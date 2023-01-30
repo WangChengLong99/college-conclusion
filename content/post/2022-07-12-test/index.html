@@ -1,0 +1,223 @@
+---
+title: 用rmarkdown生成网站
+author: admin
+date: '2022-09-07'
+slug: setup-of-hugo
+categories: markdown
+tags: rmarkdown
+subtitle: 'shortcode'
+summary: 总结了rmarkdown+hugo+wowchemy建设网站的页面元素设置
+lastmod: '2022-09-07T16:45:51+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+private: false
+show_date: true
+reading_time: true
+share: true
+profile: true
+pager: true
+show_related: true
+show_breadcrumb: true
+header:
+  navbar:
+    enable: false
+design:
+  background: 
+    color: black
+    text_color_light: true
+---
+
+
+
+<div id="c3-s1" class="section level2">
+<h2>todo</h2>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" checked="" />
+任务列表</li>
+</ul>
+</div>
+<div id="跳转到todo" class="section level2">
+<h2>跳转到todo</h2>
+<pre><code>[任务列表](#c3-s1)</code></pre>
+<p><a href="#c3-s1">任务列表</a></p>
+</div>
+<div id="不生效部分" class="section level2">
+<h2>不生效部分</h2>
+<ul>
+<li>代码折叠不再生效</li>
+<li>.tabset不再支持</li>
+<li>{{%toc%}}在.rmd后缀不显示，在.Rmarkdown后缀显示</li>
+<li>yaml中设置<code>toc: true</code>.rmd不显示，.Rmarkdown显示</li>
+</ul>
+</div>
+<div id="短代码" class="section level2">
+<h2>短代码</h2>
+<p>{{% callout warning %}}
+注意在编译为html文件后，英文双引号会莫名被转换为中文，注意前面加反斜杠则不会被转换
+{{% /callout %}}</p>
+<div id="链接静态文件" class="section level3">
+<h3>链接静态文件</h3>
+<p>比如pdf，doc，html等，文件放在theme下的static文件下</p>
+<p>{{%staticref "uploads/LaTeX.pdf" "new tab"%}}Download my CV{{%/staticref%}}</p>
+</div>
+<div id="下拉框" class="section level3">
+<h3>下拉框</h3>
+<p>可以把内容放在下拉框之间，可以是其他markdown格式</p>
+<p>{{%spoiler text="Click to view the spoiler"%}}You found me!{{%/spoiler%}}</p>
+</div>
+<div id="应用css" class="section level3">
+<h3>应用css</h3>
+<p style="color:green">
+Red colored text
+</p>
+</div>
+<div id="文本高亮" class="section level3">
+<h3>文本高亮</h3>
+<p>This is a {{%hl%}}highlighted quote{{%/hl%}}</p>
+</div>
+<div id="链接" class="section level3">
+<h3>链接</h3>
+<ul>
+<li>可以直接用标题名作为链接</li>
+</ul>
+<p><a href="#跳转到todo">Scroll down to a page section with heading <em>Hi</em></a></p>
+<ul>
+<li>链接到别的post，要搞明白路径关系，文件名为slug若没有则为title</li>
+</ul>
+<p><a href="../python-style-strategy/">A post</a></p>
+</div>
+<div id="脚注" class="section level3">
+<h3>脚注</h3>
+<p>I have more <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> to say</p>
+</div>
+<div id="导入图片" class="section level3">
+<h3>导入图片</h3>
+<p>还可以设置numbered属性为true，从而编号，以及caption标题，图片位置为assets/media下或者该文件所在文件夹</p>
+<p>可以设置id，用于链接到该图片</p>
+<p>{{% figure src="iu3.jpg" id="iu3"%}}</p>
+<ul>
+<li>markdown形式的链接</li>
+</ul>
+<p>{{% figure src="header.png" caption="A caption" numbered="true" %}}</p>
+<p>{{%figure src="icon.png" caption="A icon" numbered="true"%}}</p>
+<p>{{% figure src="header.png" caption="test" theme="dark" %}}</p>
+<p><a href="#iu3">a figure</a></p>
+</div>
+<div id="tags-and-categories" class="section level3">
+<h3>tags and categories</h3>
+<p>展示所有标签和分类</p>
+<p>{{%list_tags%}}</p>
+<p>{{%list_categories%}}</p>
+</div>
+<div id="交互式行为" class="section level3">
+<h3>交互式行为</h3>
+<p>生成图形化的交互式按钮，也是一种链接</p>
+<p>{{%cta cta_text="Do something" cta_link="/" cta_new_tab="false" cta_alt_text="Alternative action" cta_alt_link="/" cta_alt_new_tab="false"%}}</p>
+</div>
+<div id="关联作者" class="section level3">
+<h3>关联作者</h3>
+<p>{{%mention "admin"%}}</p>
+</div>
+<div id="子节" class="section level3">
+<h3>子节</h3>
+<p>To list child pages, such as to list book sections from a book chapter, use</p>
+<p>{{%list_children%}}.</p>
+</div>
+<div id="画廊" class="section level3">
+<h3>画廊</h3>
+<p>{{% gallery album="iu" resize_options="250x250"%}}</p>
+</div>
+<div id="icon和emoji" class="section level3">
+<h3>icon和emoji</h3>
+<p>{{%icon name="python" pack="fab"%}} Python</p>
+<p>I :heart: Wowchemy :smile:</p>
+</div>
+<div id="注意和警告" class="section level3">
+<h3>注意和警告</h3>
+<p>{{% callout note %}}
+A Markdown callout is useful for displaying notices, hints, or definitions to your readers.
+{{% /callout %}}</p>
+<p>{{% callout warning %}}
+Here’s some important information…
+{{% /callout %}}</p>
+</div>
+<div id="声音和视频" class="section level3">
+<h3>声音和视频</h3>
+<p>放在相同目录下</p>
+<p>{{% audio src="wrong.mp3" %}}</p>
+<p>{{% video library="true" src="sigmoid.mp4" controls="yes" %}}</p>
+</div>
+<div id="mermaid" class="section level3">
+<h3>mermaid</h3>
+<pre>
+{{%mermaid align=\"left\" theme=\"neutral\"%}}
+flowchart LR
+    subgraph EXTRACT
+        direction TB
+            oi[Outlook inbox] --> |Download manually|gs[Get and save data]
+            gs --> |Rename file <br> change column types|rd[Raw data store]
+    end
+    subgraph TRANSFORM
+        direction TB
+            e[Raw data store] -->|Manual filename change| sas_read
+            sas_read[Read raw data <br> into SAS format] --> |Manual filename change| sas_trans[Transform data]
+            sas_trans --> data[Processed data]
+    end
+fa[feed A] -->|automated <br> delivery| EXTRACT --> TRANSFORM
+{{%/mermaid %}}
+</pre>
+<pre class="mermaid"><code>graph TD;
+  A--&gt;B;
+  A--&gt;C;
+  B--&gt;D;
+  C--&gt;D;</code></pre>
+</div>
+<div id="代码" class="section level3">
+<h3>代码</h3>
+<pre class="python"><code># Example of code highlighting
+input_string_var = input(&quot;Enter some data: &quot;)
+print(&quot;You entered: {}&quot;.format(input_string_var))</code></pre>
+</div>
+<div id="公式" class="section level3">
+<h3>公式</h3>
+<p><span class="math display">\[
+  f(x) = \frac{1}{2} \sum_{j=1}^\infty \int_0^1 \sin^2(j t x) dt .
+\]</span></p>
+</div>
+<div id="chart" class="section level3">
+<h3>chart</h3>
+<p>Wowchemy supports the popular Plotly chart format.</p>
+<p>Save your Plotly JSON in your page folder, for example chart.json, and then add the <code>{{&lt; chart data="chart" &gt;}}</code> shortcode where you would like the chart to appear.</p>
+</div>
+<div id="markmap-markdown和mindmap结合" class="section level3">
+<h3>markmap markdown和mindmap结合</h3>
+<pre class="markmap"><code>- Hugo Modules
+  - wowchemy
+  - wowchemy-plugins-netlify
+  - wowchemy-plugins-netlify-cms
+  - wowchemy-plugins-reveal</code></pre>
+<p>{{%markmap%}}
+- Hugo Modules
+- wowchemy
+- wowchemy-plugins-netlify
+- wowchemy-plugins-netlify-cms
+- wowchemy-plugins-reveal
+{{%/markmap%}}</p>
+</div>
+<div id="插入幻灯片" class="section level3">
+<h3>插入幻灯片</h3>
+<iframe src="https://slides.com/iphysresearch/journal_club_20201020/embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+</iframe>
+<p>{{% table path="2_student_info.csv" header="true" caption="Table 1: My results" %}}</p>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>Footnote example.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>

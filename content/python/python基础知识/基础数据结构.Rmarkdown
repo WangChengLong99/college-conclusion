@@ -1,0 +1,3057 @@
+---
+title: 数据类型
+date: 2022-12-5
+lastmod: '2022-12-054T16:44:38+08:00'
+summary: 列表，元组，字典，集合
+weight: 30
+toc: true
+type: book
+---
+
+## 列表
+
+序列是Python中最基本的数据结构。序列中的每个元素都分配一个数字 - 它的位置，或索引。第一个索引是0，第二个索引是1，依此类推。
+
+Python有6个序列的内置类型，但最常见的是列表和元组。
+
+**序列都可以进行的操作**包括索引，切片，加，乘，检查成员。
+
+列表是最常用的Python数据类型，它可以作为一个方括号内的逗号分隔值出现。列表的元素可以是不同类型，可以是任何对象。即列表可以嵌套。
+
+与字符串的索引一样，列表索引从0开始。列表可以进行截取、组合等。具体看字符串的介绍。
+
+### 访问列表中的值
+
+使用下标索引来访问列表中的值，同样你也可以使用方括号的形式截取字符。
+
+### 更新列表
+
+你可以对列表的数据项进行修改或更新，你也可以使用append()方法来添加列表项.
+
+### 删除列表元素
+
+可以使用 del 语句来删除列表的的元素
+
+我们会在接下来的章节讨论 remove() 方法的使用
+
+### Python列表脚本操作符
+
+列表对 + 和 * 的操作符与字符串相似。+ 号用于组合列表，* 号用于重复列表。
+
+如下所示：
+
+Python 表达式|	结果|	描述
+-|-|-
+len([1, 2, 3])|	3|	长度
+[1, 2, 3] + [4, 5, 6]	|[1, 2, 3, 4, 5, 6]	|组合
+['Hi!'] * 4|	['Hi!', 'Hi!', 'Hi!', 'Hi!']|	重复
+3 in [1, 2, 3]|	True	|元素是否存在于列表中
+for x in [1, 2, 3]: print(x, end=" ")|	1 2 3|	迭代
+
+### Python列表截取与拼接
+
+Python的列表截取与字符串操作类型，如下所示：
+
+L=['Google', 'Runoob', 'Taobao']
+
+操作：
+
+Python 表达式|	结果|	描述
+-|-|-
+L[2]|	'Taobao'|	读取第三个元素
+L[-2]|	'Runoob'	|从右侧开始读取倒数第二个元素: count from the right
+L[1:]|	['Runoob', 'Taobao']	|输出从第二个元素开始后的所有元素
+
+列表还支持拼接操作：
+
+    >>>squares = [1, 4, 9, 16, 25]
+    >>> squares += [36, 49, 64, 81, 100]
+    >>> squares
+    [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+### 嵌套列表
+
+使用嵌套列表即在列表里创建其它列表，例如：
+
+    >>>a = ['a', 'b', 'c']
+    >>> n = [1, 2, 3]
+    >>> x = [a, n]
+    >>> x
+    [['a', 'b', 'c'], [1, 2, 3]]
+    >>> x[0]
+    ['a', 'b', 'c']
+    >>> x[0][1]
+    'b'
+
+### Python列表函数&方法{#列表}
+
+* Python包含以下函数:
+
+序号|	函数|解释
+-|-|-
+1|	len(list)|列表元素个数
+2|	max(list)|返回列表元素最大值
+3|	min(list)|返回列表元素最小值
+4|	list(seq)|将元组转换为列表
+
+* Python包含以下方法:
+
+序号|	方法|解释
+-|-|-
+1|	list.append(obj)|在列表末尾添加新的对象
+2|	list.count(obj)|统计某个元素在列表中出现的次数
+3|	list.extend(seq)|在列表末尾一次性追加另一个序列中的多个值（用新列表扩展原来的列表）
+4|	list.index(obj)|从列表中找出某个值第一个匹配项的索引位置
+5|list.insert(index, obj)|将对象插入列表
+6|list.pop([index=-1])|移除列表中的一个元素（默认最后一个元素），并且返回该元素的值
+7|list.remove(obj)|移除列表中某个值的第一个匹配项
+8|list.reverse()|反向列表中元素
+9|list.sort( key=None, reverse=False)|对原列表进行排序
+10|list.clear()|清空列表
+11|	list.copy()|复制列表
+
+### list.append()
+
+描述
+
+append() 方法用于在列表末尾添加新的对象。
+
+语法
+
+append()方法语法：
+
+list.append(obj)
+
+参数
+
+obj -- 添加到列表末尾的对象。
+
+返回值
+
+该方法无返回值，但是会修改原来的列表。
+
+实例
+
+以下实例展示了 append()函数的使用方法：
+
+    list1 = ['Google', 'Runoob', 'Taobao']
+    list1.append('Baidu')
+    print ("更新后的列表 : ", list1)
+    以上实例输出结果如下：
+
+    更新后的列表 :  ['Google', 'Runoob', 'Taobao', 'Baidu']
+
+列表可包含任何数据类型的元素，单个列表中的元素无须全为同一类型。
+
+append() 方法向列表的尾部添加一个新的元素。
+
+列表是以类的形式实现的。“创建”列表实际上是将一个类实例化。因此，列表有多种方法可以操作。
+
+append() 是浅拷贝，如果在 append 一个对象时，需要特别注意：
+
+    >>>alist = []
+    >>> num = [2]
+    >>> alist.append( num )
+    >>> id( num ) == id( alist[0] )
+    True
+    如果使用 num[0]=3，改变 num 后，alist[0] 也随之改变。
+
+    如不希望，需要使用 alist.append( copy.deepcopy( num ) )
+
+###  append() 与深拷贝、浅拷贝
+
+深浅拷贝
+
+在 Python 中，对象赋值实际上是对象的引用。当创建一个对象，然后把它赋给另一个变量的时候，Python 并没有拷贝这个对象，而只是拷贝了这个对象的引用，我们称之为浅拷贝。
+
+在 Python 中，为了使当进行赋值操作时，两个变量互不影响，可以使用 copy 模块中的 deepcopy 方法，称之为深拷贝。
+
+append() 函数
+
+当 list 类型的对象进行 append 操作时，实际上追加的是该对象的引用。
+
+id() 函数：返回对象的唯一标识，可以类比成该对象在内存中的地址。
+
+    >>>alist = []
+    >>> num = [2]
+    >>> alist.append( num )
+    >>> id( num ) == id( alist[0] )
+    True
+
+如上例所示，当 num 发生变化时(前提是 id(num) 不发生变化），alist 的内容随之会发生变化。往往会带来意想不到的后果，想避免这种情况，可以采用深拷贝解决：
+
+    alist.append( copy.deepcopy( num ) )
+
+直接赋值：其实就是对象的引用（别名）。
+
+浅拷贝(copy)：拷贝父对象，不会拷贝对象的内部的子对象。
+
+深拷贝(deepcopy)： copy 模块的 deepcopy 方法，完全拷贝了父对象及其子对象。
+
+见：<https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html>
+
+### list.count()
+
+描述
+
+count() 方法用于统计某个元素在列表中出现的次数。
+
+语法
+
+count()方法语法：list.count(obj)
+
+参数
+
+obj -- 列表中统计的对象。
+
+返回值
+
+返回元素在列表中出现的次数。
+
+实例
+
+以下实例展示了 count()函数的使用方法：
+
+    实例
+    #!/usr/bin/python3
+
+    aList = [123, 'Google', 'Runoob', 'Taobao', 123];
+
+    print ("123 元素个数 : ", aList.count(123))
+    print ("Runoob 元素个数 : ", aList.count('Runoob'))
+    以上实例输出结果如下：
+
+    123 元素个数 :  2
+    Runoob 元素个数 :  1
+
+### list.extend()
+
+extend() 函数用于在列表末尾一次性追加另一个序列中的多个值（用新列表扩展原来的列表）。
+
+extend()方法语法：list.extend(seq)
+
+参数
+
+seq -- 元素列表，可以是列表、元组、集合、字典，若为字典,则仅会将键(key)作为元素依次添加至原列表的末尾。
+
+返回值
+
+该方法没有返回值，但会在已存在的列表中添加新的列表内容。
+
+实例
+
+以下实例展示了 extend()函数的使用方法：
+
+    实例
+    #!/usr/bin/python3
+    
+    list1 = ['Google', 'Runoob', 'Taobao']
+    list2=list(range(5)) ## 创建 0-4 的列表
+    list1.extend(list2)  ## 扩展列表
+    print ("扩展后的列表：", list1)
+    以上实例输出结果如下：
+
+    扩展后的列表： ['Google', 'Runoob', 'Taobao', 0, 1, 2, 3, 4]
+
+### List.index()方法
+
+描述
+
+index() 函数用于从列表中找出某个值第一个匹配项的索引位置。
+
+语法
+
+index()方法语法：
+
+list.index(x[, start[, end]])
+
+参数
+
+x-- 查找的对象。
+
+start-- 可选，查找的起始位置。
+
+end-- 可选，查找的结束位置。  
+
+返回值
+
+该方法返回查找对象的索引位置，如果没有找到对象则抛出异常。
+
+实例
+
+以下实例展示了 index()函数的使用方法：
+
+实例 1
+
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao']
+    print ('Runoob 索引值为', list1.index('Runoob'))
+    print ('Taobao 索引值为', list1.index('Taobao'))
+    以上实例输出结果如下：
+
+    Runoob 索引值为 1
+    Taobao 索引值为 2
+    实例 2
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao', 'Facebook', 'QQ']
+    ## 从指定位置开始搜索
+    print ('Runoob 索引值为', list1.index('Runoob',1))
+    以上实例输出结果如下：
+
+    Runoob 索引值为 1
+
+### list.insert()
+
+描述
+
+insert() 函数用于将指定对象插入列表的指定位置。
+
+insert()方法语法：
+
+list.insert(index, obj)
+
+参数
+
+index -- 对象obj需要插入的索引位置。插入后该对象的索引就是填入的这个index
+
+obj -- 要插入列表中的对象。
+
+返回值
+
+该方法没有返回值，但会在列表指定位置插入对象。
+
+以下实例展示了 insert()函数的使用方法：
+
+    实例
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao']
+    list1.insert(1, 'Baidu')
+    print ('列表插入元素后为 : ', list1)
+    以上实例输出结果如下：
+
+    列表插入元素后为 :  ['Google', 'Baidu', 'Runoob', 'Taobao']
+
+    x=['a','b','c','d','b','c']
+    x.insert(8,2)#如果超过现有索引大小，默认在末尾添加
+    #['a', 'b', 'c', 'd', 'b', 'c', 2]
+    x.insert(2,8)
+    #['a', 'b', 8, 'c', 'd', 'b', 'c', 2]
+    x.insert(x.index('c'),7)
+    #['a', 'b', 8, 7, 'c', 'd', 'b', 'c', 2]
+
+**注意**： 如果插入的是列表，会跟append有一样的问题。
+
+### list.pop()
+
+描述
+
+pop() 函数用于移除列表中的一个元素（默认最后一个元素），并且返回该元素的值。
+
+语法
+
+pop()方法语法：
+
+list.pop([index=-1])
+
+参数
+
+index -- 可选参数，要移除列表元素的索引值，不能超过列表总长度，默认为 index=-1，删除最后一个列表值。
+
+返回值
+
+该方法返回从列表中移除的元素对象。
+
+实例
+
+    以下实例展示了 pop()函数的使用方法：
+    list1 = ['Google', 'Runoob', 'Taobao']
+    list1.pop()
+    print ("列表现在为 : ", list1)
+    list1.pop(1)
+    print ("列表现在为 : ", list1)
+    以上实例输出结果如下：
+    列表现在为 :  ['Google', 'Runoob']
+    列表现在为 :  ['Google']
+
+可以通过下面这种方法打印 pop() 函数来显示返回值:
+
+    list1 = ['Google', 'Runoob', 'Taobao']
+    list_pop=list1.pop(1)
+    print ("删除的项为 :", list_pop)
+    print ("列表现在为 : ", list1)
+    以上实例输出结果如下：
+
+    删除的元素为 : Runoob
+    列表现在为 :  ['Google', 'Taobao']
+
+### list.remove()
+
+remove() 函数用于移除列表中某个值的第一个匹配项。
+
+语法
+
+remove()方法语法：
+
+list.remove(obj)
+
+参数
+obj -- 列表中要移除的对象。
+
+返回值
+
+该方法没有返回值但是会移除列表中的某个值的第一个匹配项。
+
+实例
+
+以下实例展示了 remove()函数的使用方法：
+
+    实例
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao', 'Baidu']
+    list1.remove('Taobao')
+    print ("列表现在为 : ", list1)
+    list1.remove('Baidu')
+    print ("列表现在为 : ", list1)
+    以上实例输出结果如下：
+
+    列表现在为 :  ['Google', 'Runoob', 'Baidu']
+    列表现在为 :  ['Google', 'Runoob']
+
+### list.reverse()
+
+reverse() 函数用于反向列表中元素。
+
+语法
+
+reverse()方法语法：
+
+list.reverse()
+
+参数
+
+NA。
+
+返回值
+
+该方法没有返回值，但是会对列表的元素进行反向排序。
+
+实例
+
+    以下实例展示了 reverse()函数的使用方法：
+
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao', 'Baidu']
+    list1.reverse()
+    print ("列表反转后: ", list1)
+    以上实例输出结果如下：
+    列表反转后:  ['Baidu', 'Taobao', 'Runoob', 'Google']
+
+### list.sort()
+
+描述
+
+sort() 函数用于对原列表进行排序，如果指定参数，则使用比较函数指定的比较函数。
+
+语法
+
+sort()方法语法：
+
+list.sort( key=None, reverse=False)
+
+参数
+
+key -- 主要是用来进行比较的元素，只有一个参数，具体的函数的参数就是取自于可迭代对象中，指定可迭代对象中的一个元素来进行排序。
+
+reverse -- 排序规则，reverse = True 降序， reverse = False 升序（默认）。
+
+返回值
+
+该方法没有返回值，但是会对列表的对象进行排序。
+
+以下实例展示了 sort() 函数的使用方法：
+
+    #!/usr/bin/python
+    
+    aList = ['Google', 'Runoob', 'Taobao', 'Facebook']
+    
+    aList.sort()
+    print ( "List : ", aList)
+    以上实例输出结果如下：
+
+    List :  ['Facebook', 'Google', 'Runoob', 'Taobao']
+
+{{%spoiler text=\"sort中key参数的使用\"%}}
+以下实例演示了通过指定列表中的元素排序来输出列表：
+
+    实例
+    #!/usr/bin/python
+    
+    ## 获取列表的第二个元素
+    def takeSecond(elem):
+        return elem[1]
+    
+    ## 列表
+    random = [(2, 2), (3, 4), (4, 1), (1, 3)]
+    
+    ## 指定第二个元素排序
+    random.sort(key=takeSecond)
+    
+    ## 输出类别
+    print ('排序列表：', random)
+    以上实例输出结果如下：
+
+    排序列表：[(4, 1), (2, 2), (1, 3), (3, 4)]
+
+
+    list3 = ['a',10086,'wo',10010,]
+    list3.sort()
+
+    print(list3)
+    输出结果显示错误：
+
+    list3.sort()
+    TypeError: '<' not supported between instances of 'int' and 'str'
+    可见 sort 方法不适合 int 和 str 类型的比较。
+
+    如果非要将列表里不同类型相比较，可以考虑如下方法:
+
+    l = [-1, -3, 1, 0, 3, 'a', 'b', 'c']
+    l.sort(key = str)
+    print(l)
+    排序结果:
+
+    [-1, -3, 0, 1, 3, 'a', 'b', 'c']
+    这里是利用 key 参数将数字全部转换为 str 类型后排序。
+
+
+更多的笔记：
+
+    3.根据列表中类对象的属性排序
+
+    class element(object):  
+        def __init__(self,id="",name=""):  
+            self.id=id  
+            self.name=name  
+        def __lt__(self, other): ## override <操作符  
+            if self.id<other.id:  
+                return True  
+            return False  
+    
+        def __str__(self): ## override __str__  
+            return "id={0},name={1}".format(self.id,self.name)  
+    
+    def sort_by_attribute():  
+        list=[element(id="130",name="json"),  
+            element(id="01",name="jack"),element(id="120",name="tom")]  
+        list.sort()  
+        for item in list:  
+            print(item)
+
+    由于 list.sort() 函数在排序时，使用的是小于号对比，所以自定义的数据类型需要 override __lt__(小于) 函数才能实现排序。
+
+    根据 element 的 id 属性排序
+
+    排序列的结果：
+
+    id=01,name=jack  
+    id=120,name=tom  
+    id=130,name=json
+
+    4.根据列表中元素的长度排序
+
+    借助于 lambda 表达式，计算 list 列表中的元素的长度，根据元素的长度进行排序。
+
+    6.动态的根据用户指定的索引进行排序：
+
+    def two_d_list_sort2(sort_index="0,1,2"): ## 动态的根据传入的元素索引进行排序  
+        list=[ ["1","c++","demo"],  
+            ["1","c","test"],  
+            ["2","java",""],  
+            ["8","golang","google"],  
+            ["4","python","gil"],  
+            ["5","swift","apple"]  
+            ]  
+        key_set=""  
+        for item in sort_index.split(","):  
+            key_set+="ele["+item+"]+"  
+        key_set=key_set.rstrip("+")  
+        list.sort(key=lambda ele:eval(key_set))  
+        print("排序索引:",sort_index,list)  
+    
+    if __name__=="__main__":  
+        two_d_list_sort2("0")  
+        two_d_list_sort2("1")  
+        two_d_list_sort2("2")  
+        two_d_list_sort2("1,0")
+    有时候，在写代码之前，并不知道根据二维表的哪几列排序，而是在程序运行的时候根据输入或配置决定的，为了解决这个动态根据多个列或属性排序的问题，借助了 eval() 函数，eval() 函数能够把字符串编译成 python 代码并运行，从而达到动态根据多个列或属性排序的目的。
+
+    排序结果：
+
+    排序索引: 0 [['1', 'c++', 'demo'], ['1', 'c', 'test'], ['2', 'java', ''], ['4', 'python', 'gil'], ['5', 'swift', 'apple'], ['8', 'golang', 'google']]  
+    排序索引: 1 [['1', 'c', 'test'], ['1', 'c++', 'demo'], ['8', 'golang', 'google'], ['2', 'java', ''], ['4', 'python', 'gil'], ['5', 'swift', 'apple']]  
+    排序索引: 2 [['2', 'java', ''], ['5', 'swift', 'apple'], ['1', 'c++', 'demo'], ['4', 'python', 'gil'], ['8', 'golang', 'google'], ['1', 'c', 'test']]  
+    排序索引: 1,0 [['1', 'c++', 'demo'], ['1', 'c', 'test'], ['8', 'golang', 'google'], ['2', 'java', ''], ['4', 'python', 'gil'], ['5', 'swift', 'apple']]
+    综上，基本总结了 list.sort 的使用的大部分场景，如下：
+
+    1、默认排序
+    2、根据类对象的单个属性进行排序，当然也可以扩展为根据类对象的多个属性进行排序
+    3、根据元素的固有属性进行排序，如：长度、第N个元素等。为了简单，所以借助了 lambda 表达式，当然也可以使用普通函数代替 lambda 表达式
+    4、动态的根据多个列进行排序，同时借助 lambda 和 eval() 函数实现
+
+    可能还有一些场景没有涉及到，不过我相信，上面的几种情况可以满足90%以上的场景了，如果在使用中有问题欢迎留言交流。
+
+    多关键字排序的方法。
+
+    a=['delphi', 'Delphi', 'python', 'Python', 'golang', 'Golang', 'c++', 'C++', 'c', 'C']
+    print(a)
+    #按字典序升序排序
+    a.sort() 
+    print(a)
+    #先按字符串长度升序排序，长度相同按字典序升序排序
+    a.sort(key=lambda x:(len(x),x)) 
+    print(a)
+    #先按字符串长度升序排序，长度相同按字典序降序排序
+    a.sort(key=lambda x:(len(x),list(map(lambda c:-ord(c),x)))) 
+    print(a)
+    #先按字符串长度降序排序，长度相同按字典序升序排序
+    a.sort(key=lambda x:(-len(x),x))
+    print(a)
+    再举一例：
+
+    a=[[1,3],[3,2],[2,4],[1,2],[1,5],[2,5]]
+    print(a)
+    #先按第一个元素升序排序，第一个元素相同按第二个元素升序排序
+    a.sort()
+    print(a)
+    #先按第一个元素升序排序，第一个元素相同则保持原来的顺序
+    a=[[1,3],[3,2],[2,4],[1,2],[1,5],[2,5]]
+    a.sort(key=lambda x:x[0])
+    print(a)
+    #先按第二个元素升序排序，第二个元素相同则保持原来的顺序
+    a=[[1,3],[3,2],[2,4],[1,2],[1,5],[2,5]]
+    a.sort(key=lambda x:x[1])
+    print(a)
+    #先按第二个元素升序排序，第二个元素相同按第一个元素降序排序
+    a.sort(key=lambda x:(x[1],-x[0]))
+    print(a)
+
+    在汉字、英文单词都存在的情况下,会优先对英文字母排序,然后再是汉字的首字母排序，因为字符串比较大小时，是每个相应的字符的Unicode编码进行比较，汉字的Unicode编码比所有英文字母和阿拉伯数字的Unicode编码都要大。
+
+    name_list = ["唱", "跳", "rap", "篮球"]
+    num_list = [1, 7, 6, 3, 10]
+
+    '''
+    #升序
+    name_list.sort()
+    #['rap', '唱', '篮球', '跳']
+    num_list.sort()
+    #[1, 3, 6, 7, 10]
+    '''
+
+    '''
+    ## 降序
+    name_list.sort(reverse=True)  
+    ## ['跳', '篮球', '唱', 'rap']
+    num_list.sort(reverse=True)  
+    ## [10, 7, 6, 3, 1]
+    '''
+
+    ## 逆序(反转)
+    name_list.reverse()  
+    ## ['篮球', 'rap', '跳', '唱']
+    num_list.reverse()  
+    ## [10, 3, 6, 7, 1]
+    print(name_list)
+    print(num_list)
+
+    id_num = ord('一')
+    for i in range(10):
+        ch = chr(id_num+i)
+        print(ch, ord(ch))
+
+    for i in range(10):
+        ch = str(i)
+        print(ch, ord(ch))
+        
+    id_num = ord('a')
+    for i in range(10):
+        ch = chr(id_num+i)
+        print(ch, ord(ch))
+        
+    id_num = ord('A')
+    for i in range(10):
+        ch = chr(id_num+i)
+        print(ch, ord(ch))
+    运行结果如下:
+
+    一 19968
+    丁 19969
+    丂 19970
+    七 19971
+    丄 19972
+    丅 19973
+    丆 19974
+    万 19975
+    丈 19976
+    三 19977
+    0 48
+    1 49
+    2 50
+    3 51
+    4 52
+    5 53
+    6 54
+    7 55
+    8 56
+    9 57
+    a 97
+    b 98
+    c 99
+    d 100
+    e 101
+    f 102
+    g 103
+    h 104
+    i 105
+    j 106
+    A 65
+    B 66
+    C 67
+    D 68
+    E 69
+    F 70
+    G 71
+    H 72
+    I 73
+    J 74
+{{%/spoiler%}}
+
+### list.clear()
+
+描述
+
+clear() 函数用于清空列表，类似于 del a[:]。
+
+语法
+
+clear()方法语法：
+
+list.clear()
+
+参数
+
+无。
+
+返回值
+
+该方法没有返回值。
+
+实例
+
+    以下实例展示了 clear()函数的使用方法：
+
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao', 'Baidu']
+    list1.clear()
+    print ("列表清空后 : ", list1)
+    以上实例输出结果如下：
+
+    列表清空后 :  []
+
+通过 clear() 方法，remove() 方法，pop() 方法，append() 方法等改变列表的，相应的已经赋值给其它变量的列表也会被清空。
+
+    >>> d = {}
+    >>> s = s = ['一','二','一','三','四']
+    >>> d["大写数字"] = s
+    >>> d
+    {'大写数字': ['一','二','一','三','四']}
+    >>> s.remove('一')
+    >>> d
+    {'大写数字': ['二','一','三','四']}
+    >>> s.pop()
+    >>> d
+    {'大写数字': ['二','一','三']}
+    >>> s.append('五')
+    >>> d
+    {'大写数字': ['二','一','三','五']}
+    >>> s.clear()
+    >>> d
+    {'大写数字': []}
+
+### list.copy()
+
+描述
+
+copy() 函数用于复制列表，类似于 a[:]。
+
+语法
+
+copy()方法语法：
+
+list.copy()
+
+参数
+
+无。
+
+返回值
+
+返回复制后的新列表。
+
+实例
+
+以下实例展示了 copy()函数的使用方法：
+
+    实例
+    #!/usr/bin/python3
+
+    list1 = ['Google', 'Runoob', 'Taobao', 'Baidu']
+    list2 = list1.copy()
+    print ("list2 列表: ", list2)
+    以上实例输出结果如下：
+
+    list2 列表:  ['Google', 'Runoob', 'Taobao', 'Baidu']
+
+copy()和直接=赋值的区别：
+
+    a=[0,1,2,3,4,5]
+    b=a
+    c=a.copy()
+
+    del a[1]  
+    '''
+    各变量值为：
+    a=[0, 2, 3, 4, 5]
+    b=[0, 2, 3, 4, 5]
+    c=[0, 1, 2, 3, 4, 5]
+    '''
+
+    b.remove(4)
+    '''
+    各变量值为：
+    a=[0, 2, 3, 5]
+    b=[0, 2, 3, 5]
+    c=[0, 1, 2, 3, 4, 5]
+    '''
+
+    c.append(9)
+    '''
+    各变量值为：
+    a=[0, 2, 3, 5]
+    b=[0, 2, 3, 5]
+    c=[0, 1, 2, 3, 4, 5, 9]
+    '''
+
+可以看出，使用=直接赋值，是引用赋值，更改一个，另一个同样会变, 例子中的a,b改变两次都影响到了对方
+
+copy() 则顾名思义，复制一个副本，原值和新复制的变量互不影响 「a,c」
+
+    arr = [{'name': 'wcl', 'age': 23}, {'name': 'wjy', 'age': 14}]
+    arr2 = arr.copy()
+    del arr[1]
+    arr[0]['age'] = 18
+    print('arr', arr)
+    print('arr2', arr2)
+    输出结果为：
+
+    arr [{'name': 'wcl', 'age': 18}]
+    arr2 [{'name': 'wcl', 'age': 18}, {'name': 'wjy', 'age': 14}]
+
+可以看出，copy() 只是是浅度复制，修改列表不会互相影响，但是修改列表里面的对象会影响到对方列表里面对象。
+
+浅拷贝内存原理：
+
+    a=[0,1,2,3,4,5]
+    b=a
+    """
+    使用＝赋值后，相当于[0,1,2,3,4,5]对象同时被变量a和b同是引用和指向，此后，如果通过变量a或者变量b途径取修改这个列表对象，因为a和b指向的是同一个列表对象，列表对象本身改变后，所有通过引用它的变量输出来的数据都是改变的．类似于，大家公用一个寝室，其中一个人把寝室的面貌改变了，那么所有人再去描述现在的寝室，它都是改变过后的样子．
+    通过浅拷贝方法相当于其中一个人根据原来的寝室的面貌重新盖了一个寝室，所以a和b的改变与c的改变互不影响． 
+
+当原对象存在多层嵌套的情况下，浅拷贝copy()只拷贝了最外层的数据结构，最外层所包含的数据变化时，是不会相互影响的，但是当原数据对象内部嵌套数据中的数据发生变化后，相应的浅拷贝后的对象也会发生变化．类似于一个公司，原来有一个宿舍，通过浅拷贝，重新造了一个相同建筑架构的宿舍．里面有物理墙体，电视，电脑，床位等，电视里播放着统一的画面．当公司改变了电视里播放的画面时，所有的宿舍都会发生改变．其中物理墙体，硬件电视等相当于最外层的对象结构，而电视里的画面就是内层嵌套的数据了。
+
+    arr = [{'name': 'wcl', 'age': 23}, {'name': 'wjy', 'age': 14}]
+    arr2 = arr.copy()
+    del arr[1]
+    arr[0]['age'] = 18　#或者arr2[0]['age'] = 18
+    print('arr', arr)
+    print('arr2', arr2)
+
+## 元组
+
+Python 的元组与列表类似，不同之处在于元组的元素不能修改。
+
+元组使用小括号，列表使用方括号。
+
+元组创建很简单，只需要在括号中添加元素，并使用逗号隔开即可。
+
+实例(Python 3.0+)
+
+    >>>tup1 = ('Google', 'Runoob', 1997, 2000)
+    >>> tup2 = (1, 2, 3, 4, 5 )
+    >>> tup3 = "a", "b", "c", "d"   ##  不需要括号也可以
+    >>> type(tup3)
+    <class 'tuple'>
+
+* 创建空元组
+
+tup1 = ()
+
+**元组中只包含一个元素时，需要在元素后面添加逗号，否则括号会被当作运算符使用：**
+
+实例(Python 3.0+)
+
+    >>>tup1 = (50)
+    >>> type(tup1)     ## 不加逗号，类型为整型
+    <class 'int'>
+    
+    >>> tup1 = (50,)
+    >>> type(tup1)     ## 加上逗号，类型为元组
+    <class 'tuple'>
+
+元组与字符串类似，下标索引从0开始，可以进行截取，组合等。
+
+* 访问元组
+
+元组可以使用下标索引来访问元组中的值，如下实例:
+
+    实例(Python 3.0+)
+
+    #!/usr/bin/python3
+    
+    tup1 = ('Google', 'Runoob', 1997, 2000)
+    tup2 = (1, 2, 3, 4, 5, 6, 7 )
+    
+    print ("tup1[0]: ", tup1[0])
+    print ("tup2[1:5]: ", tup2[1:5])
+    以上实例输出结果：
+
+    tup1[0]:  Google
+    tup2[1:5]:  (2, 3, 4, 5)
+
+* 修改元组
+
+元组中的元素值是不允许修改的，但我们可以对元组进行连接组合，如下实例:
+    
+    tup1 = (12, 34.56)
+    tup2 = ('abc', 'xyz')
+
+    ## 以下修改元组元素操作是非法的。
+    ## tup1[0] = 100
+    
+    ## 创建一个新的元组
+    tup3 = tup1 + tup2
+    print (tup3)
+    以上实例输出结果：
+
+    (12, 34.56, 'abc', 'xyz')
+
+* 删除元组
+  
+元组中的元素值是不允许删除的，但我们可以使用del语句来删除整个元组，如下实例:
+
+    实例(Python 3.0+)
+    #!/usr/bin/python3
+    
+    tup = ('Google', 'Runoob', 1997, 2000)
+    
+    print (tup)
+    del tup
+    print ("删除后的元组 tup : ")
+    print (tup)
+    以上实例元组被删除后，输出变量会有异常信息，输出如下所示：
+
+    删除后的元组 tup : 
+    Traceback (most recent call last):
+    File "test.py", line 8, in <module>
+        print (tup)
+    NameError: name 'tup' is not defined
+
+* 元组运算符
+
+与字符串一样，元组之间可以使用 + 号和 * 号进行运算。这就意味着他们可以组合和复制，运算后会生成一个新的元组。
+
+Python 表达式	|结果|	描述
+-|-|-
+len((1, 2, 3))|	3|	计算元素个数
+(1, 2, 3) + (4, 5, 6)	|(1, 2, 3, 4, 5, 6)|	连接
+('Hi!',) * 4|	('Hi!', 'Hi!', 'Hi!', 'Hi!')|	复制
+3 in (1, 2, 3)|	True	|元素是否存在
+for x in (1, 2, 3): print (x,)|	1 2 3	|迭代
+
+* 元组索引，截取
+
+因为元组也是一个序列，所以我们可以访问元组中的指定位置的元素，也可以截取索引中的一段元素.
+
+* 元组内置函数
+  
+Python元组包含了以下内置函数
+
+序号|	方法及描述|	实例
+-|-|-
+1	|len(tuple)|计算元组元素个数。	
+2	|max(tuple)|返回元组中元素最大值。	
+3	|min(tuple)|返回元组中元素最小值。	
+4	|tuple(iterable)|将可迭代系列转换为元组。	
+
+* 关于元组是不可变的
+
+所谓元组的不可变指的是元组所指向的内存中的内容不可变。
+
+    >>> tup = ('r', 'u', 'n', 'o', 'o', 'b')
+    >>> tup[0] = 'g'     ## 不支持修改元素
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    TypeError: 'tuple' object does not support item assignment
+    >>> id(tup)     ## 查看内存地址
+    4440687904
+    >>> tup = (1,2,3)
+    >>> id(tup)
+    4441088800    ## 内存地址不一样了
+
+从以上实例可以看出，重新赋值的元组 tup，绑定到新的对象了，不是修改了原来的对象。
+
+tuple和list非常类似，但是tuple一旦初始化就不能修改，比如同样是列出同学的名字：
+
+    代码如下：
+
+    >>> classmates = ('Michael', 'Bob', 'Tracy')
+
+现在，classmates这个tuple不能变了，它也没有append()，insert()这样的方法。其他获取元素的方法和list是一样的，你可以正常地使用classmates[0]，classmates[-1]，但不能赋值成另外的元素。不可变的tuple有什么意义？因为tuple不可变，所以代码更安全。
+
+**如果可能，能用tuple代替list就尽量用tuple**
+
+tuple的陷阱：当你定义一个tuple时，在定义的时候，tuple的元素就必须被确定下来，比如：
+
+    >>> t = (1, 2)
+    >>> t
+    (1, 2)
+
+如果要定义一个空的tuple，可以写成()：
+
+    >>> t = ()
+    >>> t
+    ()
+
+**只有1个元素的tuple定义时必须加一个逗号** ,来消除歧义：
+
+    >>> t = (1,)
+    >>> t
+    (1,)
+
+Python在显示只有1个元素的tuple时，也会加一个逗号,，以免你误解成数学计算意义上的括号。
+
+在来看一个"可变的"tuple：
+
+代码如下:
+
+    >>> t = ('a', 'b', ['A', 'B'])
+    >>> t[2][0] = 'X'
+    >>> t[2][1] = 'Y'
+    >>> t
+    ('a', 'b', ['X', 'Y'])
+
+这个tuple定义的时候有3个元素，分别是'a'，'b'和一个list。不是说tuple一旦定义后就不可变了吗？怎么后来又变了？
+
+别急，我们先看看定义的时候tuple包含的3个元素：当我们把list的元素'A'和'B'修改为'X'和'Y'后，tuple变为：表面上看，tuple的元素确实变了，但其实变的不是tuple的元素，而是list的元素。tuple一开始指向的list并没有改成别的list，所以，tuple所谓的"不变"是说，**tuple的每个元素，指向永远不变**。即指向'a'，就不能改成指向'b'，指向一个list，就不能改成指向其他对象，但指向的这个list本身是可变的！理解了"指向不变"后，要创建一个内容也不变的tuple怎么做？那就必须保证tuple的每一个元素本身也不能变。
+
+## 字典
+
+字典是另一种可变容器模型，且可存储任意类型对象。
+
+字典的每个键值(key=>value)对用冒号(:)分割，每个对之间用逗号(,)分割，整个字典包括在花括号({})中 ,格式如下所示：
+
+d ={key1 : value1, key2 : value2 }
+
+键必须是唯一的，但值则不必。
+
+值可以取任何数据类型，**但键必须是不可变的，如字符串，数字或元组**。
+
+一个简单的字典实例：
+
+dict = {'Alice': '2341', 'Beth': '9102', 'Cecil': '3258'}
+
+也可如此创建字典：
+
+dict1 = { 'abc': 456 }
+dict2 = { 'abc': 123, 98.6: 37 }
+
+### 访问字典里的值
+
+把相应的键放入到方括号中，如下实例:
+
+实例
+    
+    dict = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'}
+    
+    print ("dict['Name']: ", dict['Name'])
+    print ("dict['Age']: ", dict['Age'])
+
+    以上实例输出结果：
+
+    dict['Name']:  Runoob
+    dict['Age']:  7
+
+如果用字典里没有的键访问数据，会输出错误如下：
+
+    实例
+    #!/usr/bin/python3
+    
+    dict = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'}
+    
+    print ("dict['Alice']: ", dict['Alice'])
+    以上实例输出结果：
+
+    Traceback (most recent call last):
+    File "test.py", line 5, in <module>
+        print ("dict['Alice']: ", dict['Alice'])
+    KeyError: 'Alice'
+
+### 修改字典
+
+向字典添加新内容的方法是增加新的键/值对，修改或删除已有键/值对如下实例:
+
+实例
+
+    #!/usr/bin/python3
+    
+    dict = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'}
+    
+    dict['Age'] = 8               ## 更新 Age
+    dict['School'] = "菜鸟教程"  ## 添加信息
+    
+    
+    print ("dict['Age']: ", dict['Age'])
+    print ("dict['School']: ", dict['School'])
+    以上实例输出结果：
+    dict['Age']:  8
+    dict['School']:  菜鸟教程
+
+### 删除字典元素
+
+能删单一的元素也能清空字典，清空只需一项操作。
+
+显示删除一个字典用del命令，如下实例：
+
+实例
+ 
+    dict = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'}
+    
+    del dict['Name'] ## 删除键 'Name'
+    dict.clear()     ## 清空字典
+    del dict         ## 删除字典
+    
+    print ("dict['Age']: ", dict['Age'])
+    print ("dict['School']: ", dict['School'])
+    但这会引发一个异常，因为用执行 del 操作后字典不再存在：
+
+    Traceback (most recent call last):
+    File "test.py", line 9, in <module>
+        print ("dict['Age']: ", dict['Age'])
+    TypeError: 'type' object is not subscriptable
+    注：del() 方法后面也会讨论。
+
+### 字典键的特性
+
+字典值可以是任何的 python 对象，既可以是标准的对象，也可以是用户定义的，但键不行。
+
+两个重要的点需要记住：
+
+1）不允许同一个键出现两次。创建时如果同一个键被赋值两次，后一个值会被记住，如下实例：
+
+    实例
+    #!/usr/bin/python3
+    
+    dict = {'Name': 'Runoob', 'Age': 7, 'Name': '小菜鸟'}
+    
+    print ("dict['Name']: ", dict['Name'])
+    以上实例输出结果：
+
+    dict['Name']:  小菜鸟
+
+2）键必须不可变，所以可以用数字，字符串或元组充当，而用列表就不行，如下实例：
+
+实例
+
+    #!/usr/bin/python3
+    
+    dict = {['Name']: 'Runoob', 'Age': 7}
+    
+    print ("dict['Name']: ", dict['Name'])
+    以上实例输出结果：
+
+    Traceback (most recent call last):
+    File "test.py", line 3, in <module>
+        dict = {['Name']: 'Runoob', 'Age': 7}
+    TypeError: unhashable type: 'list'
+
+### 字典内置函数&方法
+
+Python字典包含了以下内置函数：
+
+序号|函数及描述|实例
+-|-|-
+1   |len(dict)|>>> dict = {'Name':'Runoob', 'Age': 7, 'Class': 'First'}>>> len(dict) 3
+2|  str(dict)输出字典，以可打印的字符串表示。|  dict = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'} str(dict)"{'Name': 'Runoob', 'Class': 'First', 'Age': 7}"
+3|  type(variable) 返回输入的变量类型，如果变量是字典就返回字典类型。    |>>> dict = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'}>>> type(dict) \<class 'dict'\>
+
+Python字典包含了以下内置方法：
+
+序号	|函数及描述
+-|-|-
+1	|radiansdict.clear()删除字典内所有元素
+2	|radiansdict.copy()返回一个字典的浅复制
+3	|radiansdict.fromkeys()创建一个新字典，以序列seq中元素做字典的键，val为字典所有键对应的初始值
+4	|radiansdict.get(key, default=None)返回指定键的值，如果值不在字典中返回default值
+5	|key in dict如果键在字典dict里返回true，否则返回false
+6	|radiansdict.items()以列表返回可遍历的(键, 值) 元组数组
+7	|radiansdict.keys()返回一个迭代器，可以使用 list() 来转换为列表
+8	|radiansdict.setdefault(key,default=None)和get()类似, 但如果键不存在于字典中，将会添加键并将值设为default
+9	|radiansdict.update(dict2)把字典dict2的键/值对更新到dict里
+10	|radiansdict.values()返回一个迭代器，可以使用 list() 来转换为列表
+11	|pop(key[,default])删除字典给定键 key 所对应的值，返回值为被删除的值。key值必须给出。 否则，返回default值。
+12	|popitem()随机返回并删除字典中的最后一对键和值。
+
+{{%spoiler text=\"补充\"%}}
+字典的键值是"只读"的，所以不能对键和值分别进行初始化，即以下定义是错的：
+
+    >>> dic = {}
+    >>> dic.keys = (1,2,3,4,5,6)
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    AttributeError: 'dict' object attribute 'keys' is read-only
+    >>> dic.values = ("a","b","c","d","e","f")
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    AttributeError: 'dict' object attribute 'values' is read-only
+
+字典是支持无限极嵌套的，如下面代码：
+
+    cities={
+        '北京':{
+            '朝阳':['国贸','CBD','天阶','我爱我家','链接地产'],
+            '海淀':['圆明园','苏州街','中关村','北京大学'],
+            '昌平':['沙河','南口','小汤山',],
+            '怀柔':['桃花','梅花','大山'],
+            '密云':['密云A','密云B','密云C']
+        },
+        '河北':{
+            '石家庄':['石家庄A','石家庄B','石家庄C','石家庄D','石家庄E'],
+            '张家口':['张家口A','张家口B','张家口C'],
+            '承德':['承德A','承德B','承德C','承德D']
+        }
+    }
+    可以使用如下方法进行列出
+
+    for i in cities['北京']:
+        print(i)
+    将列出如下结果：
+
+    朝阳
+    海淀
+    昌平
+    怀柔
+    密云
+    for i in cities['北京']['海淀']:
+        print(i)
+    输出如下结果：
+
+    圆明园
+    苏州街
+    中关村
+    北京大学
+
+用字典记录学生名字和分数，再分级:
+
+    #!/usr/bin/python3
+
+    students= {}
+    write = 1
+    while write :
+        name = str(input('输入名字:'))
+        grade = int(input('输入分数:'))
+        students[str(name)] = grade
+        write= int(input('继续输入？\n 1/继续  0/退出'))
+    print('name  rate'.center(20,'-'))
+    for key,value in students.items():
+        if value >= 90:
+            print('%s %s  A'.center(20,'-')%(key,value))
+        elif 89 > value >= 60 :
+            print('%s %s  B'.center(20,'-')%(key,value))
+        else:
+            print('%s %s  C'.center(20,'-')%(key,value))
+
+    测试输出结果：
+
+    输入名字:a
+    输入分数:98
+    继续输入？
+    1/继续  0/退出1
+    输入名字:b
+    输入分数:23
+    继续输入？
+    1/继续  0/退出0
+    -----name  rate-----
+    ------a 98  A------
+    ------b 23  C------
+
+**字典可以通过以下方法调换 key和 value,当然要注意原始 value 的类型,必须是不可变类型：**
+
+    dic = {
+        'a': 1,
+        'b': 2,
+        'c': 3,
+    }
+
+    reverse = {v: k for k, v in dic.items()}
+
+    print(dic)
+    print(reverse)
+    输出如下：
+
+    {'a': 1, 'b': 2, 'c': 3}
+    {1: 'a', 2: 'b', 3: 'c'}
+
+循环显示字典 key 与 value 值：
+
+    b= {'a':'runoob','b':'google'}
+    for i in b.values():
+        print(i)
+    for c in b.keys():
+        print(c)
+    执行输出结果为：
+
+    runoob
+    google
+    a
+    b
+
+字典字段的比较
+
+获取字典中最大的值及其键：
+
+    prices = {
+        'A':123,
+        'B':450.1,
+        'C':12,
+        'E':444,
+    }
+
+    max_prices = max(zip(prices.values(), prices.keys()))
+    print(max_prices) ## (450.1, 'B')
+
+Python3.x 中会碰到这样的问题：
+
+    >>> sites_link = {'runoog':'runoob.com', 'google':'google.com'}
+    >>> sides = sites_link.keys()
+    >>> print(sides[0])
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    TypeError: 'dict_keys' object does not support indexing
+
+原因说明及解决方法：
+
+    dict.values()
+    dict.keys()
+    在 python2.x dict.keys 返回一个列表，但是在在 Python 3.x 下，dict.keys 返回的是 dict_keys 对象，若需要转换为列表，请使用：
+
+    list(dict.values())
+    list(dict.keys())
+
+修改上面实例：
+
+    >>> sites_link = {'runoog':'runoob.com', 'google':'google.com'}
+    >>> sides = sites_link.keys()
+    >>> list(sides)
+    ['runoog', 'google']
+
+通过 values 取到 key 的方法：
+
+    >>> dic={"a":1,"b":2,"c":3}
+    >>> list(dic.keys())[list(dic.values()).index(1)]
+    'a'
+
+字典列表，即在列表中嵌套字典：
+
+    dict_0 = {'color': 'green', 'points': 5} 
+    dict_1 = {'color': 'yellow', 'points': 10} 
+    dict_2 = {'color': 'red', 'points': 15}
+    lists = [dict_0, dict_1, dict_2]
+    for dict in lists: 
+        print(dict)
+    输出：
+
+    {'color': 'green', 'points': 5} 
+    {'color': 'yellow', 'points': 10} 
+    {'color': 'red', 'points': 15}
+{{%/spoiler%}}
+
+### 字典推导式：
+
+格式：
+
+{key:value for variable in iterable [if expression]}
+
+执行步骤：
+
+ 1、for 循环：遍历可迭代对象，将其值赋给变量。
+ 2、if 语句：筛选满足 if 条件的结果。
+ 3、存储结构：以键值对的方式存储在字典中。
+
+### Python3 字典 clear()方法
+
+描述
+
+Python 字典 clear() 函数用于删除字典内所有元素。
+
+语法
+
+clear()方法语法：dict.clear()
+
+参数：NA。
+
+返回值：该函数没有任何返回值。
+
+实例
+
+    以下实例展示了 clear()函数的使用方法：
+
+    #!/usr/bin/python3
+
+    dict = {'Name': 'Zara', 'Age': 7}
+
+    print ("字典长度 : %d" %  len(dict))
+    dict.clear()
+    print ("字典删除后长度 : %d" %  len(dict))
+    以上实例输出结果为：
+
+    字典长度 : 2
+    字典删除后长度 : 0
+
+### Python3 字典 copy()方法
+
+描述
+
+Python 字典 copy() 函数返回一个字典的浅复制。
+
+语法
+
+copy()方法语法：dict.copy()
+
+参数：NA。
+
+返回值：返回一个字典的浅复制。
+
+实例
+
+以下实例展示了 copy()函数的使用方法：
+
+    dict1 = {'Name': 'Runoob', 'Age': 7, 'Class': 'First'}
+    
+    dict2 = dict1.copy()
+    print ("新复制的字典为 : ",dict2)
+    以上实例输出结果为：
+
+    新复制的字典为 :  {'Age': 7, 'Name': 'Runoob', 'Class': 'First'}
+    
+直接赋值和 copy 的区别可以通过以下实例说明：
+
+    #!/usr/bin/python
+    ## -*- coding: UTF-8 -*-
+    
+    dict1 =  {'user':'runoob','num':[1,2,3]}
+    
+    dict2 = dict1          ## 浅拷贝: 引用对象
+    dict3 = dict1.copy()   ## 浅拷贝：深拷贝父对象（一级目录），子对象（二级目录）不拷贝，还是引用
+    
+    ## 修改 data 数据
+    dict1['user']='root'
+    dict1['num'].remove(1)
+    
+    ## 输出结果
+    print(dict1)
+    print(dict2)
+    print(dict3)
+    实例中 dict2 其实是 dict1 的引用（别名），所以输出结果都是一致的，dict3 父对象进行了深拷贝，不会随dict1 修改而修改，子对象是浅拷贝所以随 dict1 的修改而修改。
+
+    {'user': 'root', 'num': [2, 3]}
+    {'user': 'root', 'num': [2, 3]}
+    {'user': 'runoob', 'num': [2, 3]}
+
+
+Python3 字典 fromkeys() 方法
+
+描述
+
+Python 字典 fromkeys() 函数用于创建一个新字典，以序列 seq 中元素做字典的键，value 为字典所有键对应的初始值。
+
+语法
+
+fromkeys() 方法语法：dict.fromkeys(seq[, value])
+
+参数
+
+seq -- 字典键值列表。
+value -- 可选参数, 设置键序列（seq）对应的值，默认为 None。
+
+返回值
+
+该方法返回一个新字典。
+
+实例
+
+以下实例展示了 fromkeys()函数的使用方法：
+
+    seq = ('name', 'age', 'sex')
+    
+    dict = dict.fromkeys(seq)
+    print ("新的字典为 : %s" %  str(dict))
+    
+    dict = dict.fromkeys(seq, 10)
+    print ("新的字典为 : %s" %  str(dict))
+
+    以上实例输出结果为：
+    新的字典为 : {'age': None, 'name': None, 'sex': None}
+    新的字典为 : {'age': 10, 'name': 10, 'sex': 10}
+
+不指定值：
+
+实例
+
+    x = ('key1', 'key2', 'key3')
+    
+    thisdict = dict.fromkeys(x)
+    
+    print(thisdict)
+    以上实例输出结果为：
+
+    {'key1': None, 'key2': None, 'key3': None}
+
+在给一个字典使用fromkeys方法时，无法对字典内容进行改变。
+
+实例：
+
+    >>>x={}                       //建立空字典
+    >>>x.fromkeys(['a','b'])      //调用fromkeys方法
+    {'a':None,'b':None}           //输出
+    >>>x                          //再次输出字典x
+    {}                            //字典依然为空
+    >>>d={'a':'1'，'b':'2'}       
+    >>>d.fromkeys('c','3')
+    {'c':'3'}
+    >>>d
+    {'a':'1'，'b':'2'}
+
+Python 字典 fromkeys() 函数用于创建一个新字典. 切记是新字典. 因为你没有保存对新字典的引用，所以以后无法查看到它的变化。 可以对你的例子做一点小修改：
+
+    >>> x = {}
+    >>> xx = x.fromkeys(['a','b'])
+    >>> x
+    {}
+    >>> xx
+    {'a': None, 'b': None}
+
+fromkeys 的注意点
+
+使用 fromkeys 创建一个列表:
+
+如下:
+
+    >>> province = dict.fromkeys(["黑龙江", "吉林", "辽宁"], [1, {"Capital": "哈尔滨"}])
+    >>> print(province)
+    {'黑龙江': [1, {'Capital': '哈尔滨'}], '吉林': [1, {'Capital': '哈尔滨'}], '辽宁': [1, {'Capital': '哈尔滨'}]}
+    我需要将辽宁的省会改为沈阳, 再输出, 如下:
+
+    >>> province["辽宁"][1]["Capital"] = "沈阳"
+    >>> print(province)
+    {'黑龙江': [1, {'Capital': '沈阳'}], '吉林': [1, {'Capital': '沈阳'}], '辽宁': [1, {'Capital': '沈阳'}]}
+    可以看到每一个 Capital 都会被更改, 每一个 key 所对应的 value 值有点类似于浅拷贝。
+
+### Python3 字典 get() 方法
+
+描述
+
+Python 字典 get() 函数返回指定键的值，如果值不在字典中返回默认值。
+
+语法
+
+get()方法语法：dict.get(key, default=None)
+
+参数
+
+key -- 字典中要查找的键。
+
+default -- 如果指定键的值不存在时，返回该默认值值。
+
+返回值
+
+返回指定键的值，如果值不在字典中返回默认值 None。
+
+实例
+
+以下实例展示了 get()函数的使用方法：
+
+    dict = {'Name': 'Runoob', 'Age': 27}
+
+    print ("Age 值为 : %s" %  dict.get('Age'))
+    print ("Sex 值为 : %s" %  dict.get('Sex', "NA"))
+    以上实例输出结果为：
+
+    Age 值为 : 27
+    Sex 值为 : NA
+
+### Python3 字典 in 操作符
+
+描述
+
+Python 字典 in 操作符用于判断键是否存在于字典中，如果键在字典 dict 里返回 true，否则返回 false。
+
+而 not in 操作符刚好相反，如果键在字典 dict 里返回 false，否则返回 true。
+
+语法
+
+in 操作符语法：key in dict
+
+参数
+
+key -- 要在字典中查找的键。
+
+返回值
+
+如果键在字典里返回true，否则返回false。
+
+实例
+
+以下实例展示了 in 操作符在字典中的使用方法：
+
+    dict = {'Name': 'Runoob', 'Age': 7}
+    
+    ## 检测键 Age 是否存在
+    if  'Age' in dict:
+        print("键 Age 存在")
+    else :
+        print("键 Age 不存在")
+    
+    ## 检测键 Sex 是否存在
+    if  'Sex' in dict:
+        print("键 Sex 存在")
+    else :
+        print("键 Sex 不存在")
+    
+    
+    ## not in
+    
+    ## 检测键 Age 是否存在
+    if  'Age' not in dict:
+        print("键 Age 不存在")
+    else :
+        print("键 Age 存在")
+    以上实例输出结果为：
+
+    键 Age 存在
+    键 Sex 不存在
+    键 Age 存在
+
+### Python3 字典 items() 方法
+
+描述
+
+Python 字典 items() 方法以列表返回可遍历的(键, 值) 元组数组。
+
+语法
+
+items()方法语法：dict.items()
+
+参数:NA。
+
+返回值
+
+返回可遍历的(键, 值) 元组数组。
+
+实例
+
+以下实例展示了 items() 方法的使用方法：
+
+    dict = {'Name': 'Runoob', 'Age': 7}
+    
+    print ("Value : %s" %  dict.items())
+    以上实例输出结果为：
+
+    Value : dict_items([('Age', 7), ('Name', 'Runoob')])
+
+遍历例子：
+
+    dict = {'Name': 'Runoob', 'Age': 7}
+    for i,j in dict.items():
+        print(i, ":\t", j)
+
+将字典的 key 和 value 组成一个新的列表：
+
+    d={1:"a",2:"b",3:"c"}
+    result=[]
+    for k,v in d.items():
+        result.append(k)
+        result.append(v)
+
+    print(result)
+    输出：
+    [1, 'a', 2, 'b', 3, 'c']
+
+### Python3 字典 keys() 方法
+
+描述
+
+Python3 字典 keys() 方法返回一个可迭代对象，可以使用 list() 来转换为列表。
+
+注意：Python2.x 是直接返回列表
+
+语法
+
+keys()方法语法：dict.keys()
+
+参数
+
+NA。
+
+返回值
+
+返回一个迭代器。
+
+实例
+
+以下实例展示了 keys() 方法的使用方法：
+
+    >>> dict = {'Name': 'Runoob', 'Age': 7}
+    >>> dict.keys()
+    dict_keys(['Name', 'Age'])
+    >>> list(dict.keys())             ## 转换为列表
+    ['Name', 'Age']
+    >>> 
+    以上实例输出结果为：
+
+    字典所有的键为 : dict_keys(['Age', 'Name'])
+    Python3 字典 Python3 字典
+
+### Python3 字典 setdefault() 方法
+
+描述
+
+Python 字典 setdefault() 方法和 get()方法 类似, 如果键不已经存在于字典中，将会添加键并将值设为默认值。
+
+语法
+
+setdefault()方法语法：
+
+dict.setdefault(key, default=None)
+
+参数
+
+key -- 查找的键值。
+
+default -- 键不存在时，设置的默认键值。
+
+返回值
+
+如果 key 在 字典中，返回对应的值。如果不在字典中，则插入 key 及设置的默认值 default，并返回 default ，default 默认值为 None。
+
+实例
+
+以下实例展示了 setdefault() 方法的使用方法：
+
+实例
+
+    dict = {'Name': 'Runoob', 'Age': 7}
+    
+    print ("Age 键的值为 : %s" %  dict.setdefault('Age', None))
+    print ("Sex 键的值为 : %s" %  dict.setdefault('Sex', None))
+    print ("新字典为：", dict)
+    以上实例输出结果为：
+
+    Age 键的值为 : 7
+    Sex 键的值为 : None
+    新字典为： {'Age': 7, 'Name': 'Runoob', 'Sex': None}
+
+关于字典中 get() 和 setdefault() 的区别：
+
+主要在于当查找的键值 key 不存在的时候，setdefault()函数会返回默认值并更新字典，添加键值；而 get() 函数只返回默认值，并不改变原字典。
+
+get() 例子：
+
+    >>> d={}
+    >>> d.get('name','N/A')
+    'N/A'
+    >>> d
+    {}
+    >>> print d.get('name')
+    None
+    >>> d
+    {}
+
+setdefault() 例子：
+
+    >>> d={}  ## 设定
+    >>> d.setdefault('name','N/A')
+    'N/A'
+    >>> d
+    {'name':'N/A'} 
+    >>> d.setdefault('name','Jack')
+    'N/A'
+
+    >>> d={}  ## 不设定
+    >>> d.setdefault('name')
+    >>> d
+    {'name':'None'}
+
+### Python3 字典 update() 方法
+
+描述
+
+Python 字典 update() 函数把字典参数 dict2 的 key/value(键/值) 对更新到字典 dict 里。
+
+语法
+
+update() 方法语法：dict.update(dict2)
+
+参数
+
+dict2 -- 添加到指定字典dict里的字典。
+
+返回值
+
+该方法没有任何返回值。
+
+实例
+
+以下实例展示了 update()函数的使用方法：
+
+    dict = {'Name': 'Runoob', 'Age': 7}
+    dict2 = {'Sex': 'female' }
+    
+    dict.update(dict2)
+    print ("更新字典 dict : ", dict)
+    以上实例输出结果为：
+
+    更新字典 dict :  {'Name': 'Runoob', 'Age': 7, 'Sex': 'female'}
+
+    dict = {'Name': 'Runoob', 'Age': 7}
+    dict2 = {'Age': 'female' }
+    dict.update(dict2)
+    print ("更新字典 dict : ", dict)
+    如果键值有重复，则 dict2 的内容更新替换到 dict 中，如上面的代码，会有下面的结果:
+
+    更新字典 dict :  {'Name': 'Runoob', 'Age': 'female'}
+
+按照 key 来给字典排序：
+
+    dict = {200:'a',20:'b',610:'c'}
+    d1={}
+    for k in sorted(dict.keys()):
+        d={k:dict[k]}
+        d1.update(d)
+    print(d1)
+    输出结果为：
+
+    {20: 'b', 200: 'a', 610: 'c'}
+
+针对楼上的字典排序输出，提出纠正，在python 3.5版本之前的字典不关心 (键：值)对的存储顺序，而只跟踪键和值之间的关联关系。（Python 3.6 改写了 dict 的内部算法，因此 3.6 的 dict 是有序的，在此版本之前皆是无序，参考https://legacy.python.org/dev/peps/pep-0468/）
+
+所以即使采用update函数或者setdefault函数有序地去生成字典d1，但当d1输出时还是无序的。
+
+在python 3.5.4版本测试下，输出为:
+
+\{200: 'a', 610: 'c', 20: 'b'}
+
+
+### Python3 字典 values() 方法
+
+描述
+
+Python 字典 values() 方法返回一个迭代器，可以使用 list() 来转换为列表，列表为字典中的所有值。
+
+语法
+
+values()方法语法：dict.values()
+
+参数:NA。
+
+返回值
+
+返回迭代器。
+
+实例
+
+以下实例展示了 values() 方法的使用方法：
+
+    dict = {'Sex': 'female', 'Age': 7, 'Name': 'Zara'}
+    
+    print ("字典所有值为 : ",  list(dict.values()))
+    以上实例输出结果为：
+
+    字典所有值为 :  ['female', 7, 'Zara']
+
+### Python3 字典 pop() 方法
+
+描述
+
+Python 字典 pop() 方法删除字典给定键 key 所对应的值，返回值为被删除的值。key值必须给出。 否则，返回default值。
+
+语法
+
+pop()方法语法：pop(key[,default])
+
+参数
+
+key: 要删除的键值
+
+default: 如果没有 key，返回 default 值
+
+返回值
+
+返回被删除的值。
+
+实例
+
+以下实例展示了 pop() 方法的使用方法：
+
+    >>> site= {'name': '菜鸟教程', 'alexa': 10000, 'url': 'www.runoob.com'}
+    >>> pop_obj=site.pop('name')
+    >>> print(pop_obj)
+
+如果要删除的 key 不存在，则需要添加默认值，否则会报错：
+
+    >>> dict1 = {1: "a", 2: [1, 2]};
+    >>> print(dict1.pop(1),dict1);
+    a {2: [1, 2]}
+    >>> print(dict1.pop(3,"nokey"),dict1); ## 设置默认值，必须添加，否则报错
+    nokey {2: [1, 2]}
+    >>> print(dict1.pop(3),dict1); 
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    KeyError: 3
+
+    weekdays = ['Monday','Tuesday','Wednesday','Thursday','Friday']
+
+    last_day = weekdays.pop() #括号里没有参数，表示删除list数组中最后一个元素
+
+    last_day = weekdays.pop(0) #0参数表示删除数组中的第一个元素
+
+    print("last_day = ", last_day, "\nweekdays = ", weekdays)
+    输出结果：
+
+    last_day =  Monday 
+    weekdays =  ['Tuesday', 'Wednesday', 'Thursday']
+
+### Python3 字典 popitem() 方法
+
+描述
+
+Python 字典 popitem() 方法随机返回并删除字典中的最后一对键和值。
+
+如果字典已经为空，却调用了此方法，就报出KeyError异常。
+
+语法
+
+popitem()方法语法：popitem()
+
+参数:无
+
+返回值
+
+返回一个键值对(key,value)形式，按照 LIFO（Last In First Out 后进先出法） 顺序规则，即最末尾的键值对。
+
+实例
+
+以下实例展示了 popitem() 方法的使用方法：
+
+    site= {'name': '菜鸟教程', 'alexa': 10000, 'url': 'www.runoob.com'}
+    pop_obj=site.popitem()
+    print(pop_obj)   
+    print(site)
+    输出结果为：
+
+    ('url', 'www.runoob.com')
+    {'name': '菜鸟教程', 'alexa': 10000}
+
+## Python3 集合
+
+集合（set）是一个无序的不重复元素序列。
+
+可以使用大括号 { } 或者 set() 函数创建集合，注意：**创建一个空集合必须用 set() 而不是 { }，因为 { } 是用来创建一个空字典。**
+
+创建格式：
+
+parame = {value01,value02,...}或者set(value)
+
+    实例(Python 3.0+)
+    >>>basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+    >>> print(basket)                      ## 这里演示的是去重功能
+    {'orange', 'banana', 'pear', 'apple'}
+    >>> 'orange' in basket                 ## 快速判断元素是否在集合内
+    True
+    >>> 'crabgrass' in basket
+    False
+
+下面展示两个集合间的运算
+
+    ...
+    >>> a = set('abracadabra')
+    >>> b = set('alacazam')
+    >>> a                                  
+    {'a', 'r', 'b', 'c', 'd'}
+    >>> a - b                              ## 集合a中包含而集合b中不包含的元素
+    {'r', 'd', 'b'}
+    >>> a | b                              ## 集合a或b中包含的所有元素
+    {'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
+    >>> a & b                              ## 集合a和b中都包含了的元素
+    {'a', 'c'}
+    >>> a ^ b                              ## 不同时包含于a和b的元素
+    {'r', 'd', 'b', 'm', 'z', 'l'}
+    类似列表推导式，同样集合支持集合推导式(Set comprehension):
+
+实例(Python 3.0+)
+
+    >>>a = {x for x in 'abracadabra' if x not in 'abc'}
+    >>> a
+    {'r', 'd'}
+
+### 添加元素
+
+语法格式如下：s.add( x )
+
+将元素 x 添加到集合 s 中，如果元素已存在，则不进行任何操作。
+
+    实例(Python 3.0+)
+
+    >>>thisset = set(("Google", "Runoob", "Taobao"))
+    >>> thisset.add("Facebook")
+    >>> print(thisset)
+    {'Taobao', 'Facebook', 'Google', 'Runoob'}
+    还有一个方法，也可以添加元素，且参数可以是列表，元组，字典等，语法格式如下：
+
+    s.update( x )
+    x 可以有多个，用逗号分开。
+
+    实例(Python 3.0+)
+    >>>thisset = set(("Google", "Runoob", "Taobao"))
+    >>> thisset.update({1,3})
+    >>> print(thisset)
+    {1, 3, 'Google', 'Taobao', 'Runoob'}
+    >>> thisset.update([1,4],[5,6])  
+    >>> print(thisset)
+    {1, 3, 4, 5, 6, 'Google', 'Taobao', 'Runoob'}
+
+### 移除元素
+
+语法格式如下：
+
+s.remove( x )
+
+将元素 x 从集合 s 中移除，如果元素不存在，则会发生错误。
+
+实例(Python 3.0+)
+
+    >>>thisset = set(("Google", "Runoob", "Taobao"))
+    >>> thisset.remove("Taobao")
+    >>> print(thisset)
+    {'Google', 'Runoob'}
+    >>> thisset.remove("Facebook")   ## 不存在会发生错误
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    KeyError: 'Facebook'
+    >>>
+    此外还有一个方法也是移除集合中的元素，且如果元素不存在，不会发生错误。格式如下所示：
+
+    s.discard( x )
+    实例(Python 3.0+)
+    >>>thisset = set(("Google", "Runoob", "Taobao"))
+    >>> thisset.discard("Facebook")  ## 不存在不会发生错误
+    >>> print(thisset)
+    {'Taobao', 'Google', 'Runoob'}
+    我们也可以设置随机删除集合中的一个元素，语法格式如下：
+
+    s.pop() 
+    脚本模式实例(Python 3.0+)
+    thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
+    x = thisset.pop()
+    
+    print(x)
+    输出结果：
+
+    $ python3 test.py 
+    Runoob
+    多次执行测试结果都不一样。
+
+    set 集合的 pop 方法会对集合进行无序的排列，然后将这个无序排列集合的左面第一个元素进行删除。
+
+### 计算集合元素个数
+
+    语法格式如下：
+
+    len(s)
+    计算集合 s 元素个数。
+
+    实例(Python 3.0+)
+    >>>thisset = set(("Google", "Runoob", "Taobao"))
+    >>> len(thisset)
+    3
+
+### 清空集合
+
+语法格式如下：
+
+s.clear()
+
+清空集合 s。
+
+实例(Python 3.0+)
+>>>thisset = set(("Google", "Runoob", "Taobao"))
+>>> thisset.clear()
+>>> print(thisset)
+set()
+
+### 判断元素是否在集合中存在
+
+语法格式如下：
+
+x in s
+
+判断元素 x 是否在集合 s 中，存在返回 True，不存在返回 False。
+
+实例(Python 3.0+)
+
+    >>>thisset = set(("Google", "Runoob", "Taobao"))
+    >>> "Runoob" in thisset
+    True
+    >>> "Facebook" in thisset
+    False
+    >>>
+
+### 集合内置方法完整列表
+
+方法|	描述
+-|-
+add()	|为集合添加元素
+clear()	|移除集合中的所有元素
+copy()|拷贝一个集合
+difference()|	返回多个集合的差集
+difference_update()	|移除集合中的元素，该元素在指定的集合也存在。
+discard()	|删除集合中指定的元素
+intersection()|	返回集合的交集
+intersection_update()	|返回集合的交集。
+isdisjoint()	|判断两个集合是否包含相同的元素，如果没有返回 True，否则返回 False。
+issubset()|	判断指定集合是否为该方法参数集合的子集。
+issuperset()|	判断该方法的参数集合是否为指定集合的子集
+pop()	|随机移除元素
+remove()	|移除指定元素
+symmetric_difference()	|返回两个集合中不重复的元素集合。
+symmetric_difference_update()|	移除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中。
+union()	|返回两个集合的并集
+update()|	给集合添加元素
+
+{{%spoiler  text=\"辨析\"%}}
+s.update( "字符串" ) 与 s.update( {"字符串"} ) 含义不同:
+
+s.update( {"字符串"} ) 将字符串添加到集合中，有重复的会忽略。
+
+s.update( "字符串" ) 将字符串拆分单个字符后，然后再一个个添加到集合中，有重复的会忽略。
+
+    >>> thisset = set(("Google", "Runoob", "Taobao"))
+    >>> print(thisset)
+    {'Google', 'Runoob', 'Taobao'}
+    >>> thisset.update({"Facebook"})
+    >>> print(thisset) 
+    {'Google', 'Runoob', 'Taobao', 'Facebook'}
+    >>> thisset.update("Yahoo")
+    >>> print(thisset)
+    {'h', 'o', 'Facebook', 'Google', 'Y', 'Runoob', 'Taobao', 'a'}
+
+set() 中参数注意事项
+
+    1.创建一个含有一个元素的集合
+
+    >>> my_set = set(('apple',))
+    >>> my_set
+    {'apple'}
+    2.创建一个含有多个元素的集合
+
+    >>> my_set = set(('apple','pear','banana'))
+    >>> my_set
+    {'apple', 'banana', 'pear'}
+    3.如无必要，不要写成如下形式
+
+    >>> my_set = set('apple')
+    >>> my_set
+    {'l', 'e', 'p', 'a'}
+    >>> my_set1 = set(('apple'))
+    >>> my_set1
+    {'l', 'e', 'p', 'a'}
+
+集合用 set.pop() 方法删除元素的不一样的感想如下
+
+    1、对于 python 中列表 list、tuple 类型中的元素，转换集合是，会去掉重复的元素如下:
+
+    >>> list = [1,1,2,3,4,5,3,1,4,6,5]
+    >>> set(list)
+    {1, 2, 3, 4, 5, 6}
+    >>> tuple = (2,3,5,6,3,5,2,5)
+    >>> set(tuple)
+    {2, 3, 5, 6}
+    2、集合对 list 和 tuple 具有排序(升序)，举例如下:
+
+    >>> set([9,4,5,2,6,7,1,8])
+    {1, 2, 4, 5, 6, 7, 8, 9}
+    >>> set([9,4,5,2,6,7,1,8])
+    {1, 2, 4, 5, 6, 7, 8, 9}
+    3、集合的 set.pop() 的不同认为
+
+    有人认为 set.pop() 是随机删除集合中的一个元素、我在这里说句非也！对于是字典和字符转换的集合是随机删除元素的。当集合是由列表和元组组成时、set.pop() 是从左边删除元素的如下:
+
+    列表实例：
+
+    set1 = set([9,4,5,2,6,7,1,8])
+    print(set1)
+    print(set1.pop())
+    print(set1)
+    输出结果:
+
+    {1, 2, 4, 5, 6, 7, 8, 9}
+    1
+    {2, 4, 5, 6, 7, 8, 9}
+    元组实例：
+
+    set1 = set((6,3,1,7,2,9,8,0))
+    print(set1)
+    print(set1.pop())
+    print(set1)
+    输出结果:
+
+    {0, 1, 2, 3, 6, 7, 8, 9}
+    0
+    {1, 2, 3, 6, 7, 8, 9}  
+
+
+    >>> thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
+    >>> y=set({'python'})
+    >>> print(y.union(thisset))
+    {'python', 'Taobao', 'Google', 'Facebook', 'Runoob'}
+    输出结果:
+
+    {'python', 'Google', 'Taobao', 'Facebook', 'Runoob'}
+    y 的集合里此时只含有一个元素 'python'，而如果不加花括号时，y 的集合里含有'p','y','t','h','o','n'五个元素。
+
+    >>> thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
+    >>> y=set('python')
+    >>> print(y.union(thisset))
+    {'p', 'o', 'y', 'Taobao', 'h', 'Google', 'Facebook', 'Runoob', 'n', 't'}
+    也可以使用括号：
+
+    thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
+    y=set(('python','love'))
+    print(y.union(thisset))
+    输出结果:
+
+    {'Facebook', 'Runoob', 'Taobao', 'python', 'love', 'Google'}
+    但是当 y 的集合里只有一个字符串时，结果与不加花括号一样。
+{{%/spoiler%}}
+
+### Python Set add()方法
+
+描述
+
+add() 方法用于给集合添加元素，如果添加的元素在集合中已存在，则不执行任何操作。
+
+语法
+
+add()方法语法：
+
+set.add(elmnt)
+
+参数
+
+elmnt -- 必需，要添加的元素。
+
+返回值
+
+无。
+
+实例
+
+以下实例展示了 add() 方法的使用：
+
+实例 1
+
+    fruits = {"apple", "banana", "cherry"}
+    fruits.add("orange") 
+    print(fruits)
+    输出结果为：
+
+    {'apple', 'banana', 'orange', 'cherry'}
+    已存在的元素，则不执行添加操作：
+
+实例 2
+
+    fruits = {"apple", "banana", "cherry"}
+    fruits.add("apple")
+    print(fruits)
+    输出结果为：
+
+    {'apple', 'banana', 'cherry'}
+
+### Python Set clear()方法
+
+描述
+
+clear() 方法用于移除集合中的所有元素。
+
+语法
+
+clear()方法语法：set.clear()
+
+参数:无。
+
+返回值:无。
+
+实例
+
+移除 fruits 集合中的所有元素：
+
+    fruits = {"apple", "banana", "cherry"}
+    fruits.clear()
+    print(fruits)
+    输出结果为：
+
+clear() 从内存删除集合与清空集合，但内存地址不删除。
+
+del() 会从内存中删除。
+
+    fruits = {"apple", "banana", "cherry"}
+    del(fruits) #从内存中删除fruits
+    fruits = {"apple", "banana", "cherry"}
+    fruits.clear() #从清空集合fruits的内容，内存地址不删除
+
+### Python Set copy()方法
+
+描述
+
+copy() 方法用于拷贝一个集合。
+
+语法
+
+copy() 方法语法：set.copy()
+
+参数:无
+
+返回值:无
+
+实例
+
+    拷贝 fruits 集合：
+
+    fruits = {"apple", "banana", "cherry"}
+    x = fruits.copy()
+    print(x)
+    输出结果为：
+
+    {'cherry', 'banana', 'apple'}
+
+### Python Set difference() 方法
+
+描述
+
+difference() 方法用于返回集合的差集，即返回的集合元素包含在第一个集合中，但不包含在第二个集合(方法的参数)中。
+
+语法:difference() 方法语法：set.difference(set)
+
+参数
+
+set -- 必需，用于计算差集的集合
+
+返回值
+
+返回一个新的集合。
+
+实例
+
+返回一个集合，元素包含在集合 x ，但不在集合 y 
+
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    
+    z = x.difference(y) 
+    
+    print(z)
+    输出结果为：
+
+    {'cherry', 'banana'}
+
+### Python Set difference() 方法
+
+描述
+
+difference() 方法用于返回集合的差集，即返回的集合元素包含在第一个集合中，但不包含在第二个集合(方法的参数)中。
+
+语法
+
+difference() 方法语法：set.difference(set)
+
+参数
+
+set -- 必需，用于计算差集的集合
+
+返回值
+
+返回一个新的集合。
+
+实例
+
+返回一个集合，元素包含在集合 x ，但不在集合 y 
+
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    
+    z = x.difference(y) 
+    
+    print(z)
+    输出结果为：
+
+    {'cherry', 'banana'}
+
+### Python Set difference_update() 方法
+
+描述
+
+difference_update() 方法用于移除两个集合中都存在的元素。
+
+difference_update() 方法与 difference() 方法的区别在于 difference() 方法返回一个移除相同元素的新集合，而 difference_update() 方法是直接在原来的集合中移除元素，没有返回值。
+
+语法
+
+difference_update() 方法语法：set.difference_update(set)
+
+参数
+
+set -- 必需，用于计算差集的集合
+
+返回值:无。
+
+实例
+
+移除两个集合都包含的元素：
+
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    
+    x.difference_update(y) 
+    
+    print(x)
+    输出结果为：
+
+    {'cherry', 'banana'}
+
+### Python Set discard() 方法
+
+描述
+
+discard() 方法用于移除指定的集合元素。
+
+该方法不同于 remove() 方法，因为 remove() 方法在移除一个不存在的元素时会发生错误，而 discard() 方法不会。
+
+语法
+
+discard() 方法语法：set.discard(value)
+
+参数
+
+value -- 必需，要移除的元素
+
+返回值:无。
+
+实例
+
+移除集合中的元素 banana：
+
+    实例 1
+    fruits = {"apple", "banana", "cherry"}
+    
+    fruits.discard("banana") 
+    
+    print(fruits)
+    输出结果为：
+
+    {'cherry', 'apple'}
+    Python3 列表 Python 集合
+
+在集合删除完一个元素，返回新的集合后。再次用 set.discard(value) 删除刚刚已经删除掉的元素，程序不会报错：
+
+    >>> a={'123','456','789'}
+    >>> a.discard('123')
+    >>> print(a)
+    {'456', '789'}
+    >>> a
+    {'456', '789'}
+    >>> a.discard('123')
+    >>> print(a)
+    {'456', '789'}
+
+### Python Set intersection() 方法
+
+描述
+
+intersection() 方法用于返回两个或更多集合中都包含的元素，即交集。
+
+语法
+
+intersection() 方法语法：
+
+set.intersection(set1, set2 ... etc)
+
+参数
+
+set1 -- 必需，要查找相同元素的集合
+
+set2 -- 可选，其他要查找相同元素的集合，可以多个，多个使用逗号 , 隔开
+
+返回值
+
+返回一个新的集合。
+
+实例
+
+返回一个新集合，该集合的元素既包含在集合 x 又包含在集合 y 中：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    z = x.intersection(y) 
+    
+    print(z)
+    输出结果为：
+
+    {'apple'}
+    计算多个集合的交集：
+
+    实例 1
+    x = {"a", "b", "c"}
+    y = {"c", "d", "e"}
+    z = {"f", "g", "c"}
+    
+    result = x.intersection(y, z)
+    
+    print(result)
+    输出结果为：
+
+    {'c'}
+
+### Python Set intersection_update() 方法
+
+描述
+
+intersection_update() 方法用于获取两个或更多集合中都重叠的元素，即计算交集。
+
+intersection_update() 方法不同于 intersection() 方法，因为 intersection() 方法是返回一个新的集合，而 intersection_update() 方法是在原始的集合上移除不重叠的元素。
+
+语法
+
+intersection_update() 方法语法：
+
+set.intersection_update(set1, set2 ... etc)
+
+参数
+
+set1 -- 必需，要查找相同元素的集合
+
+set2 -- 可选，其他要查找相同元素的集合，可以多个，多个使用逗号 , 隔开
+
+返回值:无。
+
+实例
+
+返回一个新集合，该集合的元素既包含在集合 x 又包含在集合 y 中：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    x.intersection_update(y) 
+    
+    print(x)
+    输出结果为：
+
+    {'apple'}
+    计算多个集合的并集：
+
+    实例 1
+    x = {"a", "b", "c"}
+    y = {"c", "d", "e"}
+    z = {"f", "g", "c"}
+    
+    x.intersection_update(y, z)
+    
+    print(x)
+    输出结果为：
+
+    {'c'}
+
+### Python Set isdisjoint() 方法
+
+描述
+
+isdisjoint() 方法用于判断两个集合是否包含相同的元素，如果没有返回 True，否则返回 False。。
+
+语法
+
+isdisjoint() 方法语法：set.isdisjoint(set)
+
+参数
+
+set -- 必需，要比较的集合
+
+返回值
+
+返回布尔值，如果不包含返回 True，否则返回 False。
+
+实例
+
+判断集合 y 中是否有包含 集合 x 的元素：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "facebook"}
+    
+    z = x.isdisjoint(y) 
+    
+    print(z)
+    输出结果为：
+
+    True
+    如果包含返回 False：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    z = x.isdisjoint(y) 
+    
+    print(z)
+    输出结果为：
+
+    False
+
+### Python Set isdisjoint() 方法
+
+描述
+
+isdisjoint() 方法用于判断两个集合是否包含相同的元素，如果没有返回 True，否则返回 False。。
+
+语法
+
+isdisjoint() 方法语法：set.isdisjoint(set)
+
+参数
+
+set -- 必需，要比较的集合
+
+返回值
+
+返回布尔值，如果不包含返回 True，否则返回 False。
+
+实例
+
+判断集合 y 中是否有包含 集合 x 的元素：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "facebook"}
+    
+    z = x.isdisjoint(y) 
+    
+    print(z)
+    输出结果为：
+
+    True
+    如果包含返回 False：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    z = x.isdisjoint(y) 
+    
+    print(z)
+    输出结果为：
+
+    False
+
+### Python Set issubset() 方法
+
+描述
+
+issubset() 方法用于判断集合的所有元素是否都包含在指定集合中，如果是则返回 True，否则返回 False。
+
+语法
+
+issubset() 方法语法：set.issubset(set)
+
+参数
+
+set -- 必需，要比查找的集合
+
+返回值
+
+返回布尔值，如果都包含返回 True，否则返回False。
+
+实例
+
+判断集合 x 的所有元素是否都包含在集合 y 中：
+
+    实例 1
+    x = {"a", "b", "c"}
+    y = {"f", "e", "d", "c", "b", "a"}
+    
+    z = x.issubset(y) 
+    
+    print(z)
+    输出结果为：
+
+    True
+    如果没有全部包含返回 False：
+
+    实例 1
+    x = {"a", "b", "c"}
+    y = {"f", "e", "d", "c", "b"}
+    
+    z = x.issubset(y) 
+    
+    print(z)
+    输出结果为：
+
+    False
+
+### Python Set issuperset() 方法
+
+描述
+
+issuperset() 方法用于判断指定集合的所有元素是否都包含在原始的集合中，如果是则返回 True，否则返回 False。
+
+语法
+
+issuperset() 方法语法：set.issuperset(set)
+
+参数
+
+set -- 必需，要比查找的集合
+
+返回值
+
+返回布尔值，如果都包含返回 True，否则返回 False。
+
+实例
+
+判断集合 y 的所有元素是否都包含在集合 x 中：
+
+    实例 1
+    x = {"f", "e", "d", "c", "b", "a"}
+    y = {"a", "b", "c"}
+    
+    z = x.issuperset(y) 
+    
+    print(z)
+    输出结果为：
+
+    True
+    如果没有全部包含返回 False：
+
+    实例 1
+    x = {"f", "e", "d", "c", "b"}
+    y = {"a", "b", "c"}
+    
+    z = x.issuperset(y) 
+    
+    print(z)
+    输出结果为：
+
+    False
+
+### Python Set issuperset() 方法
+
+描述
+
+issuperset() 方法用于判断指定集合的所有元素是否都包含在原始的集合中，如果是则返回 True，否则返回 False。
+
+语法
+
+issuperset() 方法语法：set.issuperset(set)
+
+参数
+
+set -- 必需，要比查找的集合
+
+返回值
+
+返回布尔值，如果都包含返回 True，否则返回 False。
+
+实例
+
+判断集合 y 的所有元素是否都包含在集合 x 中：
+
+    实例 1
+    x = {"f", "e", "d", "c", "b", "a"}
+    y = {"a", "b", "c"}
+    
+    z = x.issuperset(y) 
+    
+    print(z)
+    输出结果为：
+
+    True
+    如果没有全部包含返回 False：
+
+    实例 1
+    x = {"f", "e", "d", "c", "b"}
+    y = {"a", "b", "c"}
+    
+    z = x.issuperset(y) 
+    
+    print(z)
+    输出结果为：
+
+    False
+
+### Python Set pop() 方法
+
+描述
+
+pop() 方法用于随机移除一个元素。
+
+语法
+
+pop() 方法语法：set.pop()
+
+参数:无
+
+返回值
+
+返回移除的元素。
+
+实例
+
+随机移除一个元素：
+
+实例 1
+
+    fruits = {"apple", "banana", "cherry"}
+    
+    fruits.pop() 
+    
+    print(fruits)
+    输出结果为：
+
+    {'apple', 'banana'}
+    输出返回值：
+
+    实例 1
+    fruits = {"apple", "banana", "cherry"}
+    
+    x = fruits.pop() 
+    
+    print(x)
+    输出结果为：
+
+    banana
+
+### Python Set remove() 方法
+
+描述
+
+remove() 方法用于移除集合中的指定元素。
+
+该方法不同于 discard() 方法，因为 remove() 方法在移除一个不存在的元素时会发生错误，而 discard() 方法不会。
+
+语法
+
+remove() 方法语法：set.remove(item)
+
+参数
+
+item -- 要移除的元素
+
+返回值
+
+返回移除的元素。
+
+实例
+
+移除元素 banana：
+
+    实例 1
+
+    fruits = {"apple", "banana", "cherry"}
+    
+    fruits.remove("banana") 
+    
+    print(fruits)
+    输出结果为：
+
+    {'cherry', 'apple'}
+
+### Python Set symmetric_difference() 方法
+
+描述
+
+symmetric_difference() 方法返回两个集合中不重复的元素集合，即会移除两个集合中都存在的元素。
+
+语法
+
+symmetric_difference() 方法语法：
+
+set.symmetric_difference(set)
+
+参数
+
+set -- 集合
+
+返回值
+
+返回一个新的集合。
+
+实例
+
+返回两个集合组成的新集合，但会移除两个集合的重复元素：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    z = x.symmetric_difference(y) 
+    
+    print(z)
+    输出结果为：
+
+    {'google', 'cherry', 'banana', 'runoob'}
+    Python3 列表 Python 集合
+
+
+这个用\^ 比较好记，这个是好像是叫对称差集：
+
+    >>> x={1,2,3,4,5}
+    >>> y={2,5,6,7,9}
+    >>> x^y
+    {1, 3, 4, 6, 7, 9}
+    >>> x.symmetric_difference(y)
+    {1, 3, 4, 6, 7, 9}
+
+### Python Set symmetric_difference_update() 方法
+
+描述
+
+symmetric_difference_update() 方法移除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中。
+
+语法
+
+symmetric_difference_update() 方法语法：
+
+set.symmetric_difference_update(set)
+
+参数
+
+set -- 要检测的集合
+
+返回值:无。
+
+实例
+
+在原始集合 x 中移除与 y 集合中的重复元素，并将不重复的元素插入到集合 x 中：
+
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    x.symmetric_difference_update(y) 
+    
+    print(x)
+    输出结果为：
+
+    {'google', 'cherry', 'banana', 'runoob'}
+
+### Python Set union() 方法
+
+描述
+
+union() 方法返回两个集合的并集，即包含了所有集合的元素，重复的元素只会出现一次。
+
+语法
+
+union() 方法语法：set.union(set1, set2...)
+
+参数
+
+set1 -- 必需，合并的目标集合
+
+set2 -- 可选，其他要合并的集合，可以多个，多个使用逗号 , 隔开。
+
+返回值
+
+返回一个新集合。
+
+实例
+
+合并两个集合，重复元素只会出现一次：
+
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    z = x.union(y) 
+    
+    print(z)
+    输出结果为：
+
+    {'cherry', 'runoob', 'google', 'banana', 'apple'}
+    合并多个集合：
+
+    实例 1
+    x = {"a", "b", "c"}
+    y = {"f", "d", "a"}
+    z = {"c", "d", "e"}
+    
+    result = x.union(y, z) 
+    
+    print(result)
+    输出结果为：
+
+    {'c', 'd', 'f', 'e', 'b', 'a'}
+
+### Python Set update() 方法
+
+描述
+
+update() 方法用于修改当前集合，可以添加新的元素或集合到当前集合中，如果添加的元素在集合中已存在，则该元素只会出现一次，重复的会忽略。
+
+语法
+
+update() 方法语法：set.update(set)
+
+参数
+
+set -- 必需，可以是元素或集合
+
+返回值:无。
+
+实例
+
+合并两个集合，重复元素只会出现一次：
+
+    实例 1
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "runoob", "apple"}
+    
+    x.update(y) 
+    
+    print(x)
+    输出结果为：
+
+    {'banana', 'apple', 'google', 'runoob', 'cherry'}

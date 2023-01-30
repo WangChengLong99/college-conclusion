@@ -1,0 +1,207 @@
+---
+title: 统计函数
+date: 2022-12-5
+lastmod: '2022-12-054T16:44:38+08:00'
+summary: 一些常用统计函数
+weight: 60
+toc: true
+type: book
+---
+
+## 数据的探索性分析
+
+使用python中的函数，对序列或数据框类型进行基本数据分析。
+
+如下图：
+
+{{%figure src="graph-python-python基础知识/统计函数.png"%}}
+
+基本上上图展示的都是序列或数据框对象的方法。
+
+### describe函数
+
+如果数据框中既有数值型，又有非数值型，那么只会返回数值型数据列的统计信息，包括频数，均值，标准差，以及四分位的点信息。
+
+如果只有非数值型数据，那么会返回该数据的一些次数的统计信息。
+
+不能对行求。
+
+```{python describe}
+import pandas as pd
+sd=pd.read_csv('./在校生.csv')
+sd.head(5)
+sd.describe()
+sd[['学号','性别']].describe()
+sd[['专业','性别']].describe()
+```
+
+            专业	性别
+    count	8206	8203 代表频数
+    unique	43	    2    代表种类个数
+    top	    法学	女    代表个数最多的类
+    freq	4695	4739  
+
+### count函数
+
+计算每一列的非空值的频数。显示列名和频数。
+
+    sd.count()
+    sum(sd['生源所在地'].isnull())
+
+### value_counts (直接使用只对序列数据，一维的频数表)
+
+显示类别和频数
+
+    ## 数据框的一列为一个序列
+    sd['生源所在地'].value_counts()
+    sd['学号'].value_counts()
+
+### crosstab(二维频数表)
+
+以二维的形式展示二维或多维的数据。
+
+比如：
+
+    pd.crosstab([sd['生源所在地'],sd['民族']],sd['性别'])
+
+内部是序列的组合，某些序列作为行索引，用中括号括起来。某些序列作为列索引，同理。
+
+使用margins=True参数，可以显示合计。
+
+使用margins_name参数，设置margins的名称。
+
+使用 normalize 参数，normalize=‘index’ 表示各数据占行的比例；normalize=‘columns’ 表示各数据占列的比例；normalize=‘all’，表示各数据占总和的构成比例。
+
+### pivot_table(多维频数分析)
+
+有index和columns参数，必是列表形式。可以选定用来分类的列，可以是一列或多列，用列表组合。一般是定性数据。values参数选定进行计算的列，只有一列。aggfunc参数设定选用的函数。可以组合多种函数。也可以设计和crosstab的一样的margin等参数，来显示margin。
+
+    sd.pivot_table(values=['分数1'],index=['性别'],columns=['民族'],aggfunc=len,margins=True)
+    sd.pivot_table(values=['分数1'],index=['性别'],columns=['民族'],aggfunc=[np.mean,len])
+
+### min,max
+
+返回数据框或序列的每一列中最小的数值或char或str，但是对于有缺失值的str或char(形如：'abcd','你','a')等，不能比较最小值。
+
+对于一个数据框来说，只要不是只含有有缺失值的字符串列即可。会只显示可以比较的列。
+
+    sd[['学号','分数1']].min()
+    sd.min()
+
+### argmin 和 argmax
+
+**序列**方法，返回最大/小值索引值
+
+    sd['分数1']
+    sd['分数1'].argmin()
+    sd['分数1'][231]
+    ## sd.argmin() 错误
+
+### idxmin 和 isxmax
+
+比较只含数值型数据的数据框或序列的每一列的最大小值索引。
+
+    sd['分数1'].idxmin()
+    sd[['分数1','分数2','分数3']].idxmin()
+    sd[['分数1','分数2','分数3']].idxmin()
+    ## sd.idxmin()错误，不能含有字符串列
+
+### cumsum
+
+对于字符串列累加字符串，对于数值列累加数值，有缺失值的字符串列会错误。所以不能含有。
+
+    sd[['分数1','分数2']].cumsum()
+    sd[['专业','分数2']].cumsum()
+
+### cummin cummax
+
+遍历的过程中遇到最小（大）值就变成最小（大）值.不能包含含有缺失值的字符串列。
+
+    sd[['分数1','分数2']].cummin()
+    sd[['专业','分数2']].cummin()
+    sd['专业'].min()
+
+### cumprod
+
+只对数值型数据,遇到缺失值该行显示缺失值，不影响后面的计算。
+
+    sd[['分数1','分数2']].cumprod()
+    sd[['专业','分数2']].cumprod()
+
+    x=pd.DataFrame([[1,2,3],[4,5,6],[7.4,np.nan,9],[1,2,3]],columns=list('abc'))
+    x['a'].cumprod()
+    x['b'].cumprod()
+
+### diff
+
+一阶差分,第一行是缺失值，数据中缺失值后面一个包括本身都是缺失值。
+
+    sd[['分数1','分数2']].diff()
+    x=pd.DataFrame([[1,2,3],[4,np.nan,6],[7.4,8,9],[1,2,3]],columns=list('abc'))
+    x['b'].diff()
+
+### pct_change
+
+相对于上一个数值的变化的百分比。缺失值显示为0，默认无变化，缺失值的下一个值和缺失值前面的最近的非缺失值比较。
+
+    sd[['分数1','分数2']].pct_change()
+    x=pd.DataFrame([[1,2,3],[4,np.nan,6],[7.4,8,9],[1,2,3]],columns=list('abc'))
+    x['b'].pct_change()
+
+### 定量数据描述方法
+
+函数|含义|用法
+-|-|-
+sum|求和|会显示所有数值列的求和 与 无缺失值的字符串列的字符相加。也可以对每一行相加;也可以选择保留缺失值，skipna=false，数值与缺失值的和为缺失值。<br/>sd.sum()<br/>sd.sum(axis=1)，
+下面皆是针对数值型数据|
+quantile|求百分位数|df.quantile() ,括号里面跟数值或列表或数组来代表分位点。只会显示数值型数据的分位点。<br/>sd.quantile(0.25)<br/>sd.quantile([0.25,0.5,0.75])
+mean|求平均值|sd.mean()，与quantile类似
+median|求中位数|sd.median(),与quantile类似
+mad|根据平均值求绝对离差|
+var|求方差|sd.var()
+std|求标准差|sd.std()
+skew|求峰度|sd.skew()
+kurt|求偏度|sd.kurt()
+
+### 相关系数和协方差
+
+有些汇总统计如协方差和相关系数是通过参数对计算出来的。Series的corr()函数用于计算两个Series中重叠的、非NA的、按索引对齐的值的相关系数，类似地cov用于计算协方差。
+
+### 数据框的函数应用
+
+Numpy的ufuncs(元素级数组方法)也可以用于操作pandas对象。比如abs等。但是是对每一列，如果想对整个数据框做计算，可以先取数据框的values转换为数组，这样就可以对整个数组应用元素级数组方法。
+
+将函数作用到数据框的行或列使用apply方法。apply后只能跟一种函数。但可以选择行列，可以选择作用于数据框的函数。
+
+将函数作用到数据框的每一个元素使用applymap函数，作用到序列使用map函数。
+
+对数据框分组后对每一组应用函数,使用groupby函数。
+
+group之后应用多个函数可以使用agg方法。但是不能选择行列，只能应用于某些列。并且不能跟应用于整个数据框的函数。当然也可以使用apply方法。
+
+    df=pd.DataFrame([[1,2,3],[4,5,6],[7,8,9]],index=list('abc'),columns=list('def'))
+
+    df.apply(np.mean)#对列
+    df.apply(np.mean,axis=1)#对行
+
+    def add1(x):
+        return(x+3)
+
+    df.applymap(add1)#对数据框每个元素
+    df['d'].map(add1)#对序列每个元素
+
+    sd.groupby('专业')#按专业分组
+    sd.groupby(['专业','性别'])#按专业性别分组
+    ## 结果是一个分组对象。
+    <pandas.core.groupby.genericDataFrameGroupBy object at 0x0000023BD81A8948>
+
+    sd.groupby('专业')['分数1'].agg(np.mean)
+    sd.groupby('专业')['分数1'].agg(np.mean).shape
+    sd.groupby('专业')['分数1'].agg([np.mean,np.median])
+    sd.groupby('专业')['分数1'].agg([np.mean,np.median]).shape
+    sd.groupby('专业')[['分数1','分数2']].agg([np.mean,np.median])
+    sd.groupby('专业')[['分数1','分数2']].agg([np.mean,np.median]).columns
+
+    ## 在应用函数后结果是一维的序列或多维的数据框，他的分组标准的所有种类是行索引index，他取得列加上所应用的函数是列索引columns。没应用函数前没有索引值。但是可以应用前面介绍的统计方法。
+
+    ## 要对分组后的一行做运算，可以用apply。要对分组后的每一组做运算，要利用apply和一个作用于整个数据框的函数。因为一组就是一个数据框。

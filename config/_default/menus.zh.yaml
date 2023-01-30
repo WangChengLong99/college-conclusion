@@ -1,0 +1,88 @@
+# Navigation Links
+#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
+#     desired widget in your `content/home/` folder.
+#   The weight parameter defines the order that the links will appear in.
+# 所有的文件夹用英文，所有的tag和category用中文
+
+main:
+  - name: 文章
+    url: 'post/'
+    weight: 1
+  - name: python
+    url: 'python/'
+    weight: 10
+  - name: R
+    url: 'r/'
+    weight: 20
+  - name: 统计学
+    url: 'statistics/'
+    weight: 25
+  - name: 数学
+    url: 'math/'
+    weight: 27
+  - name: 人工智能
+    identifier: AI
+    weight: 30
+  - name: 机器学习
+    parent: AI
+    url: 'machine-learning/'
+    weight: 10
+  - name: 深度学习
+    url: 'deep-learning/'
+    parent: AI
+    weight: 20
+  - name: 数据科学
+    identifier: data-science
+    weight: 40
+  - name: 数据清洗
+    parent: data-science
+    url: 'category/数据清洗/'
+    weight: 10
+  - name: 数据处理
+    parent: data-science
+    url: 'category/数据处理/'
+    weight: 20
+  - name: 特征工程
+    parent: data-science
+    url: 'category/特征工程'
+    weight: 30
+  #- name: 数据结构与算法
+  #  identifier: dsal
+  #  weight: 50
+  #- name: 数据结构
+  #  parent: dsal
+  #  url: 'data-structure/'
+  #  weight: 10
+  #- name: 算法
+  # parent: dsal
+  #  url: ' algorithm/'
+  #  weight: 20
+  - name: 可视化
+    weight: 50
+    url: 'visualization/'
+  - name: 数据库
+    identifier: database
+    weight: 60
+  - name: MySQL
+    parent: database
+    url: 'mysql/'
+    weight: 10
+  - name: 大数据
+    identifier: bigdata
+    weight: 70
+  - name: 题库
+    identifier: excecise
+    weight: 80
+  - name: ppt
+    url: 'slides/example/'
+    weight: 90
+  #- name: 个人简历
+  #  url: uploads/简历.pdf
+  #  weight: 100
+
+
+# Link to a PDF of your resume/CV from the menu.
+# To enable, copy your resume/CV to `static/uploads/resume.pdf` and uncomment the lines below.
+#  - name: CV
+#    url: uploads/resume.pdf
+#    weight: 70

@@ -4,14 +4,14 @@ theme: "starter-hugo-academic"
 # Hugo Documentation: https://gohugo.io/getting-started/configuration/#all-configuration-settings
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-title: home # Website name
+title: rblog # Website name
 baseURL: 'https://wcl99.netlify.app' # Website URL
 
 ############################
 ## LANGUAGE
 ############################
 
-defaultContentLanguage: en
+defaultContentLanguage: zh
 hasCJKLanguage: false
 defaultContentLanguageInSubdir: false
 removePathAccents: true
@@ -57,6 +57,9 @@ taxonomies:
   author: authors
 markup:
   _merge: deep
+  tableOfContents:
+    startlevel: 2
+    endlevel: 4
 related:
   threshold: 80
   includeNewer: true
@@ -70,3 +73,20 @@ security:
   _merge: deep
 sitemap:
   _merge: deep
+
+## page collection
+
+cascade:
+  # Configure blog posts
+  - _target:
+      path: /post/**
+    pager: true
+    editable: true
+    reading_time: true
+    commentable: true
+    show_related: true
+    show_breadcrumb: false
+    share: true
+    header:
+      navbar:
+        enable: true

@@ -1,0 +1,22 @@
+---
+title: 类图(class diagram)
+author: admin
+date: '2022-09-18'
+slug: class-diagram
+categories: []
+tags: []
+subtitle: ''
+summary: '类图是面向对象建模的主要构建块。它用于应用程序结构的一般概念建模，以及用于将模型转换为编程代码的详细建模。类图还可以用于数据建模。类图中的类表示主要元素、应用程序中的交互以及要编程的类。'
+authors: []
+lastmod: '2022-09-18T14:12:12+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+weight：40
+type: book
+---
+
+类图是面向对象建模的主要构建块。它用于应用程序结构的一般概念建模，以及用于将模型转换为编程代码的详细建模。类图还可以用于数据建模。类图中的类表示主要元素、应用程序中的交互以及要编程的类。

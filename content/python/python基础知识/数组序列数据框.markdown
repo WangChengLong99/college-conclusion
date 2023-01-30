@@ -1,0 +1,2352 @@
+---
+title: 数组序列数据框
+date: 2022-12-5
+lastmod: '2022-12-054T16:44:38+08:00'
+summary: 数组序列数据框
+weight: 40
+toc: true
+type: book
+---
+
+## 数组
+
+numpy中最重要的就是n维数组对象ndarray，ndarray对象是一系列同类型数据的集合，一个数组类型的实例就是一个ndarray对象。以 0 下标为开始进行集合中元素的索引。
+
+ndarray 对象是用于存放同类型元素的多维数组。
+
+ndarray 中的每个元素在内存中都有相同存储大小的区域。
+
+### 数组中的数据类型
+
+数组是一系列同类型数据的集合，所以我们应该了解numpy中含有哪些数据类型。
+
+数据类型可以在创建数组时利用dtype参数设置，也可以事先利用numpy.dtype函数创建一个数据类型对象，然后在创建时使用。
+
+* 数据类型汇总
+
+名称|	描述|符号(注意加引号)
+-|-|-
+bool_|	布尔型数据类型（True 或者 False）|b
+int_|	默认的整数类型（类似于 C 语言中的 long，int32 或 int64）|i
+intc|	与 C 的 int 类型一样，一般是 int32 或 int 64|
+intp	|用于索引的整数类型（类似于 C 的 ssize_t，|一般情况下仍然是 int32 或 int64）|
+int8|	字节（-128 to 127）|i1
+int16|	整数（-32768 to 32767）|i2
+int32|	整数（-2147483648 to 2147483647）|i4
+int64|	整数（-9223372036854775808 to 9223372036854775807）|i8
+uint8	|无符号整数（0 to 255）|u1
+uint16	|无符号整数（0 to 65535）|u2
+uint32|	无符号整数（0 to 4294967295）|u4
+uint64|	无符号整数（0 to 18446744073709551615）|u8
+float_	|float64 类型的简写|
+float16|	半精度浮点数，包括：1 个符号位，5 个指数位，10 个尾数位|f2
+float32	|单精度浮点数，包括：1 个符号位，8 个指数位，23 个尾数位|f4
+float64	|双精度浮点数，包括：1 个符号位，11 个指数位，52 个尾数位|f8
+complex_|	complex128 类型的简写，即 128 位复数
+complex64	|复数，表示双 32 位浮点数（实数部分和虚数部分）
+complex128|	复数，表示双 64 位浮点数（实数部分和虚数部分）
+
+numpy 的数值类型实际上是 dtype 对象的实例，并对应唯一的字符，包括 np.bool_，np.int32，np.float32，等等。
+
+字符|	对应类型
+-|-
+b|	布尔型
+i|	(有符号) 整型
+u	|无符号整型 integer
+f	|浮点型
+c	|复数浮点型
+m	|timedelta（时间间隔）
+M	|datetime（日期时间）
+O	|(Python) 对象
+S, a|	(byte-)字符串 a代表字符串长度（字节）
+U	|Unicode
+V	|原始数据 (void)
+
+### 数据类型对象
+
+数据类型对象 (dtype)
+
+数据类型对象是用来描述与数组对应的内存区域如何使用，这依赖如下几个方面：
+
+数据的类型（整数，浮点数或者 Python 对象）
+
+数据的大小（例如， 整数使用多少个字节存储）
+
+数据的字节顺序（小端法或大端法）
+
+在结构化类型的情况下，字段的名称、每个字段的数据类型和每个字段所取的内存块的部分
+
+如果数据类型是子数组，它的形状和数据类型
+
+字节顺序是通过对数据类型预先设定"<"或">"来决定的。"<"意味着小端法(最小值存储在最小的地址，即低位组放在最前面)。">"意味着大端法(最重要的字节存储在最小的地址，即高位组放在最前面)。
+
+dtype 对象是使用以下语法构造的：
+
+numpy.dtype(object, align, copy)
+
+object - 要转换为的数据类型对象
+
+align - 如果为 true，填充字段使其类似 C 的结构体。
+
+copy - 复制 dtype 对象 ，如果为 false，则是对内置数据类型对象的引用
+
+实例：数据类型对象
+
+
+```python
+import numpy as np
+dt1=np.dtype('i2',align=True,copy=True)
+dt4=np.dtype('i2',align=False,copy=False)
+dt2=np.dtype([('age','i2')],align=True)
+dt3=np.dtype([('age','i2')],align=False)
+print(dt1)
+```
+
+```
+## int16
+```
+
+```python
+print(dt4)
+```
+
+```
+## int16
+```
+
+```python
+print(dt2)
+```
+
+```
+## {'names':['age'], 'formats':['<i2'], 'offsets':[0], 'itemsize':2, 'aligned':True}
+```
+
+```python
+print(dt3)
+```
+
+```
+## [('age', '<i2')]
+```
+
+```python
+a1= np.array([(10,),(20,),(30,)], dtype = dt1) 
+a2 = np.array([(10,),(20,),(30,)], dtype = dt2) 
+a3 = np.array([(10,),(20,),(30,)], dtype = dt3) 
+a4 = np.array([(10,),(20,),(30,)], dtype = dt4) 
+print(a1);a1.shape
+```
+
+```
+## [[10]
+##  [20]
+##  [30]]
+## (3, 1)
+```
+
+```python
+print(a2);print(a2['age']);a2.shape
+```
+
+```
+## [(10,) (20,) (30,)]
+## [10 20 30]
+## (3,)
+```
+
+```python
+print(a3);print(a3['age']);a3.shape
+```
+
+```
+## [(10,) (20,) (30,)]
+## [10 20 30]
+## (3,)
+```
+
+```python
+print(a4);a4.shape
+```
+
+```
+## [[10]
+##  [20]
+##  [30]]
+## (3, 1)
+```
+
+```python
+dt5=np.dtype([('age','i2'),('sex','S9')])
+print(dt5)
+```
+
+```
+## [('age', '<i2'), ('sex', 'S9')]
+```
+
+```python
+a5=np.array([(3,6),(3,'haonslidjflaj')],dtype=dt5)
+a6=np.array([(3,6),(3,'nihao')],dtype=dt5)
+a7=np.array([3,(3,'nihao')],dtype=dt5)
+a8=np.array([3,6,(3,'nihao')],dtype=dt5)
+## a5=np.array([(3,6),(3,'光洙')],dtype=dt5)不行，不能输入汉字。
+
+print(a5)
+```
+
+```
+## [(3, b'6') (3, b'haonslidj')]
+```
+
+```python
+print(a6)
+```
+
+```
+## [(3, b'6') (3, b'nihao')]
+```
+
+```python
+print(a7)
+```
+
+```
+## [(3, b'3') (3, b'nihao')]
+```
+
+```python
+print(a8)
+```
+
+```
+## [(3, b'3') (6, b'6') (3, b'nihao')]
+```
+
+主要需要注意结构体类型的设置，如果设置一个field，那么你的array的行的维度只能为1，而你的列的维度不管是多少，都属于feild这个字段。呈现的是一行的结果。而如果你设置多个field，那么行的维度不能超过filed数，如果你以元组来包含一行的数据（一个一维数组），就像 \[(),(),(),...]，那么每一个一维数组的长度必须与filed数一致，而如果你不以元组的形式。就像\[a,(),b,c,(),...]，对于其中的a，b，c来说他们会被自动复制为filed个数，并且转化为相应feild的类型。
+
+### 创建数组
+
+方法|含义|参数
+-|-|-
+直接创建数组|
+numpy.array|将列表或元组或各自和相互的组合转化为数组|object：	数组或嵌套的数列<br/>dtype：	数组元素的数据类型，可选<br/>copy：	对象是否需要复制，可选<br/>order：	创建数组的样式，C为行方向，F为列方向，A为任意方向（默认）<br/>subok	默认返回一个与基类类型一致的数组<br/>ndmin	指定生成数组的最小维度
+numpy.empty|numpy.empty 方法用来创建一个指定形状（shape）、数据类型（dtype）且未初始化的数组：|shape	:数组形状<br/>dtype	:数据类型，可选<br/>order:	有"C"和"F"两个选项,分别代表，行优先和列优先，在计算机内存中的存储元素的顺序。
+numpy.zeros|创建指定大小的数组，数组元素以 0 来填充|shape	数组形状<br/>dtype	数据类型，可选<br/>order	'C' 用于 C 的行数组，或者 'F' 用于 FORTRAN 的列数组
+numpy.ones|创建指定形状的数组，数组元素以 1 来填充|shape,order,dtype
+numpy.eye|对角矩阵数组|shape,order,dtype
+从已有数组创建数组|
+numpy.asarray|转换为数组|a	任意形式的输入参数，可以是，列表, 列表的元组, 元组, 元组的元组, 元组的列表，多维数组<br/>dtype	数据类型，可选<br/>order	可选，有"C"和"F"两个选项,分别代表，行优先和列优先，在计算机内存中的存储元素的顺序。
+numpy.frombuffer|numpy.frombuffer 用于实现动态数组。<br/>numpy.frombuffer 接受 buffer 输入参数，以流的形式读入转化成 ndarray 对象<br/>注意：buffer 是字符串的时候，Python3 默认 \str 是 Unicode 类型，所以要转成 bytestring 在原 \str 前加上 b。|buffer	可以是任意对象，会以流的形式读入。<br/>dtype	返回数组的数据类型，可选<br/>count	读取的数据数量，默认为-1，读取所有数据。<br/>offset	读取的起始位置，默认为0。
+numpy.fromiter|numpy.fromiter 方法从可迭代对象中建立 ndarray 对象，返回一维数组。|iterable	可迭代对象<br/>dtype	返回数组的数据类型<br/>count	读取的数据数量，默认为-1，读取所有数据<br/>创建一定数值范围的数组|
+numpy.arange|numpy 包中的使用 arange 函数创建数值范围并返回 ndarray 对象|start	起始值，默认为0<br/>stop	终止值（不包含）<br/>step	步长，默认为1<br/>dtype	返回ndarray的数据类型，如果没有提供，则会使用输入数据的类型。
+numpy.linspace|numpy.linspace 函数用于创建一个一维数组，数组是一个等差数列构成的<br/>**注意他和logspace是默认包含终止值并且可以控制终止值是否包含的函数**|start	序列的起始值<br/>stop	序列的终止值，如果endpoint为true，该值包含于数列中<br/>num	要生成的等步长的样本数量，默认为50<br/>endpoint	该值为 true 时，数列中包含stop值，反之不包含，默认是True。<br/>retstep	如果为 True 时，生成的数组中会显示间距，反之不显示。<br/>dtype	ndarray 的数据类型
+numpy.logspace|numpy.logspace 函数用于创建一个于等比数列.|start	序列的起始值为：base ** start<br/>stop	序列的终止值为：base ** stop。如果endpoint为true，该值包含于数列中<br/>num	要生成的等步长的样本数量，默认为50<br/>endpoint	该值为 true 时，数列中中包含stop值，反之不包含，默认是True。<br/>base	对数 log 的底数。<br/>dtype	ndarray 的数据类型
+
+
+```python
+import numpy as np
+## np.array
+b1=np.array([1,2,3],dtype='f',order='F',ndmin=2);print(b1)
+```
+
+```
+## [[1. 2. 3.]]
+```
+
+```python
+b1.shape##二维数组，（1,3）
+```
+
+```
+## (1, 3)
+```
+
+```python
+b2=np.array([1,2,3],dtype='f',order='F',ndmin=1);print(b2)
+```
+
+```
+## [1. 2. 3.]
+```
+
+```python
+b2.shape##一维数组，（3，）
+
+## np.empty
+```
+
+```
+## (3,)
+```
+
+```python
+b3=np.empty((3,2),dtype='i2',order='F')
+b4=np.empty((3,2),dtype='i2',order='C')
+print(b3);print(b4)##顺序发生了变化
+
+## np.zeros
+```
+
+```
+## [[    0 16384]
+##  [16256     0]
+##  [    0 16448]]
+## [[    0 16256]
+##  [    0 16384]
+##  [    0 16448]]
+```
+
+```python
+b5=np.zeros(5);print(b5)
+```
+
+```
+## [0. 0. 0. 0. 0.]
+```
+
+```python
+b6=np.zeros((3,4));print(b6)
+```
+
+```
+## [[0. 0. 0. 0.]
+##  [0. 0. 0. 0.]
+##  [0. 0. 0. 0.]]
+```
+
+```python
+dt=np.dtype([('age','S1'),('sex','S1')])
+dt2=np.dtype([('age','i4'),('sex','i2')])
+b7=np.zeros((2,2),dtype=dt);print(b7)
+```
+
+```
+## [[(b'', b'') (b'', b'')]
+##  [(b'', b'') (b'', b'')]]
+```
+
+```python
+print(b7['age'])
+```
+
+```
+## [[b'' b'']
+##  [b'' b'']]
+```
+
+```python
+b8=np.zeros((2,2),dtype=dt2);print(b8)##np.zeros创建自定义结构类型有点不一样
+
+#np.ones
+```
+
+```
+## [[(0, 0) (0, 0)]
+##  [(0, 0) (0, 0)]]
+```
+
+```python
+b9=np.ones(3,'i2') ### 默认是浮点型
+print(b9)
+
+#numpy.asarray
+```
+
+```
+## [1 1 1]
+```
+
+```python
+b10=np.asarray([(1,2),(3,4,5)])
+```
+
+```
+## D:\Anaconda\lib\site-packages\numpy\core\_asarray.py:83: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+##   return array(a, dtype, copy=False, order=order)
+```
+
+```python
+print(b10)
+```
+
+```
+## [(1, 2) (3, 4, 5)]
+```
+
+```python
+b10.shape#如果个数不相等就会变成一维而不是多维。
+
+#numpy.frombuffer
+```
+
+```
+## (2,)
+```
+
+```python
+s =  b'Hello World' ##注意一定要加b
+b11 = np.frombuffer(s, dtype =  'S1')  
+print (b11)### 可以看到被转化成了一个一个字符的流形式
+### b12=np.frombuffer(12345,'S2',offset=1);print(b12)  'int' object has no attribute '__buffer__'
+```
+
+```
+## [b'H' b'e' b'l' b'l' b'o' b' ' b'W' b'o' b'r' b'l' b'd']
+```
+
+```python
+b12=np.frombuffer(b'12345','S2',offset=1);print(b12)
+```
+
+```
+## [b'23' b'45']
+```
+
+```python
+b13=np.frombuffer(b'12345','S1',offset=1,count=2);print(b13)#所以offset可以看成索引位置，count可以看成要读入的个数，复数代表全部读入，如果设置的个数超过了最大的个数，那么会显示错误。
+
+#numpy.fromiter
+##迭代对象也是一个一个读入。但是必须从头读入。
+```
+
+```
+## [b'2' b'3']
+```
+
+```python
+list=range(5)
+it=iter(list)
+x=np.fromiter(it, dtype=float,count=3)
+print(x)
+
+## numpy.arange
+```
+
+```
+## [0. 1. 2.]
+```
+
+```python
+b14=np.arange(1,10,step=2,dtype='i1')
+print(b14)
+```
+
+```
+## [1 3 5 7 9]
+```
+
+```python
+print(np.arange(10,step=2,dtype='i1'))
+```
+
+```
+## [0 2 4 6 8]
+```
+
+```python
+print(np.arange(1,1,dtype='i1')) ##空数组，默认步长为1
+##print(np.arange(1,1,step=0,dtype='i1')),不可为0
+
+## numpy.linspace
+```
+
+```
+## []
+```
+
+```python
+b15=np.linspace(1,10,num=10,dtype='i1',endpoint=True)
+b16=np.linspace(1,10,num=10,dtype='f2',endpoint=False)
+b17=np.linspace(1,10,num=10,dtype='f2',retstep=True)
+print(b15)
+```
+
+```
+## [ 1  2  3  4  5  6  7  8  9 10]
+```
+
+```python
+print(b16)
+```
+
+```
+## [1.  1.9 2.8 3.7 4.6 5.5 6.4 7.3 8.2 9.1]
+```
+
+```python
+print(b17)
+
+## numpy.logspace
+### 一般num和base不同时出现，base相当于等比数列的比。
+```
+
+```
+## (array([ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10.], dtype=float16), 1.0)
+```
+
+```python
+a = np.logspace(1.0,  2.0, num =  10)  
+print (a)
+```
+
+```
+## [ 10.          12.91549665  16.68100537  21.5443469   27.82559402
+##   35.93813664  46.41588834  59.94842503  77.42636827 100.        ]
+```
+
+```python
+a1 = np.logspace(0,9,10,base=2)
+print (a1)
+```
+
+```
+## [  1.   2.   4.   8.  16.  32.  64. 128. 256. 512.]
+```
+
+### 数组属性
+
+属性|	说明
+-|-
+ndarray.ndim|	秩，即轴的数量或维度的数量，维度的数量和维度要区分开。
+ndarray.shape|	数组的维度，对于矩阵，n 行 m 列
+ndarray.size	|数组元素的总个数，相当于 .shape 中 n*m 的值
+ndarray.dtype	|ndarray 对象的元素类型
+ndarray.itemsize|	ndarray 对象中每个元素的大小，以字节为单位
+ndarray.flags|	ndarray 对象的内存信息
+ndarray.real|	ndarray元素的实部
+ndarray.imag|	ndarray 元素的虚部
+ndarray.data	|包含实际数组元素的缓冲区，由于一般通过数组的索引获取元素，所以通常不需要使用这个属性。
+
+NumPy 数组的维数称为秩（rank），秩就是轴的数量，即数组的维度，一维数组的秩为 1，二维数组的秩为 2，以此类推。
+
+在 NumPy中，每一个线性的数组称为是一个轴（axis），也就是维度（dimensions）。比如说，二维数组相当于是两个一维数组，其中第一个一维数组中每个元素又是一个一维数组。所以一维数组就是 NumPy 中的轴（axis），第一个轴相当于是底层数组，第二个轴是底层数组里的数组。而轴的数量——秩，就是数组的维数。
+
+很多时候可以声明 axis。axis=0，表示沿着第 0 轴进行操作，即对每一列进行操作；axis=1，表示沿着第1轴进行操作，即对每一行进行操作。
+
+ndarray.flags
+
+ndarray.flags 返回 ndarray 对象的内存信息，包含以下属性：
+
+属性	|描述
+-|-
+C_CONTIGUOUS (C)|	数据是在一个单一的C风格的连续段中
+F_CONTIGUOUS (F)|	数据是在一个单一的Fortran风格的连续段中
+OWNDATA (O)|	数组拥有它所使用的内存或从另一个对象中借用它
+WRITEABLE (W)|	数据区域可以被写入，将该值设置为 False，则数据为只读
+ALIGNED (A)	|数据和所有元素都适当地对齐到硬件上
+UPDATEIFCOPY (U)|	这个数组是其它数组的一个副本，当这个数组被释放时，原数组的内容将被更新
+
+### 数组方法和相关函数
+
+函数|描述|参数
+-|-|-
+修改数组形状|
+reshape	|不改变数据的条件下修改形状|arr：要修改形状的数组<br/>newshape：整数或者整数数组，新的形状应当兼容原有形状<br/>order：'C' -- 按行，'F' -- 按列，'A' -- 原顺序，'k' -- 元素在内存中的出现顺序。
+flat	|数组元素迭代器|ndarray.flat
+flatten|	返回一份数组拷贝，对拷贝所做的修改不会影响原始数组|ndarray.flatten(order)<br/>order：'C' -- 按行，'F' -- 按列，'A' -- 原顺序，'K' -- 元素在内存中的出现顺序。
+ravel   |返回展开数组,修改会影响原始数组|order：'C' -- 按行，'F' -- 按列，'A' --原顺序，'K' -- 元素在内存中的出现顺序。
+翻转数组|
+transpose|	对换数组的维度|arr：要操作的数组<br/>axes：整数列表，对应维度，通常所有维度都会对换。
+ndarray.T|	和 self.transpose() 相同|
+rollaxis|	向后滚动指定的轴|arr：数组<br/>axis：要向后滚动的轴，其它轴的相对位置不会改变<br/>start：默认为零，表示完整的滚动。会滚动到特定位置。
+swapaxes|   对换数组的两个轴|arr：输入的数组<br/>axis1：对应第一个轴的整数<br/>axis2：对应第二个轴的整数
+修改数组形状|
+broadcast|	产生模仿广播的对象|
+broadcast_to|	将数组广播到新形状
+expand_dims	|扩展数组的形状
+squeeze	|从数组的形状中删除一维条目
+连接数组|
+concatenate|	连接沿现有轴的数组序列|a1, a2, ...：相同类型的数组<br/>axis：沿着它连接数组的轴，默认为 0
+stack	|沿着新的轴加入一系列数组。|arrays相同形状的数组序列<br/>axis：返回数组中的轴，输入数组沿着它来堆叠
+hstack	|水平堆叠序列中的数组（列方向）|
+vstack	|竖直堆叠序列中的数组（行方向）|
+分裂数组|
+split	|将一个数组分割为多个子数组|ary：被分割的数组indices_or_sections：果是一个整数，就用该数平均切分，如果是一个数组，为沿轴切分的位置（左开右闭）<br/>axis：沿着哪个维度进行切向，默认为0，横向切分。为1时，纵向切分
+hsplit	|将一个数组水平分割为多个子数组（按列）|通过指定要返回的相同形状的数组数量来拆分原数组。
+vsplit	|将一个数组垂直分割为多个子数组（按行）|与hsplit相似
+resize|	返回指定形状的新数组|如果新数组大小大于原始大小，则包含原始数组中的元素的副本。arr：要修改大小的数组<br/>shape：返回数组的新形状
+append| 将值添加到数组末尾| 追加操作会分配整个数组，并把原来的数组复制到新数组中。 此外，输入数组的维度必须匹配否则将生成ValueError。<br/>append 函数返回的始终是一个一维数组。<br/>arr：输入数组<br/>values：要向arr添加的值，需要和arr形状相同（除了要添加的轴）<br/>axis：默认为 None。当axis无定义时，是横向加成，返回总是为一维数组！当axis有定义的时候，分别为0和1的时候。当axis有定义的时候，分别为0和1的时候（列数要相同）。当axis为1时，数组是加在右边（行数要相同）。
+insert  |沿指定轴将值插入到指定下标之前|numpy.insert 函数在给定索引之前，沿给定轴在输入数组中插入值。<br/>如果值的类型转换为要插入，则它与输入数组不同。<br/>插入没有原地的，函数会返回一个新数组。<br/> 此外，如果未提供轴，则输入数组会被展开。<br/>arr：输入数组<br/>obj：在其之前插入值的索引<br/>values：要插入的值<br/>axis：沿着它插入的轴，如果未提供，则输入数组会被展开
+delete	|删掉某个轴的子数组，并返回删除后的新数组|numpy.delete 函数返回从输入数组中删除指定子数组的新数组。<br/> 与 insert() 函数的情况一样，如果未提供轴参数，则输入数组将展开。<br/>arr：输入数组<br/>obj：可以被切片，整数或者整数数组，表明要从输入数组删除的子数组<br/>axis：沿着它删除给定子数组的轴，如果未提供，则输入数组会被展开
+unique	|查找数组内的唯一元素|numpy.unique 函数用于去除数组中的重复元素.<br/>arr：输入数组，如果不是一维数组则会展开<br/>return_index：如果为true，返回新列表元素在旧列表中的位置（下标），并以列表形式储<br/>return_inverse：如果为true，返回旧列表元素在新列表中的位置（下标），并以列表形式储<br/>return_counts：如果为true，返回去重数组中的元素在原数组中的出现次数
+
+
+```python
+## 所有介绍的操作中只有改变数组形状不是函数，其他都是针对数组的函数。
+
+## 改变数组形状
+
+### np.reshape函数，注意转换后要兼容
+
+import numpy as np
+c=np.array([(1,2,3),(4,5,6),(7,8,9),(1,4,8)])
+print(c)
+
+#### 按行
+```
+
+```
+## [[1 2 3]
+##  [4 5 6]
+##  [7 8 9]
+##  [1 4 8]]
+```
+
+```python
+np.reshape(c,(3,4),order='C')
+#### 按列
+```
+
+```
+## array([[1, 2, 3, 4],
+##        [5, 6, 7, 8],
+##        [9, 1, 4, 8]])
+```
+
+```python
+c.reshape((3,4),order='F')
+#### reshape可以看到既可以做函数也可以做方法，按行的时候，原数组按照行遍历，新数组按照行逐个排列。列也是如此。按列遍历，按列生成。
+
+### numpy.ndarray.flat
+
+###对数组中每个元素都进行处理，可以使用flat属性，该属性是一个数组元素迭代器：
+```
+
+```
+## array([[1, 1, 8, 6],
+##        [4, 2, 4, 9],
+##        [7, 5, 3, 8]])
+```
+
+```python
+print ('迭代后的数组：')
+```
+
+```
+## 迭代后的数组：
+```
+
+```python
+for element in c.flat:
+    print (element)
+
+### numpy.ndarray.flatten
+```
+
+```
+## 1
+## 2
+## 3
+## 4
+## 5
+## 6
+## 7
+## 8
+## 9
+## 1
+## 4
+## 8
+```
+
+```python
+print (c.flatten())
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print (c.flatten(order = 'F'))
+```
+
+```
+## [1 4 7 1 2 5 8 4 3 6 9 8]
+```
+
+```python
+print (c.flatten(order = 'A'))
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print (c.flatten(order = 'K'))
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print(c)
+
+### numpy.ndarray.ravel(并未和flatten有什么区别)
+```
+
+```
+## [[1 2 3]
+##  [4 5 6]
+##  [7 8 9]
+##  [1 4 8]]
+```
+
+```python
+print (c.ravel())
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print (c.ravel(order = 'F'))
+```
+
+```
+## [1 4 7 1 2 5 8 4 3 6 9 8]
+```
+
+```python
+print (c.ravel(order = 'A'))
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print (c.ravel(order = 'K'))
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print(c)
+
+## 翻转数组
+
+###  np.transpose
+```
+
+```
+## [[1 2 3]
+##  [4 5 6]
+##  [7 8 9]
+##  [1 4 8]]
+```
+
+```python
+print(np.transpose(c))
+
+### np.T
+```
+
+```
+## [[1 4 7 1]
+##  [2 5 8 4]
+##  [3 6 9 8]]
+```
+
+```python
+print(c.T)
+
+### 后两个不做演示。
+
+## 修改数组维度
+
+### 不做演示
+
+## 连接数组
+
+### numpy.concatenate
+
+#### 沿着已有的轴连接：
+```
+
+```
+## [[1 4 7 1]
+##  [2 5 8 4]
+##  [3 6 9 8]]
+```
+
+```python
+d=np.linspace(2,24,num=12).reshape(4,3)
+print(d)
+```
+
+```
+## [[ 2.  4.  6.]
+##  [ 8. 10. 12.]
+##  [14. 16. 18.]
+##  [20. 22. 24.]]
+```
+
+```python
+print (np.concatenate((c,d),axis = 0))#行轴，上下连接
+```
+
+```
+## [[ 1.  2.  3.]
+##  [ 4.  5.  6.]
+##  [ 7.  8.  9.]
+##  [ 1.  4.  8.]
+##  [ 2.  4.  6.]
+##  [ 8. 10. 12.]
+##  [14. 16. 18.]
+##  [20. 22. 24.]]
+```
+
+```python
+print (np.concatenate((c,d),axis = 1))#列轴，左右连接
+
+### numpy.stack
+
+#### 这个不是简单的链接,链接过后二维会变成三维，如果是按行方向，则两个原数组（二维数组）堆叠形成三维数组，如果是按列方向，那就是每一行变成一个新的二维数组，形成堆叠的三维数组。
+```
+
+```
+## [[ 1.  2.  3.  2.  4.  6.]
+##  [ 4.  5.  6.  8. 10. 12.]
+##  [ 7.  8.  9. 14. 16. 18.]
+##  [ 1.  4.  8. 20. 22. 24.]]
+```
+
+```python
+print (np.stack((c,d),0))
+```
+
+```
+## [[[ 1.  2.  3.]
+##   [ 4.  5.  6.]
+##   [ 7.  8.  9.]
+##   [ 1.  4.  8.]]
+## 
+##  [[ 2.  4.  6.]
+##   [ 8. 10. 12.]
+##   [14. 16. 18.]
+##   [20. 22. 24.]]]
+```
+
+```python
+print (np.stack((c,d),1))
+
+### hstack/vstack
+
+#### 很简单，水平堆叠，就是按列方向。垂直连接就是按行方向堆叠。
+
+## 分割数组
+
+### split
+```
+
+```
+## [[[ 1.  2.  3.]
+##   [ 2.  4.  6.]]
+## 
+##  [[ 4.  5.  6.]
+##   [ 8. 10. 12.]]
+## 
+##  [[ 7.  8.  9.]
+##   [14. 16. 18.]]
+## 
+##  [[ 1.  4.  8.]
+##   [20. 22. 24.]]]
+```
+
+```python
+print(np.split(c,[1,2]))
+```
+
+```
+## [array([[1, 2, 3]]), array([[4, 5, 6]]), array([[7, 8, 9],
+##        [1, 4, 8]])]
+```
+
+```python
+print(np.split(c,[1,2],axis=1))
+```
+
+```
+## [array([[1],
+##        [4],
+##        [7],
+##        [1]]), array([[2],
+##        [5],
+##        [8],
+##        [4]]), array([[3],
+##        [6],
+##        [9],
+##        [8]])]
+```
+
+```python
+print(np.split(c,3,axis=1))###这里如果列是四列就会出错，因为不能平分
+
+### hsplit/vsplit
+
+#### hsplit水平分割，列轴，vsplit垂直分割，行轴。只允许指定数字，不可指定列表。
+
+## 数组元素的添加与删除
+
+### resize
+
+#### resize与reshape的不同之处在于resize不一定要新形状的兼容
+```
+
+```
+## [array([[1],
+##        [4],
+##        [7],
+##        [1]]), array([[2],
+##        [5],
+##        [8],
+##        [4]]), array([[3],
+##        [6],
+##        [9],
+##        [8]])]
+```
+
+```python
+print(np.resize(c,(3,4)))
+```
+
+```
+## [[1 2 3 4]
+##  [5 6 7 8]
+##  [9 1 4 8]]
+```
+
+```python
+print(np.resize(c,(3,5)))
+```
+
+```
+## [[1 2 3 4 5]
+##  [6 7 8 9 1]
+##  [4 8 1 2 3]]
+```
+
+```python
+print(np.resize(c,(4,5)))
+
+#### 总结来说，他可以按照行遍历的方式无限循环下去。
+
+### numpy.append
+```
+
+```
+## [[1 2 3 4 5]
+##  [6 7 8 9 1]
+##  [4 8 1 2 3]
+##  [4 5 6 7 8]]
+```
+
+```python
+print(np.append(c,[1,2,3]))
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8 1 2 3]
+```
+
+```python
+print(np.append(c,[[1,2,3]],axis=0))
+```
+
+```
+## [[1 2 3]
+##  [4 5 6]
+##  [7 8 9]
+##  [1 4 8]
+##  [1 2 3]]
+```
+
+```python
+print(np.append(c,[[1],[2],[3],[4]],axis=1))
+
+#### 总结一下，如果axis没给，那么就对value的维度无要求，结果必为一维数组。如果axis为0，垂直连接，那就必须保证列数相等，必为二维数组。行数无要求。如果axis为1，同理，二维数组行同列无。
+
+### np.insert
+
+#### 未指明axis，会被展开，指明后，按照广播规则插入。
+```
+
+```
+## [[1 2 3 1]
+##  [4 5 6 2]
+##  [7 8 9 3]
+##  [1 4 8 4]]
+```
+
+```python
+print (np.insert(c,1,[11]))
+```
+
+```
+## [ 1 11  2  3  4  5  6  7  8  9  1  4  8]
+```
+
+```python
+print (np.insert(c,1,[11],axis = 0))
+```
+
+```
+## [[ 1  2  3]
+##  [11 11 11]
+##  [ 4  5  6]
+##  [ 7  8  9]
+##  [ 1  4  8]]
+```
+
+```python
+print (np.insert(c,1,[11],axis = 1))
+
+### np.delete
+
+#### 未指明axis，展开，指明，沿着轴删除某些行或列
+```
+
+```
+## [[ 1 11  2  3]
+##  [ 4 11  5  6]
+##  [ 7 11  8  9]
+##  [ 1 11  4  8]]
+```
+
+```python
+print (np.delete(c,[1,2]))
+```
+
+```
+## [1 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print (np.delete(c,[1,2],axis = 0))
+```
+
+```
+## [[1 2 3]
+##  [1 4 8]]
+```
+
+```python
+print (np.delete(c,[1,2],axis = 1))
+
+### np.unique
+```
+
+```
+## [[1]
+##  [4]
+##  [7]
+##  [1]]
+```
+
+```python
+print ('第一个数组的去重值：')
+```
+
+```
+## 第一个数组的去重值：
+```
+
+```python
+u = np.unique(c)
+print (u)
+```
+
+```
+## [1 2 3 4 5 6 7 8 9]
+```
+
+```python
+print ('\n')
+ 
+```
+
+```python
+print ('去重数组在旧列表的索引数组：')
+```
+
+```
+## 去重数组在旧列表的索引数组：
+```
+
+```python
+u,indices = np.unique(c, return_index = True)
+print (indices)
+```
+
+```
+## [0 1 2 3 4 5 6 7 8]
+```
+
+```python
+print ('\n')
+ 
+```
+
+```python
+print ('我们可以看到每个和原数组下标对应的数值：')
+```
+
+```
+## 我们可以看到每个和原数组下标对应的数值：
+```
+
+```python
+print (c)
+```
+
+```
+## [[1 2 3]
+##  [4 5 6]
+##  [7 8 9]
+##  [1 4 8]]
+```
+
+```python
+print ('\n')
+ 
+```
+
+```python
+print ('去重数组：')
+```
+
+```
+## 去重数组：
+```
+
+```python
+u,indices = np.unique(c,return_inverse = True)
+print (u)
+```
+
+```
+## [1 2 3 4 5 6 7 8 9]
+```
+
+```python
+print ('\n')
+ 
+```
+
+```python
+print ('旧列表元素在去重列表的下标为：')
+```
+
+```
+## 旧列表元素在去重列表的下标为：
+```
+
+```python
+print (indices)
+```
+
+```
+## [0 1 2 3 4 5 6 7 8 0 3 7]
+```
+
+```python
+print ('\n')
+ 
+```
+
+```python
+print ('使用下标重构原数组：')
+```
+
+```
+## 使用下标重构原数组：
+```
+
+```python
+print (u[indices])
+```
+
+```
+## [1 2 3 4 5 6 7 8 9 1 4 8]
+```
+
+```python
+print ('\n')
+ 
+```
+
+```python
+print ('返回去重元素的重复数量：')
+```
+
+```
+## 返回去重元素的重复数量：
+```
+
+```python
+u,indices = np.unique(c,return_counts = True)
+print (u)
+```
+
+```
+## [1 2 3 4 5 6 7 8 9]
+```
+
+```python
+print (indices)
+```
+
+```
+## [2 1 1 2 1 1 1 2 1]
+```
+
+{{%spoiler text=\"补充：不理解部分\"%}}
+
+        numpy.rollaxis
+        numpy.rollaxis 函数向后滚动特定的轴到一个特定位置，格式如下：
+
+        numpy.rollaxis(arr, axis, start)
+        参数说明：
+
+        arr：数组
+        axis：要向后滚动的轴，其它轴的相对位置不会改变
+        start：默认为零，表示完整的滚动。会滚动到特定位置。
+        实例
+        import numpy as np
+        
+        ## 创建了三维的 ndarray
+        a = np.arange(8).reshape(2,2,2)
+        
+        print ('原数组：')
+        print (a)
+        print ('获取数组中一个值：')
+        print(np.where(a==6))   
+        print(a[1,1,0])  ## 为 6
+        print ('\n')
+        
+        
+        ## 将轴 2 滚动到轴 0（宽度到深度）
+        
+        print ('调用 rollaxis 函数：')
+        b = np.rollaxis(a,2,0)
+        print (b)
+        ## 查看元素 a[1,1,0]，即 6 的坐标，变成 [0, 1, 1]
+        ## 最后一个 0 移动到最前面
+        print(np.where(b==6))   
+        print ('\n')
+        
+        ## 将轴 2 滚动到轴 1：（宽度到高度）
+        
+        print ('调用 rollaxis 函数：')
+        c = np.rollaxis(a,2,1)
+        print (c)
+        ## 查看元素 a[1,1,0]，即 6 的坐标，变成 [1, 0, 1]
+        ## 最后的 0 和 它前面的 1 对换位置
+        print(np.where(c==6))   
+        print ('\n')
+        输出结果如下：
+
+        原数组：
+        [[[0 1]
+        [2 3]]
+
+        [[4 5]
+        [6 7]]]
+        获取数组中一个值：
+        (array([1]), array([1]), array([0]))
+        6
+
+
+        调用 rollaxis 函数：
+        [[[0 2]
+        [4 6]]
+
+        [[1 3]
+        [5 7]]]
+        (array([0]), array([1]), array([1]))
+
+
+        调用 rollaxis 函数：
+        [[[0 2]
+        [1 3]]
+
+        [[4 6]
+        [5 7]]]
+        (array([1]), array([0]), array([1]))
+        numpy.swapaxes
+        numpy.swapaxes 函数用于交换数组的两个轴，格式如下：
+
+        numpy.swapaxes(arr, axis1, axis2)
+        arr：输入的数组
+        axis1：对应第一个轴的整数
+        axis2：对应第二个轴的整数
+        实例
+        import numpy as np
+        
+        ## 创建了三维的 ndarray
+        a = np.arange(8).reshape(2,2,2)
+        
+        print ('原数组：')
+        print (a)
+        print ('\n')
+        ## 现在交换轴 0（深度方向）到轴 2（宽度方向）
+        
+        print ('调用 swapaxes 函数后的数组：')
+        print (np.swapaxes(a, 2, 0))
+        输出结果如下：
+
+        原数组：
+        [[[0 1]
+        [2 3]]
+
+        [[4 5]
+        [6 7]]]
+
+
+        调用 swapaxes 函数后的数组：
+        [[[0 4]
+        [2 6]]
+
+        [[1 5]
+        [3 7]]]
+        修改数组维度
+        维度	描述
+        broadcast	产生模仿广播的对象
+        broadcast_to	将数组广播到新形状
+        expand_dims	扩展数组的形状
+        squeeze	从数组的形状中删除一维条目
+        numpy.broadcast
+        numpy.broadcast 用于模仿广播的对象，它返回一个对象，该对象封装了将一个数组广播到另一个数组的结果。
+
+        该函数使用两个数组作为输入参数，如下实例：
+
+        实例
+        import numpy as np
+        
+        x = np.array([[1], [2], [3]])
+        y = np.array([4, 5, 6])  
+        
+        ## 对 y 广播 x
+        b = np.broadcast(x,y)  
+        ## 它拥有 iterator 属性，基于自身组件的迭代器元组
+        
+        print ('对 y 广播 x：')
+        r,c = b.iters
+        
+        ## Python3.x 为 next(context) ，Python2.x 为 context.next()
+        print (next(r), next(c))
+        print (next(r), next(c))
+        print ('\n')
+        ## shape 属性返回广播对象的形状
+        
+        print ('广播对象的形状：')
+        print (b.shape)
+        print ('\n')
+        ## 手动使用 broadcast 将 x 与 y 相加
+        b = np.broadcast(x,y)
+        c = np.empty(b.shape)
+        
+        print ('手动使用 broadcast 将 x 与 y 相加：')
+        print (c.shape)
+        print ('\n')
+        c.flat = [u + v for (u,v) in b]
+        
+        print ('调用 flat 函数：')
+        print (c)
+        print ('\n')
+        ## 获得了和 NumPy 内建的广播支持相同的结果
+        
+        print ('x 与 y 的和：')
+        print (x + y)
+        输出结果为：
+
+        对 y 广播 x：
+        1 4
+        1 5
+
+
+        广播对象的形状：
+        (3, 3)
+
+
+        手动使用 broadcast 将 x 与 y 相加：
+        (3, 3)
+
+
+        调用 flat 函数：
+        [[5. 6. 7.]
+        [6. 7. 8.]
+        [7. 8. 9.]]
+
+
+        x 与 y 的和：
+        [[5 6 7]
+        [6 7 8]
+        [7 8 9]]
+        numpy.broadcast_to
+        numpy.broadcast_to 函数将数组广播到新形状。它在原始数组上返回只读视图。 它通常不连续。 如果新形状不符合 NumPy 的广播规则，该函数可能会抛出ValueError。
+
+        numpy.broadcast_to(array, shape, subok)
+        实例
+        import numpy as np
+        
+        a = np.arange(4).reshape(1,4)
+        
+        print ('原数组：')
+        print (a)
+        print ('\n')
+        
+        print ('调用 broadcast_to 函数之后：')
+        print (np.broadcast_to(a,(4,4)))
+        输出结果为：
+
+        原数组：
+        [[0 1 2 3]]
+
+
+        调用 broadcast_to 函数之后：
+        [[0 1 2 3]
+        [0 1 2 3]
+        [0 1 2 3]
+        [0 1 2 3]]
+        numpy.expand_dims
+        numpy.expand_dims 函数通过在指定位置插入新的轴来扩展数组形状，函数格式如下:
+
+        numpy.expand_dims(arr, axis)
+        参数说明：
+
+        arr：输入数组
+        axis：新轴插入的位置
+        实例
+        import numpy as np
+        
+        x = np.array(([1,2],[3,4]))
+        
+        print ('数组 x：')
+        print (x)
+        print ('\n')
+        y = np.expand_dims(x, axis = 0)
+        
+        print ('数组 y：')
+        print (y)
+        print ('\n')
+        
+        print ('数组 x 和 y 的形状：')
+        print (x.shape, y.shape)
+        print ('\n')
+        ## 在位置 1 插入轴
+        y = np.expand_dims(x, axis = 1)
+        
+        print ('在位置 1 插入轴之后的数组 y：')
+        print (y)
+        print ('\n')
+        
+        print ('x.ndim 和 y.ndim：')
+        print (x.ndim,y.ndim)
+        print ('\n')
+        
+        print ('x.shape 和 y.shape：')
+        print (x.shape, y.shape)
+        输出结果为：
+
+        数组 x：
+        [[1 2]
+        [3 4]]
+
+
+        数组 y：
+        [[[1 2]
+        [3 4]]]
+
+
+        数组 x 和 y 的形状：
+        (2, 2) (1, 2, 2)
+
+
+        在位置 1 插入轴之后的数组 y：
+        [[[1 2]]
+
+        [[3 4]]]
+
+
+        x.ndim 和 y.ndim：
+        2 3
+
+
+        x.shape 和 y.shape：
+        (2, 2) (2, 1, 2)
+        numpy.squeeze
+        numpy.squeeze 函数从给定数组的形状中删除一维的条目，函数格式如下：
+
+        numpy.squeeze(arr, axis)
+        参数说明：
+
+        arr：输入数组
+        axis：整数或整数元组，用于选择形状中一维条目的子集
+        实例
+        import numpy as np
+        
+        x = np.arange(9).reshape(1,3,3)
+        
+        print ('数组 x：')
+        print (x)
+        print ('\n')
+        y = np.squeeze(x)
+        
+        print ('数组 y：')
+        print (y)
+        print ('\n')
+        
+        print ('数组 x 和 y 的形状：')
+        print (x.shape, y.shape)
+        输出结果为：
+
+        数组 x：
+        [[[0 1 2]
+        [3 4 5]
+        [6 7 8]]]
+
+
+        数组 y：
+        [[0 1 2]
+        [3 4 5]
+        [6 7 8]]
+
+
+        数组 x 和 y 的形状：
+        (1, 3, 3) (3, 3)
+{{%/spoiler%}}
+
+### 切片和索引
+
+切片是截取原数组的一部分，而索引是找到数组某个具体位置的值。所以切片是数组的一部分，跟数组维度保持一致，而索引是查找值，维度会发生变化。
+
+1 slice函数，具体见内置函数
+
+2我们也可以通过冒号分隔切片参数 start:stop:step 来进行切片操作。
+
+3用逗号分隔维度
+
+
+```python
+import numpy as np
+c=np.array([(1,2),(3,4)])
+c[0:2]
+```
+
+```
+## array([[1, 2],
+##        [3, 4]])
+```
+
+```python
+c[0:2,0:1]
+```
+
+```
+## array([[1],
+##        [3]])
+```
+
+```python
+c[:,0:1]
+```
+
+```
+## array([[1],
+##        [3]])
+```
+
+```python
+c[0:1,...]
+```
+
+```
+## array([[1, 2]])
+```
+
+```python
+c[...,0:1]
+```
+
+```
+## array([[1],
+##        [3]])
+```
+
+```python
+c[...]
+```
+
+```
+## array([[1, 2],
+##        [3, 4]])
+```
+
+```python
+c[:]
+```
+
+```
+## array([[1, 2],
+##        [3, 4]])
+```
+
+整数数组索引，即两个整数数组，一个代表行索引，一个代表列索引，索引多维数组的值。当然‘：’可以和整数数组配合使用。
+
+花式索引：给定一个整数数组，或利用np.ix_组合多个索引数组。对于一维数组来说，就是下标值。而对于多维数组来说就是行标，取得是对应的行。如果使用np.ix_([arr1,arr2]),那就是arr1的每一个元素和arr2的所有元素进行组合，arr1中元素可以理解为行标，arr是列标。这样可以可以达到在某些行中去某些元素并且可以调整行和元素的顺序的作用。
+
+    a=np.resize(np.array([1,3,5,4,2,8,7]),(3,3));print(a)
+    a[[0,2],[1,2]]#整数数组
+    a[0:2,[1,2]]#：号与整数数组组合
+    a[[0,2]]#花式
+    a[np.ix_([0,2],[1,2])]#花式
+
+    ## array([3, 3])
+    ## array([[3, 5],
+    ##       [2, 8]])
+    #array([[1, 3, 5],
+    ##       [7, 1, 3]]) 
+    #array([[3, 5],
+    ##      [1, 3]])
+
+所以可以看出：整数数组是给定所有单个元素的坐标，没有规律,冒号加整数数组是 冒号代表某些连续行，而整数数组是取每一行的某些列,花式索引加np.ix取一些不要求连续的行，然后每一行中取一些相同的列。布尔索引，通过给与条件来索引数组。
+
+    x=np.array([1,2,3])
+    x[x<2]
+    ## array([1])
+
+### 广播
+
+广播是让一些形状不同的数组之间可以进行运算。
+
+规则：
+
+一维和二维进行运算只要一维数组的长度和二维数组的任一维的维度相同。即可进行运算。
+
+同为二维，只要有任一维维度相同，且其中有一个数组的另一个维度值为1，则可广播。或者两个数组皆有一个维度是一。
+
+单个数值可以和任意维的数组进行运算
+
+    np.array([1,2,3])+np.array([[1],[2],[3]])
+    np.array([[1,2,3]])+np.array([[1],[2],[3],[4]])
+    np.array([[3,4]])+np.array([[1,2],[3,4],[5,6],[7,8]])
+
+    array([[2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6]])
+
+    array([[2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6],
+        [5, 6, 7]])
+
+    array([[ 4,  6],
+        [ 6,  8],
+        [ 8, 10],
+        [10, 12]])
+
+### 迭代数组
+
+让数组能够迭代输出
+
+numpy.nditer
+
+输出迭代元素不是使用标准 C 或者 Fortran 顺序，选择的顺序是和数组内存布局一致的，这样做是为了提升访问的效率，默认是行序优先（row-major order，或者说是 C-order）。
+
+这反映了默认情况下只需访问每个元素，而无需考虑其特定顺序
+
+    a = np.arange(6).reshape(2,3)
+    print(a)
+    for x in np.nditer(a):
+        print (x, end=", " )
+    print ('\n')
+    for x in np.nditer(a.T):
+        print (x, end=", " )
+    print ('\n')
+    #这就说明a.T并没有改变内存顺序
+    for x in np.nditer(a.T,order='C'):
+        print (x, end=", " )
+    #可以人为改变。
+
+    0, 1, 2, 3, 4, 5, 
+
+    0, 1, 2, 3, 4, 5, 
+
+    0, 3, 1, 4, 2, 5,
+
+
+nditer 对象有另一个可选参数 op_flags。 默认情况下，nditer 将视待迭代遍历的数组为只读对象（read-only），为了在遍历数组的同时，实现对数组元素值得修改，必须指定 read-write 或者 write-only 的模式。
+
+    for x in np.nditer(a, op_flags=['readwrite']): 
+        x[...]=2*x 
+    print(a)
+    下面两种方式也能达到同样的效果
+    a[...]=2*a
+    a=2*a
+
+{{%spoiler text=\"补充：不理解部分\"%}}
+
+    使用外部循环
+
+    nditer类的构造器拥有flags参数，它可以接受下列值：
+
+    参数	描述
+    c_index	可以跟踪 C 顺序的索引
+    f_index	可以跟踪 Fortran 顺序的索引
+    multi-index	每次迭代可以跟踪一种索引类型
+    external_loop	给出的值是具有多个值的一维数组，而不是零维数组
+    在下面的实例中，迭代器遍历对应于每列，并组合为一维数组。
+
+    实例
+    import numpy as np 
+    a = np.arange(0,60,5) 
+    a = a.reshape(3,4)  
+    print ('原始数组是：')
+    print (a)
+    print ('\n')
+    print ('修改后的数组是：')
+    for x in np.nditer(a, flags =  ['external_loop'], order =  'F'):  
+    print (x, end=", " )
+    输出结果为：
+
+    原始数组是：
+    [[ 0  5 10 15]
+    [20 25 30 35]
+    [40 45 50 55]]
+
+
+    修改后的数组是：
+    [ 0 20 40], [ 5 25 45], [10 30 50], [15 35 55],
+    广播迭代
+    如果两个数组是可广播的，nditer 组合对象能够同时迭代它们。 假设数组 a 的维度为 3X4，数组 b 的维度为 1X4 ，则使用以下迭代器（数组 b 被广播到 a 的大小）。
+
+    实例
+    import numpy as np 
+    
+    a = np.arange(0,60,5) 
+    a = a.reshape(3,4)  
+    print  ('第一个数组为：')
+    print (a)
+    print  ('\n')
+    print ('第二个数组为：')
+    b = np.array([1,  2,  3,  4], dtype =  int)  
+    print (b)
+    print ('\n')
+    print ('修改后的数组为：')
+    for x,y in np.nditer([a,b]):  
+        print ("%d:%d"  %  (x,y), end=", " )
+    输出结果为：
+
+    第一个数组为：
+    [[ 0  5 10 15]
+    [20 25 30 35]
+    [40 45 50 55]]
+
+
+    第二个数组为：
+    [1 2 3 4]
+
+
+    修改后的数组为：
+    0:1, 5:2, 10:3, 15:4, 20:1, 25:2, 30:3, 35:4, 40:1, 45:2, 50:3, 55:4,
+{{%/spoiler%}}
+
+## 序列和数据框
+
+Series是一种类似于一维数组的对象，是由一组数据以及一组与之相关联的标签（即索引）组成的，具体的表现形式就是索引在左边，值在右边。
+
+DataFrame是一个表型的数据结构，它含有一组有序的列，每列间可以是不同的数据类型（数值，字符串，布尔值等）。DataFrame既有行索引又有列索引，其中的数据是以一个或多个二维块存放的，而不是列表，字典或别的一维数据结构。虽然它是个二维的结构，但是DataFrame任然可以表示更高维的数据（利用层次化索引的表结构）
+
+### 创建序列
+
+直接创建，通过列表或元组,索引的值是默认的自动创建一个0到 N-1 的整数索引.
+
+    import pandas as pd
+    pd.Series((1,2,3))
+
+当然也可以为其设置索引：通过index对象，index后面跟数值或列表，长度和序列长度必须保持一致。
+
+    pd.Series((1,2,3),index=['a','b'，'c'])
+
+通过字典创建
+
+* 单个字典：
+
+结果Series中的索引就是原字典的键，而且是按**键值有序排列，键的顺序就是序列的顺序**
+
+    sdata = {'Ohio':35000,'Texas':71000,'Oregon':16000,'Utah':5000}
+    obj3 = pd.Series(sdata)
+    obj3
+
+* 单个字典并且设置index
+
+序列的标签会变化，但是只有在字典中有与index相同的键，该标签才能获得字典中的相应键值，否则为NAN。我们可以用这个改变键的顺序。
+
+* 嵌套的字典
+
+嵌套的字典作为一个字典元素显示
+
+    sdata = {'Ohio':{'a':35000,'Texas':71000},'Oregon':{'b':16000,'Utah':5000}}
+    obj3 = pd.Series(sdata)
+    obj3
+
+    Ohio      {'a': 35000, 'Texas': 71000}
+    Oregon      {'b': 16000, 'Utah': 5000}
+    dtype: object
+
+### 创建数据框
+
+1 通过字典，要求每个键里面的值是等长数组或列表
+
+    data = {'state':['Ohio','Ohio','Ohio','Nevada','Nevada'],
+    'year':[2000,2001,2002,2001,2002],
+    'pop':[1.5,1.7,3.6,2.4,2.9]}
+    frame = pd.DataFrame(data)
+    frame
+
+        state	year	pop
+    0	Ohio	2000	1.5
+    1	Ohio	2001	1.7
+    2	Ohio	2002	3.6
+    3	Nevada	2001	2.4
+    4	Nevada	2002	2.9
+
+数据框有两种索引，名称分别为columns和index。columns是列索引，index是行索引。可以在创建数据框的同时设置index和columns。
+
+对于由字典或其他先给了索引名称的数据来说，原则和序列相同。必须是和原索引相同的新索引才能获得值，其他为NAN。
+
+对于由二维数组等未设置索引名的可以直接设置索引。
+
+2 通过二维数组
+
+* 一般的
+
+    import numpy as np
+    print(pd.DataFrame(np.array([[1,2],[3,4]])))
+
+    0  1
+    0  1  2
+    1  3  4
+
+* 结构体
+
+    print(pd.DataFrame(np.array([(1,2),(3,4)],dtype=[('age','i2'),('sex','i1')]),index=['a','b']))...
+    age  sex
+    a    1    2
+    b    3    4 
+
+
+    np.array([(1,2),(3,4),(5,6)],dtype=[('age','i1'),('sex','i1')])...
+    array([(1, 2), (3, 4), (5, 6)], dtype=[('age', 'i1'), ('sex', 'i1')])
+
+3 通过嵌套字典
+
+所有外层作为列索引，所有内层作为行索引，相互组合，没有的值就补NAN。
+
+        sdata = {'Ohio':{'a':35000,'Texas':71000},'Oregon':{'b':16000,'Utah':5000}}
+        obj3 = pd.DataFrame(sdata)
+        obj3
+
+                Ohio	Oregon
+        a	    35000.0	NaN
+        Texas   71000.0	NaN
+        b	    NaN	    16000.0
+        Utah	NaN	    5000.0
+
+        sdata = {'Ohio':{'a':35000,'Texas':71000},'Oregon':{'a':16000,'Texas':5000}}
+        obj3 = pd.DataFrame(sdata)
+        obj3
+    
+                Ohio	Oregon
+            a	35000	16000
+        Texas	71000	5000
+
+所有可用于创建数据框的数据类型：
+
+{{%figure src=\"graph-python-python基础知识/适用于创建数据框的数据类型.png\"%}}
+
+### 创建层次化索引的数据框或序列
+
+层次化索引(hierarchical indexing)是pandas的一项重要功能，它使你能在一个轴上拥有多个索引级别，抽象点说，它使你以低纬度形式处理高纬度数据。
+
+主要方式就是在设置索引时不在是一个列表，而是多个列表组合而成的列表。
+
+    data = pd.Series(np.random.randn(10),index=[['a','a','a','b','b','b','c','c','d','d'],[1,2,3,1,2,3,1,2,2,3]])
+    data.index
+
+    MultiIndex([('a', 1),
+                ('a', 2),
+                ('a', 3),
+                ('b', 1),
+                ('b', 2),
+                ('b', 3),
+                ('c', 1),
+                ('c', 2),
+                ('d', 2),
+                ('d', 3)],
+            )
+    #这是一个数组的列表形式。
+
+    data.index[1]
+
+    ('a', 2)
+
+    #利用levels属性查看每一个层次有几种索引值。
+    
+    data.index.levels
+
+    FrozenList([['a', 'b', 'c', 'd'], [1, 2, 3]])
+
+    data.index.levels[0]
+
+    Index(['a', 'b', 'c', 'd'], dtype='object')
+
+    data
+
+    a  1    1.344812
+    2    0.724783
+    3    0.944525
+    b  1    1.779043
+    2    0.896989
+    3    1.443788
+    c  1    0.516698
+    2   -0.609928
+    d  2    0.888369
+    3   -0.071537
+    dtype: float64
+
+具有层次化索引的Series能通过unstack()函数转成一个DataFrame:
+
+    data.unstack()
+
+    1	2	3
+    a	1.344812	0.724783	0.944525
+    b	1.779043	0.896989	1.443788
+    c	0.516698	-0.609928	NaN
+    d	NaN	0.888369	-0.071537
+
+数据框的层次化索引有两个，index和columns
+
+
+    frame = pd.DataFrame(np.arange(12).reshape((4,3)),index=[['a','a','b','b'],[1,2,1,2]],columns=[['Ohio','Ohio','Colorado'],['Green','Red','Green']])
+    frame.index.names = ['key1','key2']
+    frame.columns.names = ['state','color']
+    frame
+
+            state	   Ohio	        Colorado
+            color	   Green   Red	Green
+    key1	key2			
+    a	     1	        0	    1	2
+             2	        3	    4	5
+    b	     1	        6	    7	8
+             2	        9	    10	11
+
+swaplevel 调整分级顺序。调换给定name的索引使用name值或者0,1等。没有name的只能用0,1...。返回一个新对象
+
+    frame.swaplevel('key1','key2')
+    frame.swaplevel(0,1)
+
+            state	   Ohio	        Colorado
+            color	   Green   Red	Green
+    key2	key1			
+    1	     a	        0	    1	2
+    2        b	        3	    4	5
+    1	     a	        6	    7	8
+    2        b	        9	    10	11
+
+对于具有层次化索引的DataFrame和Series来说，其描述和汇总统计都有一个level参数，它用于指定在某条轴上进数据操作。他代表了层级。默认指代index的轴，而选择columns的轴，要设置axis=1。
+
+例1：根据索引名为key2进行sum()函数操作，相当于按照key2的值进行分组。
+
+    frame.sum(level='key2')
+
+    state	Ohio	Colorado
+    color	Green	Red	Green
+    key2			
+    1	6	8	10
+    2	12	14	16
+
+例2：根据列名为color进行sum()操作：
+
+    frame.sum(level='color',axis=1)
+
+
+    color	Green	Red
+    key1	key2		
+    a	1	2	1
+    2	8	4
+    b	1	14	7
+    2	20	10
+
+转化行列索引：set_index和reset_index方法
+
+    frame = pd.DataFrame({'a':range(7),'b':range(7,0,-1),'c':['one','one','one','two','two','two','two'],'d':[0,1,2,0,1,2,3]})
+    frame
+
+        a	b	c	d
+    0	0	7	one	0
+    1	1	6	one	1
+    2	2	5	one	2
+    3	3	4	two	0
+    4	4	3	two	1
+    5	5	2	two	2
+    6	6	1	two	3
+
+    frame2 = frame.set_index(['c','d'])
+    frame2
+
+            a	b
+    c	d		
+    one	0	0	7
+        1	1	6
+        2	2	5
+    two	0	3	4
+        1	4	3
+        2	5	2
+        3	6	1
+
+默认被转化的将会从columns中去掉，但是设置drop=false可以保留。
+
+    frame.set_index(['c','d'],drop=False)
+
+            a	b	c	d
+    c	d				
+    one	0	0	7	one	0
+        1	1	6	one	1
+        2	2	5	one	2
+    two	0	3	4	two	0
+        1	4	3	two	1
+        2	5	2	two	2
+        3	6	1	two	3
+
+使用reset_index\()方法可以使index索引转到column列。
+
+    frame2.reset_index()
+
+        c	d	a	b
+    0	one	0	0	7
+    1	one	1	1	6
+    2	one	2	2	5
+    3	two	0	3	4
+    4	two	1	4	3
+    5	two	2	5	2
+    6	two	3	6	1
+
+    frame.reset_index()
+
+        index	a	b	c	d
+    0   	0	0	7	one	0
+    1   	1	1	6	one	1
+    2   	2	2	5	one	2
+    3   	3	3	4	two	0
+    4   	4	4	3	two	1
+    5   	5	5	2	two	2
+    6   	6	6	1	two	3
+
+### index对象
+
+通过对数据框或序列取序列获得index对象
+
+index对象在设置的时候一定是列表形式，即使只有一个值。
+
+pandas的索引对象负责管理轴标签和其他元数据（比如轴名称等）。index对象是不可修改的，所以用户是不能通过赋值的形式对索引名称进行修改。
+
+    obj = pd.Series(range(3),index=['a','b','c'])
+    index = obj.index
+
+index对象的一些方法：
+
+{{%figure src=\"graph-python-python基础知识/index对象.png\"%}}
+
+index对象不可以直接通过赋值更改，但是可以使用values属性，index的value是一个ndarray对象。更改index的value，这样index的标识符就会发生改变。
+
+    a= pd.Series(range(3),index=['a','b','c']);a
+    a    0
+    b    1
+    c    2
+    dtype: int64
+    a.index.values[:]=['e','d','f']
+    a.index.values[-1]='g'#更改单个值得时候不用加列表，否则会变成['g']这种形式
+    a
+    e    0
+    d    1
+    g    2
+    dtype: int64
+
+另一种reindex函数并不是改变index的名称，而是重新赋予一组index，与原index相符的新index名才能有相应的值，否则没有。
+
+对于数据框来说，还可以添加`columns=[]`来更改列标。
+
+reindex函数的参数：
+
+{{%figure src=\"graph-python-python基础知识/reindex参数.png" %}}
+
+* 序列
+
+与一维array基本相似，但是序列还有index可以选择。
+
+比如：
+
+    a=pd.Series([1,2,3],index=list('abc'));a
+    a['a']
+    #1
+
+同时利用标签的切片是包括末端的
+
+* 数据框
+
+数据框如果要直接选取的话只能通过列标(行标不行),或者<b>.</b>号但是如果要通过列表的形式要借助iloc和loc方法。
+
+iloc不能使用标签，而loc使用标签，不使用下标。
+
+    import pandas as pd
+    a=pd.DataFrame([(1,2),(3,4),(5,6),(7,8)],index=list('abcd'),columns=['e','f']);a
+        e	f
+    a	1	2
+    b	3	4
+    c	5	6
+    d	7	8
+
+    a['e']
+
+    a    1
+    b    3
+    c    5
+    d    7
+
+    a[['e','f']]
+
+    e	f
+    a	1	2
+    b	3	4
+    c	5	6
+    d	7	8
+
+    a.e
+
+    a    1
+    b    3
+    c    5
+    d    7
+    Name: e, dtype: int64
+
+    a.iloc[0:2]
+    a.iloc[2,1]
+    a.iloc[[0,2]]
+    a.iloc[[0,2],[1,0]]#这个跟数组是不一样的，不存在单个元素的选取，一定是行的选取。
+    a.iloc[[0,2],0:2]
+    a.iloc[0:2,[0,1]]
+    #a.iloc[0:2,'e'] 不行，不能使用标签
+
+    #a.loc[0:2,'e'] 不行，不能使用下标
+    #对于行标是默认标签的序列，就可以对行这一维整数数组。
+    a.loc[['a','c'],'e']
+
+    a    1
+    c    5
+    Name: e, dtype: int64
+
+    a.loc['a':'c','e']
+
+    a    1
+    b    3
+    c    5
+    Name: e, dtype: int64
+
+### 序列和数据框操作
+
+* values属性
+
+数据框和序列都可以通过values获得其数组表现形式。
+
+    a=pd.Series([1,2,3]);a.values
+
+    array([1, 2, 3], dtype=int64)
+
+    b=pd.DataFrame([a,a]);b.values
+
+    array([[1, 2, 3],
+        [1, 2, 3]], dtype=int64)
+
+    #### name属性
+
+    a
+
+    array([1, 2, 3], dtype=int64)
+
+    a.name='aaa';a
+
+    0    1
+    1    2
+    2    3
+    Name: aaa, dtype: int64
+
+    a.index.name='iii'
+
+    a
+
+    iii
+    0    1
+    1    2
+    2    3
+    Name: aaa, dtype: int64
+
+    b.index.name='bbb'
+    b.columns.name='iii'
+    b
+
+    iii	0	1	2
+    bbb			
+    0	1	2	3
+    1	1	2	3
+
+* isnull,notnull，fillna，dropna
+
+缺失值处理，判断，删除与填补
+
+判断缺失值
+
+    pd.isnull(a)
+    pd.notnull(a)
+    a.isnull()
+    a.notnull()
+    pd.isnull(b)
+    pd.notnull(b)
+    b.isnull()
+    b.notnull()
+
+去掉缺失值：dropna（）
+
+对于序列来说，返回只含非缺失值的序列
+
+对于数据框来说，默认去掉有缺失值的行，而使用axis=1，默认去掉含有缺失值的列；how=all参数可以让那些所有行或列全为nan的去掉，其他非全nan的保留。而通过thresh=？，可以保留行或者列中有不少于？个非缺失值的行或者列。
+
+填充缺失值：fillna()
+
+通过fillna()函数能解决将缺失值替换为常数值的操作，fillna()默认会返回新对象，但是可以通过设置参数inplace=True，可以对现有对象进行修改。
+  
+若是通过一个字典调用fillna()，就可以实现对不同的列用不同值进行填充。但是只会对键名和列名相应的列进行修改.
+
+* 数据框行列操作
+
+增加列：
+
+数据框的一列是一个序列。
+
+可以直接设置列标添加,
+如果是数值：无限重复使用
+如果是列表或数组：长度必须一致
+序列：多取前少补NAN，如果给了index，那就是对应的index给值，无对应的NAN
+
+    b['3']=pd.Series(['a'])
+    b
+
+    iii	0	1	2	3
+    bbb				
+    0	1	2	3	a
+    1	1	2	3	NaN
+
+    b['3']=pd.Series(['a'],index=[1])
+    b
+
+    iii	0	1	2	3
+    bbb				
+    0	1	2	3	NaN
+    1	1	2	3	a
+
+删除列：\del
+
+    del b['3']
+    b
+
+    iii	0	1	2
+    bbb			
+    0	1	2	3
+    1	1	2	3
+
+删除某个轴：
+
+使用drop方法：默认删除行的某些值，利用axis可以设置轴。返回的是新对象，并不会对原对象造成更改。
+
+    import numpy as np
+    data = pd.DataFrame(np.arange(16).reshape((4,4)), index=['Ohio','Colorado','Utah','New York'],columns=['one','two','three','four']);data
+
+        one	two	three	four
+    Ohio	0	1	2	3
+    Colorado	4	5	6	7
+    Utah	8	9	10	11
+    New York	12	13	14	15
+
+    data.drop(['Colorado','Ohio'])
+
+        one	two	three	four
+    Utah	8	9	10	11
+    New York	12	13	14	15
+
+    data.drop('two',axis=1)
+
+                one	three	four
+    Ohio	    0	2	3
+    Colorado	4	6	7
+    Utah	    8	10	11
+    New York	12	14	15
+
+    data.drop(['two','four'],axis=1)
+
+        one	three
+    Ohio	0	2
+    Colorado	4	6
+    Utah	8	10
+    New York	12	14 
+
+* 排序 sort_index，sort-values，order
+
+按照index排序：数据框可以通过设置axis=0|1 来设置是按照行还是列的index来重排。
+
+    obj = pd.Series(range(4), index=['d','a','b','c'])
+    obj.sort_index()
+
+    a    1
+    b    2
+    c    3
+    d    0
+    dtype: int64
+
+    frame = pd.DataFrame(np.arange(8).reshape((2,4)), index=['three','one'],columns=['d','a','b','c'])
+    frame.sort_index()
+
+            d	a	b	c
+    one	    4	5	6	7
+    three	0	1	2	3
+
+    frame.sort_index(axis=1)
+
+            a	b	c	d
+    three	1	2	3	0
+    one	    5	6	7	4
+
+DataFrame上，若想根据一个或多个列中的值进行排序要使用其sort_values\()函数，还需要将那些列名传递给by选项来达到目的。
+
+
+    frame = pd.DataFrame({'b':[4,7,-3,2],'a':[0,1,0,1]})
+    frame.sort_values(by='b')
+
+        b	a
+    2	-3	0
+    3	2	1
+    0	4	0
+    1	7	1
+
+    frame.sort_values(by=['a','b'])
+        b	a
+    2	-3	0
+    0	4	0
+    3	2	1
+    1	7	1

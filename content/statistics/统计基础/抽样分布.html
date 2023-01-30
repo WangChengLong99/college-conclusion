@@ -1,0 +1,513 @@
+---
+# Page title
+title: 抽样分布与参数估计和假设检验
+# summary
+summary: 包括抽样分布，参数估计和假设检验三个部分的内容
+# Date page published
+date: 2022-8-5
+lastmod: '2022-08-09T16:44:38+08:00'
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 6
+
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="抽样分布" class="section level1">
+<h1>抽样分布</h1>
+<div id="常见抽样分布的总结" class="section level2">
+<h2>常见抽样分布的总结</h2>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>分布函数</th>
+<th>数学形式</th>
+<th>均值</th>
+<th>方差</th>
+<th>性质</th>
+<th align="left">图像</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>正态分布</td>
+<td><span class="math display">\[X\backsim N(\mu,\sigma^2)\]</span></td>
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\sigma^2\)</span></td>
+<td></td>
+<td align="left">{{% figure src="data/正态分布.png"%}}</td>
+</tr>
+<tr class="even">
+<td>卡方分布</td>
+<td>设随机变量<span class="math inline">\(X_1,X_2,\dots,X_n\)</span>相互独立，且<span class="math inline">\(X_i(i=1,2,\dots,n)\)</span>服从<strong>标准</strong>正态分布<span class="math inline">\(N(0,1)\)</span>，则他们的平方和<span class="math inline">\(\sum_{i=1}^nX_i^2\)</span>服从<a href="#a4">自由度</a>为n的<span class="math inline">\(\chi^2\)</span>分布,记为<span class="math inline">\(\chi^2(n)\)</span></td>
+<td>n</td>
+<td>2n</td>
+<td>(1)可加性<br/>(2)当<span class="math inline">\(n\to\infty\)</span>时，极限分布为正态分布<br/>(3)当自由度n&gt;45时，<span class="math inline">\(\sqrt{2\chi^2(n)}\)</span>近似服从<span class="math inline">\(N(\sqrt{2n-1},1)\)</span><span class="math display">\[\chi^2_p(n)\approx\frac{1}{2}(\mu_p+\sqrt{2n-1})^2\]</span></td>
+<td align="left">{{% figure src="data/卡方分布.png"%}}</td>
+</tr>
+<tr class="odd">
+<td>t分布</td>
+<td>设随机变量<span class="math display">\[X\backsim N(0,1),Y\backsim\chi^2(n)\]</span>,且X与Y相互独立，则<span class="math display">\[t=\frac{X}{\sqrt{Y/n}}\]</span>,记为<span class="math inline">\(t(n)\)</span></td>
+<td>当<span class="math inline">\(n\geq2\)</span>时，<span class="math inline">\(E(t)=0\)</span></td>
+<td>当<span class="math inline">\(n\geq3\)</span>时,<span class="math inline">\(\frac{n}{n-2}\)</span></td>
+<td>(1)t(n)的方差比N(0,1)要大一些<br/>(2)自由度为1的t分布称为柯西分布，期望不存在<br/>(3)当<span class="math inline">\(n\geq30\)</span>,认为近似<strong>标准</strong>正态分布</td>
+<td align="left">{{% figure src="data/t分布.png"%}}</td>
+</tr>
+<tr class="even">
+<td>F分布</td>
+<td>设随机变量Y与Z相互独立，且Y和Z分别服从自由度为m和n的<span class="math inline">\(\chi^2\)</span>分布，则<span class="math display">\[X=\frac{Y/m}{Z/n}=\frac{nY}{mZ}\]</span>,服从第一自由度为m，第二自由度为n的F分布</td>
+<td><span class="math display">\[\frac{n}{n-2},n&gt;2\]</span></td>
+<td><span class="math display">\[\frac{2n^2(m+n-2)}{m(n-2)(n-4)},n&gt;4\]</span></td>
+<td>(1)<span class="math inline">\(F_p(v_1,v_2)=\frac{1}{F_{1-p}(v_2,v_1)}\)</span><br/>(2)如果随机变量X服从t(n)分布，则<span class="math inline">\(X^2\)</span>服从F(1,n)分布</td>
+<td align="left">{{% figure src="data/F分布.png"%}}</td>
+</tr>
+<tr class="odd">
+<td>中心极限定理</td>
+<td>不管总体的分布是什么，样本均值X的分布总是近似正态分布，只要总体的方差<span class="math inline">\(\sigma^2\)</span>有限，<span class="math display">\[\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)\]</span></td>
+<td>0</td>
+<td>1</td>
+<td>(1)通常认为<span class="math inline">\(n\geq30\)</span>时为大样本(2)大样本，小样本实际并不是以样本量大小来区分的，在样本固定的条件下所进行的推断统计，问题分析不管样本量有多大，都成为小样本问题；在样本量<span class="math inline">\(n\to\infty\)</span>的条件下进行的统计推断，问题分析则成为大样本问题。</td>
+<td align="left">{{% figure src="data/中心极限定理.png"%}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="服从各种分布的统计量的构建" class="section level2">
+<h2>服从各种分布的统计量的构建</h2>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>统计量</th>
+<th>分布</th>
+<th>推导</th>
+<th align="left">条件</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math display">\[\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\]</span></td>
+<td><span class="math display">\[N(0,1)\]</span></td>
+<td><span class="math display">\[E(\bar{x})=E(\frac{1}{n}\sum_{i=1}^nX_i)=\frac{1}{n}\sum_{i=1}^nE(X_i)=\frac{1}{n}\cdot n\mu=\mu\]</span> <span class="math display">\[D(\bar{x})=D(\frac{1}{n}\sum_{i=1}^nX_i)=\frac{1}{n^2}\sum_{i=1}^nD(X_i)=\frac{1}{n^2}\cdot n\sigma^2=\frac{\sigma^2}{n}\]</span> <span class="math display">\[\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)\]</span></td>
+<td align="left">(1)大样本(近似正态分布)<br/>(2)<span class="math inline">\(\mu,\sigma\)</span>已知</td>
+</tr>
+<tr class="even">
+<td><span class="math display">\[\frac{(n-1)s^2}{\sigma^2}\]</span></td>
+<td><span class="math display">\[\chi^2(n-1)\]</span></td>
+<td><span class="math display">\[\because \frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)\]</span> <span class="math display">\[\therefore \frac{(\bar{x}-\mu)^2}{\sigma^2/n}\backsim \chi^2(n-1)\]</span> <span class="math display">\[s^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{x})^2\]</span> <span class="math display">\[\begin{aligned} &amp;D\left(\frac{(n-1)s^2}{\sigma^2}\right) = 2(n - 1) \\ &amp;D(s^2) = \frac{2\sigma^4}{n - 1} \end{aligned}\]</span> <span class="math display">\[(n-1)s^2=\sum_{i=1}^nX_i^2-2\sum_{i=1}^nX_i\bar{x}+\sum_{i=1}^n\bar{x}^2=\sum_{i=1}^nX_i^2-n\bar{x}^2\]</span> <span class="math display">\[\frac{\sum_{i=1}^n(X_i-\bar{x})^2}{\sigma^2}\backsim N(0,1)\]</span> <span class="math display">\[可以认为将\bar{x}视作\mu,则可想明白\]</span>,<a href="#a3"><span class="math display">\[独立性与分布的证明\]</span></a></td>
+<td align="left">(1)正态分布总体或者大样本<br/>(2)<span class="math inline">\(\sigma\)</span>已知</td>
+</tr>
+<tr class="odd">
+<td><span class="math display">\[\frac{\bar{x}-\mu}{s/\sqrt{n}}\]</span></td>
+<td><span class="math display">\[t(n-1)\]</span></td>
+<td><span class="math display">\[\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)\]</span> <span class="math display">\[\frac{(n-1)s^2}{\sigma^2}\backsim\chi^2(n-1)\]</span> <span class="math display">\[\frac{\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}}{\sqrt{\frac{(n-1)s^2}{\sigma^2(n-1)}}}=\frac{\bar{x}-\mu}{s/\sqrt{n}}\backsim t(n-1)\]</span></td>
+<td align="left">(1)正态总体或大样本<br/>(2)<span class="math inline">\(\mu\)</span>已知</td>
+</tr>
+<tr class="even">
+<td><span class="math display">\[\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2}\]</span></td>
+<td><span class="math display">\[F(n_1-1,n_2-1)\]</span></td>
+<td><span class="math display">\[\because \frac{(n-1)s^2}{\sigma^2}\backsim\chi^2(n-1)\]</span> <span class="math display">\[\therefore\frac{(n_1-1)s_1^2}{\sigma_1^2(n_1-1)}/\frac{(n_2-1)s_2^2}{\sigma_2^2(n_2-1)}=\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2}\]</span></td>
+<td align="left">(1)正态总体或大样本<br/>(2)<span class="math inline">\(\sigma_1,\sigma_2\)</span>已知</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="参数估计" class="section level1">
+<h1>参数估计</h1>
+<div id="各种情况下的参数估计总结" class="section level2">
+<h2>各种情况下的参数估计总结</h2>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="10%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">参数</th>
+<th align="center">统计量</th>
+<th align="center">分布</th>
+<th align="center">点估计值</th>
+<th align="center">标准误差</th>
+<th align="left"><span class="math inline">\((1-\alpha)\%\)</span>的置信区间</th>
+<th align="left">假定条件</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu\)</span>总体均值</td>
+<td align="center"><span class="math display">\[\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math inline">\(\bar{x}\)</span></td>
+<td align="center"><span class="math display">\[\frac{\sigma}{\sqrt{n}}\]</span></td>
+<td align="left"><span class="math display">\[\bar{x}\pm z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}\]</span></td>
+<td align="left">(1)<span class="math inline">\(\sigma\)</span>已知<br/>(2)大样本(n&gt;=30)</td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="center"><span class="math display">\[\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math inline">\(\bar{x}\)</span></td>
+<td align="center"><span class="math display">\[\frac{\sigma}{\sqrt{n}}\]</span></td>
+<td align="left"><span class="math display">\[\bar{x}\pm z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}\]</span></td>
+<td align="left">(1)<span class="math inline">\(\sigma\)</span>未知<br/>(2)大样本(n&gt;=30)</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"><span class="math display">\[\frac{\bar{x}-\mu}{s/\sqrt{n}}\]</span></td>
+<td align="center">t(n-1)</td>
+<td align="center"><span class="math inline">\(\bar{x}\)</span></td>
+<td align="center"><span class="math display">\[\frac{\sigma}{\sqrt{n}}\]</span></td>
+<td align="left"><span class="math display">\[\bar{x}\pm t_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}\]</span></td>
+<td align="left">(1)正态总体<br/>(2)<span class="math inline">\(\sigma\)</span>未知<br/>(3)小样本(n&lt;30)</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\pi\)</span>总体比例</td>
+<td align="center"><span class="math display">\[z=\frac{p-\pi}{\sqrt{\pi(1-\pi)/n}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math inline">\(p\)</span></td>
+<td align="center"><span class="math display">\[\sqrt{\frac{\pi(1-\pi)}{n}}\]</span></td>
+<td align="left"><span class="math display">\[p\pm z_{\frac{\alpha}{2}}\sqrt{\frac{p(1-p)}{n}}\]</span></td>
+<td align="left">(1)二项总体<br/>(2)大样本<br/><span class="math inline">\((np\geq5,n(1-p)\geq5)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math display">\[\sigma^2总体方差\]</span></td>
+<td align="center"><span class="math display">\[\frac{(n-1)s^2}{\sigma^2}\]</span></td>
+<td align="center"><span class="math display">\[\chi^2(n-1)\]</span></td>
+<td align="center"><span class="math inline">\(s^2\)</span></td>
+<td align="center">不要求</td>
+<td align="left"><span class="math display">\[\frac{(n-1)s^2}{\chi^2_{\alpha/2}}\leq\sigma^2\leq\frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}\]</span></td>
+<td align="left">正态总体</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math display">\[\mu_1-\mu_2\]</span>两个总体均值之差</td>
+<td align="center"><span class="math display">\[z=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math inline">\(\bar{x}_1-\bar{x}_2\)</span></td>
+<td align="center"><span class="math display">\[\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}\]</span></td>
+<td align="left"><span class="math display">\[(\bar{x}_1-\bar{x}_2)\pm z_{\alpha/2}\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}\]</span></td>
+<td align="left">(1)独立大样本<br/><span class="math inline">\((n_1\geq30,n_2\geq30)\)</span><br/>(2)<span class="math inline">\(\sigma_1,\sigma_2\)</span>已知</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"><span class="math display">\[z=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math inline">\(\bar{x}_1-\bar{x}_2\)</span></td>
+<td align="center"><span class="math display">\[\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}\]</span></td>
+<td align="left"><span class="math display">\[(\bar{x}_1-\bar{x}_2)\pm z_{\alpha/2}\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}\]</span></td>
+<td align="left">(1)独立大样本<br/><span class="math inline">\((n_1\geq30,n_2\geq30)\)</span><br/>(2)<span class="math inline">\(\sigma_1,\sigma_2\)</span>已知</td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="center"><a href="#a1"><span class="math display">\[t=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}}\]</span></a></td>
+<td align="center"><span class="math inline">\(t(n_1+n_2-2)\)</span></td>
+<td align="center"><span class="math inline">\(\bar{x}_1-\bar{x}_2\)</span></td>
+<td align="center"><span class="math display">\[\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}\]</span></td>
+<td align="left"><span class="math display">\[(\bar{x}_1-\bar{x}_2)\pm t_{\alpha/2}(n_1+n_2-2)\sqrt{s_p^2(\frac{1}{n_1}+\frac{1}{n_2})}\]</span></td>
+<td align="left">(1)两个正态总体<br/>(2)独立小样本<br/><span class="math inline">\((n_1\leq30,n_2\leq30)\)</span><br/>(3)<span class="math inline">\(\sigma_1,\sigma_2\)</span>未知但相等</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"><span class="math display">\[t=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}}\]</span></td>
+<td align="center"><a href="#a2"><span class="math inline">\(t(v)\)</span></a></td>
+<td align="center"><span class="math inline">\(\bar{x}_1-\bar{x}_2\)</span></td>
+<td align="center"><span class="math display">\[\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}\]</span></td>
+<td align="left"><span class="math display">\[(\bar{x}_1-\bar{x}_2)\pm t_{\alpha/2}(v)\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}\]</span></td>
+<td align="left">(1)两个正态总体<br/>(2)独立小样本<br/><span class="math inline">\((n_1\leq30,n_2\leq30)\)</span><br/>(3)<span class="math inline">\(\sigma_1,\sigma_2\)</span>未知且不相等</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math display">\[\mu_d=\mu_1-\mu_2\]</span>两个总体均值之差</td>
+<td align="center"><span class="math display">\[z=\frac{\bar{d}-\mu_d}{\sigma_d/\sqrt{n}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math inline">\(\bar{d}\)</span></td>
+<td align="center"><span class="math display">\[\frac{\sigma_d}{\sqrt{n}}\]</span></td>
+<td align="left"><span class="math display">\[\bar{d}\pm z_{\alpha/2}\frac{\sigma_d}{\sqrt{n}}\]</span></td>
+<td align="left">(1)匹配大样本<br/><span class="math inline">\((n_1\geq30,n_2\geq30)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"><span class="math display">\[z=\frac{\bar{d}-\mu_d}{s_d/\sqrt{n}}\]</span></td>
+<td align="center">t(n-1)</td>
+<td align="center"><span class="math inline">\(\bar{d}\)</span></td>
+<td align="center"><span class="math display">\[\frac{\sigma_d}{\sqrt{n}}\]</span></td>
+<td align="left"><span class="math display">\[\bar{d}\pm t_{\alpha/2}(n-1)\frac{s_d}{\sqrt{n}}\]</span></td>
+<td align="left">(1)两个正态总体<br/>(2)匹配小样本<br/><span class="math inline">\((n_1\leq30,n_2\leq30)\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math display">\[\pi_1-\pi_2\]</span>两个总体比例之差</td>
+<td align="center"><span class="math display">\[Z=\frac{(p_1-p_2)-(\pi_1-\pi_2)}{\sqrt{\frac{\pi_1(1-\pi_1)}{n_1}+\frac{\pi_2(1-\pi_2)}{n_2}}}\]</span></td>
+<td align="center">N(0,1)</td>
+<td align="center"><span class="math display">\[p_1-p_2\]</span></td>
+<td align="center"><span class="math display">\[\sqrt{\frac{\pi_1(1-\pi_1)}{n_1}+\frac{\pi_2(1-\pi_2)}{n_2}}\]</span></td>
+<td align="left"><span class="math display">\[(p_1-p_2)\pm z_{\alpha/2}\sqrt{\frac{p_1(1-p_1)}{n_1}+\frac{p_2(1-p_2)}{n_2}}\]</span></td>
+<td align="left">(1)两个二项总体<br/>(2)大样本<br/><span class="math inline">\((n_1p_1\geq5,n_1(1-p_1)\geq5\)</span><br/><span class="math inline">\(n_2p_2\geq5,n_2(1-p_2)\geq5)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math display">\[\frac{\sigma_1^2}{\sigma_2^2}\]</span>两个总体方差之比</td>
+<td align="center"><span class="math display">\[F=\frac{s_1^2}{s_2^2}\cdot\frac{\sigma_2^2}{\sigma_1^2}\]</span></td>
+<td align="center"><span class="math display">\[F(n_1-1,n_2-1)\]</span></td>
+<td align="center"><span class="math inline">\(\frac{s_1^2}{s_2^2}\)</span></td>
+<td align="center">不要求</td>
+<td align="left"><span class="math display">\[\frac{s_1^2/s_2^2}{F_{\alpha/2}}\leq\frac{\sigma_1^2}{\sigma_2^2}\leq\frac{s_1^2/s_2^2}{F_{1-\alpha/2}}\]</span></td>
+<td align="left">两个正态总体</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="参数估计的基本原理" class="section level2">
+<h2>参数估计的基本原理</h2>
+<p>参数估计是为了估计一个总体的参数</p>
+<p>通过构造统计量（估计量），从而利用样本来预测总体的参数，利用具体的样本算出来的统计量称为估计值。</p>
+<p>点估计就是用估计值来估计总体参数</p>
+<p>区间估计是构造服从一定分布的含未知参数的（<strong>但是注意这个参数被视作一个常数</strong>）统计量来估计总体参数的范围，当我们得知一个统计量的分布时，我们就可以得到它任一分位点的值，就可以得到该统计量一定范围区间的值（被称作置信水平），从而反推出此时参数的取值范围（被称作置信区间，最小值被称为置信下限，最大值被称为置信上限）。</p>
+<ul>
+<li><p>置信水平<span class="math inline">\(\alpha\)</span>（置信度，置信系数）：</p>
+<p>主观设定的值，取决于我们希望这个置信区间应该多宽，<strong>当样本量给定时，置信区间的宽度随着置信系数的增大而增大</strong>，置信区间越大，肯定越可靠。但是太宽的置信区间没有意义</p>
+<p><strong>这个水平是针对某个随机区间而言</strong>，我们永远不能说参数在某个具体区间内的概率为<span class="math inline">\(\alpha\)</span></p></li>
+<li><p>置信区间</p>
+<p>置信区间的解释是<strong>在n次抽样中，包含参数的区间的概率为<span class="math inline">\(\alpha\)</span>,包含参数的区间个数为<span class="math inline">\(n\alpha\)</span></strong></p>
+<p>参数在一个区间的概率非1即0，在或者不在。<span class="math inline">\(\alpha\)</span>是统计量的分布概率，参数本身不存在概率分布，也就无法说参数在该置信区间的概率是<span class="math inline">\(\alpha\)</span></p></li>
+</ul>
+</div>
+<div id="估计量的评价标准" class="section level2">
+<h2>估计量的评价标准</h2>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>指标</th>
+<th>解释</th>
+<th>图像</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>无偏性</td>
+<td>估计量的期望等于参数</td>
+<td>{{% figure src="data/无偏性.jpg"%}}</td>
+</tr>
+<tr class="even">
+<td>有效性</td>
+<td>估计量的方差大小，越小越有效</td>
+<td>{{% figure src="data/有效性.jpg"%}}</td>
+</tr>
+<tr class="odd">
+<td>一致性</td>
+<td>随着样本量的增大，估计量的值越来越接近被估计总体的参数。比如样本均值抽样分布的标准差为<span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>,当<span class="math inline">\(n\to\infty\)</span>时，方差为0，无限接近均值</td>
+<td>{{% figure src="data/一致性.jpg"%}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="样本量的确定" class="section level2">
+<h2>样本量的确定</h2>
+<p>在样本量确定的情况下，我们不可能同时提高预测精度和可靠度，但是样本量也不可能无限增大，我们要找到最优的样本量。</p>
+<p>思路是参数估计的估计误差的表达式已经知道，则确定某个误差，我们可以反推样本量，样本量取较大的整数（样本量的元整法则）</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>样本量表达式</th>
+<th>关系</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>总体均值</td>
+<td><span class="math display">\[n=\frac{(z_{\alpha/2})^2\sigma^2}{E^2}\]</span></td>
+<td>(1)与置信水平成正比，置信水平越大，所需样本量越大<br/>(2)与总体方差成正比<br/>(3)与估计误差的<strong>平方</strong>成反比，可接受的估计误差的平方越大，所需样本量越小。(4)方差未知可以用样本方差代替</td>
+</tr>
+<tr class="even">
+<td>总体比例</td>
+<td><span class="math display">\[E=z_{\alpha/2}\sqrt{\frac{\pi(1-\pi)}{n}}\]</span> <span class="math display">\[n=\frac{(z_{\alpha/2})^2\pi(1-\pi)}{E^2}\]</span></td>
+<td>可以用样本比例代替，<br/>当<span class="math inline">\(\pi\)</span>无法知道时，取使<span class="math inline">\(\pi(1-\pi)\)</span>最大的0.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="假设检验" class="section level1">
+<h1>假设检验</h1>
+<div id="假设检验分情况讨论" class="section level2">
+<h2>假设检验分情况讨论</h2>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">原假设<span class="math inline">\(H_0\)</span></th>
+<th align="center">检验统计量</th>
+<th align="center">拒绝域</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu\leq\mu\)</span><br/><span class="math inline">\(\mu\geq\mu\)</span><br/><span class="math inline">\(\mu=\mu\)</span><br/><span class="math inline">\((\sigma^2已知)\)</span></td>
+<td align="center"><span class="math inline">\(Z=\frac{\overline{X}-\mu_0}{\sigma/\sqrt{n}}\)</span></td>
+<td align="center"><span class="math inline">\(z\geq z_\alpha\)</span><br/><span class="math inline">\(z\leq-z_\alpha\)</span><br/><span class="math inline">\(\mid z\mid\geq z_{\alpha/2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\mu\leq\mu\)</span><br/><span class="math inline">\(\mu\geq\mu\)</span><br/><span class="math inline">\(\mu=\mu\)</span><br/><span class="math inline">\((\sigma^2未知)\)</span></td>
+<td align="center"><span class="math inline">\(t=\frac{\overline{X}-\mu_0}{S/\sqrt{n}}\)</span></td>
+<td align="center"><span class="math inline">\(t\geq t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(t\leq -t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(\mid t\mid\leq t_{\alpha/2}(n-1)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_1-\mu_2\leq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2\geq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2=\delta\)</span><br/>(<span class="math inline">\(\sigma_1^2,\sigma_2^2已知\)</span>)</td>
+<td align="center"><span class="math inline">\(Z=\frac{\overline{X}-\overline{Y}-\delta}{\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}}\)</span></td>
+<td align="center"><span class="math inline">\(z\geq z_\alpha\)</span><br/><span class="math inline">\(z\leq-z_\alpha\)</span><br/><span class="math inline">\(\mid z\mid\geq z_{\alpha/2}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\mu_1-\mu_2\leq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2\geq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2=\delta\)</span><br/>(<span class="math inline">\(\sigma_1^2=\sigma_2^2=\sigma^2未知\)</span>)</td>
+<td align="center"><span class="math inline">\(t=\frac{\overline{X}-\overline{Y}-\delta}{S_\omega\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}}\)</span><br/><span class="math inline">\(S_\omega^2=\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}\)</span></td>
+<td align="center"><span class="math inline">\(t\geq t_\alpha(n_1+n_2-2)\)</span><br/><span class="math inline">\(t\leq -t_\alpha(n_1+n_2-2)\)</span><br/><span class="math inline">\(\mid t \mid\geq t_{\alpha/2}(n_1+n_2-2)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\sigma^2\leq \sigma_0^2\)</span><br/><span class="math inline">\(\sigma^2\geq \sigma_0^2\)</span><br/><span class="math inline">\(\sigma^2=\sigma_0^2\)</span><br/><span class="math inline">\((\mu 未知)\)</span></td>
+<td align="center"><span class="math inline">\(\chi^2=\frac{(n-1)S^2}{\sigma_0^2}\)</span></td>
+<td align="center"><span class="math inline">\(\chi^2\geq \chi^2_\alpha(n-1)\)</span><br/><span class="math inline">\(\chi^2\leq \chi^2_{1-\alpha}(n-1)\)</span><br/><span class="math inline">\(\chi^2\geq \chi^2_{\alpha/2}(n-1)\)</span>或<span class="math inline">\(\chi^2\leq \chi^2_{1-\alpha/2}(n-1)\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\sigma_1^2\leq\sigma_2^2\)</span><br/><span class="math inline">\(\sigma_1^2\geq\sigma_2^2\)</span><br/><span class="math inline">\(\sigma_1^2=\sigma_2^2\)</span><br/><span class="math inline">\((\mu_1,\mu_2未知)\)</span></td>
+<td align="center"><span class="math inline">\(F=\frac{S_1^2}{S_2^2}\)</span></td>
+<td align="center"><span class="math inline">\(F\geq F_\alpha(n_1-1,n_2-1)\)</span><br/><span class="math inline">\(F\leq F_{1-\alpha}(n_1-1,n_2-1)\)</span><br/><span class="math display">\[F\geq F_{\alpha/2}(n_1-1,n_2-1)或F\leq F_{1-\alpha/2}(n_1-1,n_2-1)\]</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_D\leq0\)</span><br/><span class="math inline">\(\mu_D\geq0\)</span><br/><span class="math inline">\(\mu_D=0\)</span><br/>(成对数据)</td>
+<td align="center"><span class="math inline">\(t=\frac{\overline{D}-0}{S_D/\sqrt{n}}\)</span></td>
+<td align="center"><span class="math inline">\(t\geq t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(t\leq -t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(\mid t\mid\leq t_{\alpha/2}(n-1)\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="假设检验的理解" class="section level2">
+<h2>假设检验的理解</h2>
+<p>参数估计是为了估计参数的范围，而假设检验是为了检验我们关于参数的假设值或者范围是否正确。这在实际生活中有很大的意义，我们希望来检测总体的参数有没有发生某些变化，假设检验给了我们科学的指导。</p>
+<p>假设分为原假设，和备则假设。假设的检验有可能犯两类错误，一类是弃真(<span class="math inline">\(\alpha\)</span>错误),一类是取伪错误(<span class="math inline">\(\beta\)</span>错误)，而在实际应用中我们大多数选择让检验的弃真错误概率不超过<span class="math inline">\(\alpha\)</span>，所以实际上的犯错概率是要大于<span class="math inline">\(\alpha\)</span>的</p>
+<p>弃真错误和取伪错误此消彼长，</p>
+<div id="为什么选择弃真错误" class="section level3">
+<h3>为什么选择弃真错误</h3>
+<ul>
+<li>人为规定的统一标准</li>
+<li>原假设常常是明确的。我们更关心原假设为真，但是被我们拒绝了的可能性有多大</li>
+</ul>
+</div>
+<div id="假设检验的根本原则" class="section level3">
+<h3>假设检验的根本原则</h3>
+<p>假设检验依据的是小概率原则，也就是我们认为小概率的事件在一次试验中是几乎不可能发生的。如果发生了，就认为原假设有问题，我们就可以拒绝原假设。</p>
+<p>假设检验也是通过构造服从一定分布含假设参数的统计量，通过分布我们可以选定小概率区间，如果估计值落在了小概率区间内，则拒绝原假设。</p>
+</div>
+<div id="单边检验和双边检验中拒绝域的选择" class="section level3">
+<h3>单边检验和双边检验中拒绝域的选择</h3>
+<pre><code>**其实就是找确定为小概率区间的值**，对于双边检验来说，要检验的参数值确定，不需要考虑小概率区间的变化，而对于单边检验来说，我们要找确定为小概率区间的区间。我们先假定
+
+以上看法不对</code></pre>
+<p>单边检验就是找小概率区间来拒绝，但是双边检验是对问题的理解，比如关于<span class="math inline">\(\mu\)</span>,当原假设是大于问题时，此时我们将更关心下限问题，即当产品低于什么水平时拒绝，即<span class="math inline">\(\bar{x}\)</span>,{x}越低，统计量越小，所以选择下限检验。当原假设是小于问题时，此时我们更关心上限问题，即<span class="math inline">\(\bar{x}\)</span>越大，此时统计量越大。我们要选择上限检验</p>
+<p>要理解，参数永远改变不了统计量的分布，统计量的分布是固定的，参数只是个常数，真正决定统计量分布的是样本。所以我们不管怎么假设参数实际上影响的使我们对于小概率区间的选择，而不是统计量的分布。统计量的小概率区间可以从两边或单边去选择。我们用样本去衡量<span class="math inline">\({\bar{x}}\)</span>以及<span class="math inline">\(s^2\)</span>去衡量<span class="math inline">\(\mu,\sigma^2\)</span>时，我们希望推翻原假设时，总体参数怎么变，然后就是样本的估计量应该相同趋势变化，然后作用到统计量上会怎么变化，此时我们就可以确定去上限还是上限了。统计量变大取上限，统计量变小取下限。</p>
+</div>
+<div id="原假设和备则假设的关系" class="section level3">
+<h3>原假设和备则假设的关系</h3>
+<p>对于显著性水平为<span class="math inline">\(\alpha\)</span>的检验准则来说，保证了错误的拒绝原假设的概率不超过<span class="math inline">\(alpha\)</span>，但是不知道错误的接受原假设的概率。原假设被拒绝代表“结论H1为真出错的概率不超过<span class="math inline">\(alpha\)</span>”,实际可能更低及更有可能结论H1为真，因为H1可能被错误的当真。</p>
+<p>在一次实验中，原假设是有优势的。所以有可能备则假设和原假设互换位置后，新的原假设同样被接受。</p>
+<p>原假设和备则假设并不是非此即彼的关系，拒绝原假设可以认为原假设就是错误的，但是接受原假设不代表备则假设是错误的。只能说还没有充分的证据证明原假设是错误的。</p>
+</div>
+<div id="原假设和备则假设的选择" class="section level3">
+<h3>原假设和备则假设的选择</h3>
+<p>双边检验一般选择清晰的假设作为原假设</p>
+<p>单边检验中：我们往往把原有的、传统的观点或结论放在原假设，而把希望验证的，希望证明的去放在备则假设，这样就可以通过推翻原有的假设，而得出结论。</p>
+<p>同时单边检验也受到背景的影响，我们可能根据过往的经验来判断原假设。</p>
+</div>
+</div>
+</div>
+<div id="附录" class="section level1">
+<h1>附录</h1>
+<div id="a1" class="section level2">
+<h2><span class="math inline">\(s_p\)</span>的公式</h2>
+<p>当两个总体的方差<span class="math inline">\(\sigma_1^2\)</span>和<span class="math inline">\(\sigma_2^2\)</span>未知但相等时，需要用两个样本的方差<span class="math inline">\(s_1^2\)</span>,<span class="math inline">\(s_2^2\)</span>来估计，这时，需要将两个样本的数据组合在一起，以给出总体方差的合并估计量<span class="math inline">\(s_p^2\)</span>.</p>
+<p><span class="math display">\[s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}\]</span></p>
+</div>
+<div id="a2" class="section level2">
+<h2><span class="math inline">\(v\)</span>的公式</h2>
+<p>当两个总体的方差<span class="math inline">\(\sigma_1^2\)</span>和<span class="math inline">\(\sigma_2^2\)</span>未知但不相等时，两个样本均值只差经标准化后近似服从自由度为v的t分布，自由度v的计算公式如下：
+<span class="math display">\[v=\frac{(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2})^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}}\]</span></p>
+</div>
+<div id="a3" class="section level2">
+<h2>样本均值和样本方差分布以及独立性的证明</h2>
+<p>定理：设随机样本<span class="math inline">\(X_1,\cdots,X_n\)</span>服从正态分布<span class="math inline">\(N(\mu,\sigma^2)\)</span>,样本均值<span class="math inline">\(\overline{X}=\sum_{i=1}^nX_i/n\)</span>,且样本方差<span class="math inline">\(S^2=\sum_{i=1}^n(X_i-\overline{X})^2/(n-1)\)</span>,则:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\overline{X}\)</span>和<span class="math inline">\(S^2\)</span>相互独立；</li>
+<li><span class="math inline">\(\overline{x}\)</span>服从<span class="math inline">\(N(\mu,\sigma^2/2)\)</span></li>
+<li><span class="math inline">\((n-1)S^2/\sigma^2\)</span>服从卡方分布<span class="math inline">\(\chi^2_{n-1}\)</span></li>
+</ol>
+<p>结论2易得，以下仅证明结论1和3。</p>
+<p>证明：为证明结论1，首先给出三个引理如下：</p>
+<p><strong>引理1:</strong> 对任一<span class="math inline">\(Cov(X_i-\overline{X},\overline{X})=0\)</span></p>
+<p>证明：注意到:</p>
+<p><span class="math display">\[\overline{X}=\sum_{l=1}^n\frac{1}{n}X_l;X_i-\overline{X}=\sum_{l=1}^n(\delta_{il}-\frac{1}{n})X_l\]</span></p>
+<p>这里<span class="math inline">\(\delta_{il}=1,i=l;\delta_{il}=0,i\neq l\)</span>,从而</p>
+<p><span class="math display">\[Cov(X_i-\overline{X},\overline{X})=\sigma^2\sum_{i=1}^n(\delta_{il}-\frac{1}{n})\frac{1}{n}=\sigma^2(\frac{1}{n}-n\frac{1}{n^2})=0\]</span></p>
+<p><strong>引理2：</strong> 对任一$(X_i-,)服从二元正态分布.</p>
+<p>证明：由引理1的证明可知：</p>
+<p><span class="math display">\[\overline{X}=(1/n,\cdots,1/n)^T(X_1,\cdots,X_n);X_i-\overline{X}=(\delta_{il}-1/n,\cdots,\delta_{in}-1)\]</span>
+又<span class="math inline">\((X_1,\cdots,X_n)\)</span>服从多元正态分布，而多元正态分布的线性变换仍然是正态分布，故此引理得证。</p>
+<p><strong>引理3：</strong> 对于二元正态分布，协方差为0等价于独立。</p>
+<p>证明：协方差为0等价于联合密度等于边际密度乘积等价于独立，得证。</p>
+<p>由上述引理1—3，易知对任一<span class="math inline">\(i,X_i-\overline{X}\)</span>与<span class="math inline">\(\overline{X}\)</span>是相互独立的。而<span class="math inline">\(S^2=\sum_{i=1}^n(X_i-\overline{X})^2/(n-1)\)</span>是<span class="math inline">\(X_i-\overline{X},i=1,\cdots,n\)</span>的函数，故仍与<span class="math inline">\(\overline{X}\)</span>独立。结论1得证。</p>
+<p>接下来考虑结论3。注意到</p>
+<p><span class="math display">\[\sum_{i=1}^n\frac{(X_i-\mu)^2}{\sigma^2}=\sum_{i=1}^n\frac{[(X_i-\overline{X})+(\overline{X}-\mu)]^2}{\sigma^2}=\frac{\sum_{i=1}{n}(X_i-\overline{X})^2}{\sigma^2}+\frac{n(\overline{X}-\mu)^2}{\sigma^2}\]</span></p>
+<p>也就是</p>
+<p><span class="math display">\[\sum_{i=1}^n\frac{(X_i-\mu)^2}{\sigma^2}=\frac{(n-1)S^2}{\sigma^2}+\frac{n(\overline{X}-\mu)^2}{\sigma^2}\]</span></p>
+<p>等式左边是n项独立标准正态分布的平方和，故服从<span class="math inline">\(\chi^2_n\)</span>，而等式右边第二项是1项标准正态分布的平方和，故服从<span class="math inline">\(\chi^2_1\)</span>。又由于等式右边的两项是相互独立的，故结论3得证。</p>
+<p>上述证明的核心是基于多元正态分布的典型性质，即不相关和独立等价，从而我们仅需证明变量不相关即可，使得独立性的证明变得简单易懂。</p>
+</div>
+<div id="样本方差与总体方差无偏性的证明" class="section level2">
+<h2>样本方差与总体方差无偏性的证明</h2>
+<p><span class="math display">\[\begin{array}{lcl} \displaystyle E(\bar{x}) = E\left(\frac{1}{n}\sum\limits_{i=1}^{n}x_i\right) = \frac{1}{n}\sum\limits_{i=1}^{n}E(x_i) = \frac{1}{n}\sum\limits_{i=1}^{n}\mu = \mu \\\\ \begin{aligned} E(s^2) &amp;= E\left(\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}\right) \\ &amp;= \frac{1}{n-1}\sum\limits_{i=1}^{n}E(x_i^2 + \bar{x}^2 - 2x_i\bar{x}) \\ &amp;= \frac{1}{n-1}\sum\limits_{i=1}^{n}\left[D(x) + E(x)^2 + D(\bar{x}) + E(\bar{x})^2 - 2E\left(\frac{x_i^2+x_i\sum_{j=1,j\ne i}^n x_j}{n} \right)\right]\\ &amp;= \frac{1}{n-1}\sum\limits_{i=1}^{n}\left[\sigma^2 + \mu^2 + \frac{\sigma^2}{n} + \mu^2 - 2\frac{\sigma^2 + \mu^2 + (n-1)\mu^2}{n}\right]\\ &amp;=  \frac{1}{n-1}\sum\limits_{i=1}^{n}\left(\frac{n - 1}{n}\sigma^2\right)\\ &amp;= \sigma^2 \end{aligned} \end{array}\]</span></p>
+</div>
+<div id="a4" class="section level2">
+<h2>自由度的介绍</h2>
+<p>自由度是指附加给独立的观测值的约束或限制的个数。从字面含义来看，自由度是指一组数据中可以自由取值的个数。当样本数据的个数是n时，若样本平均数<span class="math inline">\(\bar{x}\)</span>确定下来，则附加给n个观测值的限制个数是一个，因此只有n-1个数据可以自由取值，n-1就是他的自由度。</p>
+</div>
+<div id="参考资料" class="section level2">
+<h2>参考资料</h2>
+<p><a href="https://blog.csdn.net/TSzero/article/details/112073454?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4.no_search_link" target=_blank>统计中常用的抽样分布</a></p>
+<p><a href="https://blog.csdn.net/weixin_41503009/article/details/105012965?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2.no_search_link" target=_blank>常见统计分布的概率分布图</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/166463011" target=_blank>独立性的证明</a></p>
+</div>
+</div>

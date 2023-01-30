@@ -3,9 +3,9 @@
  **************************************************/
 
 .article-container {
-  max-width: 760px;
-  padding: 0 20px 0 20px;
-  margin: 0 auto 0 auto;
+  width: 1000px;
+  padding: auto auto auto auto;
+  margin: auto auto auto 200px;
 }
 
 .page-subtitle {
@@ -84,7 +84,6 @@
   // If any unresponsive embeds still remain in the article, prevent article overflow and DIV scrolling.
   // Note that lazy-loaded images, e.g. Gallery, may cause scrollable Y-overflow if only X-overflow is hidden pre-load.
   overflow: hidden;
-
   // Word wrap text content.
   @include word-wrap();
 

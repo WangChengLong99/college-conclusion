@@ -8,6 +8,8 @@
   translation: 回到顶部
 - id: home
   translation: Home
+- id: content
+  translation: 目录
 - id: close
   translation: Close
 - id: languages

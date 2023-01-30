@@ -1,41 +1,66 @@
 ---
-abstract: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellusac
-  convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac
-  faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien
-  eu, pulvinar tempor diam.
-address:
-  city: Stanford
-  country: United States
-  postcode: "94305"
-  region: CA
-  street: 450 Serra Mall
-all_day: false
-authors: []
-date: "2030-06-01T13:00:00Z"
-date_end: "2030-06-01T15:00:00Z"
+# 文章的题目
+title: Example Talk
+# 作者
+authors: [admin]
+# 地址
+location: 安徽省
+# 所属tag
+tags: []
+# 文章的预览显示
+summary: An example talk using Wowchemy's Markdown slides feature.
+# event可以用来记录自己参加的会议，等。
+abstract: 这是一个event的示例，会在/talk/下来访问，文章的内容显示
+# 事件的名称和链接
 event: Wowchemy Conference
 event_url: https://example.org
-featured: false
+# 事件发生的地址
+address:
+  city: 合肥
+  country: 中国
+  # postcode: "94305"
+  # region: CA
+  street: 肥东县陶冲湖
+# 开始日期和结束日期
+date: "2030-06-01T13:00:00Z"
+date_end: "2030-06-01T15:00:00Z"
+
+# 将会显示在image上的内容
 image:
-  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'
-  focal_point: Right
+# Featured image
+# To use, place an image named `featured.jpg/png` in your page's folder.
+# Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
+# Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+# Set `preview_only` to `true` to just use the image for thumbnails.（缩略图，仅在预览界面可以看到，文章中看不到
+  placement: 1
+  #关于photo的介绍
+  caption: "Photo by [Geo](https://github.com/gcushen/)"
+  focal_point: "Center"
+  preview_only: false
+  alt_text: An optional description of the image for screen readers.
+
+# 并没有显示
+publishDate: "2017-01-01T00:00:00Z"
+all_day: false
+featured: false
+
+# button
+# 用于显示在顶端的page-resources,会创建button
 links:
 - icon: twitter
   icon_pack: fab
   name: Follow
   url: https://twitter.com/georgecushen
-location: Wowchemy HQ
-projects:
-- example
-publishDate: "2017-01-01T00:00:00Z"
-slides: example
-summary: An example talk using Wowchemy's Markdown slides feature.
-tags: []
-title: Example Talk
+# url链接,可以以button形式显示网上相关的code，pdf，slides，和video
 url_code: ""
 url_pdf: ""
 url_slides: ""
 url_video: ""
+# 相关的slides下的文件夹
+slides: example
+# 跟event相关的project，即设置project下的相关文件夹
+projects:
+- example
 ---
 
 {{% callout note %}}

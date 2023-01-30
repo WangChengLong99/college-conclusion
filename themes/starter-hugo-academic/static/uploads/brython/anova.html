@@ -1,0 +1,284 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.10.0/brython.min.js"></script>
+    <style type="text/css">
+    .mytable{
+    
+    border:1px solid #A6C1E4;
+
+    font-family:Arial;
+
+    border-collapse: collapse;
+
+}
+
+table th{
+
+    border:1px solid black;
+
+    background-color:#71c1fb;
+
+    width:100px;
+
+    height:20px;
+
+    font-size:15px;
+
+}
+
+table td{
+
+    border:1px solid #A6C1E4;
+
+    text-align:center;
+
+    height:15px;
+
+    padding-top:5px;
+
+    font-size:12px;
+
+}
+        td input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 5em;
+         text-align: center;
+      } 
+
+      th input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 100%;
+         background-color:#71c1fb;
+         text-align: center;
+         font-size:15px;
+         margin-left: 0%;
+         margin-right: 0%;
+         margin-top: 0%;
+         margin-bottom: 0%;
+      } 
+    </style>
+</head>
+
+<!-- <body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+col=2
+row=5
+def add_col(ev):
+    global col
+    global row
+    col+=1
+    b=row
+    document["th-factor"].clear()
+    document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col)
+    document["th"] <= TH(INPUT(value="水平"+str(col),id="th"+str(col)))
+    for i in range(1,b+1):
+        document["td"+str(i)] <= TD(INPUT(value="",id="td"+str(i)+str(col)))
+
+def del_col(ev):
+    global col
+    global row
+    b=row
+    document["th-factor"].clear()
+    document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col-1)
+    document["th"].clear()
+    for i in range(1,col):
+        document["th"] <= TH(INPUT(id="th"+str(i),value="水平"+str(i)))
+    for i in range(1,b+1):
+        document["td"+str(i)].clear()
+        for j in range(1,col):
+            document["td"+str(i)] <= TD(INPUT(id="td"+str(i)+str(j),value=""))
+    col-=1
+
+def add_row(ev):
+    global col
+    global row
+    row+=1
+    a=col
+    document["data"] <= TR([TD(INPUT(value="",id="td"+str(row)+str(j))) for j in range(1,a+1)],id="td"+str(row))
+
+def del_row(ev):
+    global col
+    global row
+    document["td"+str(row)].style.display="none"
+    row-=1
+
+document["add-col"].bind("click",add_col)
+document["del-col"].bind("click",del_col)
+document["add-row"].bind("click",add_row)
+document["del-row"].bind("click",del_row)
+
+</script>
+</body> -->
+
+<body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+col=2
+row=5
+def add_col(ev):
+    global col
+    global row
+    col+=1
+    b=row
+    document["th-factor"].clear()
+    document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col)
+    document["th"] <= TH(INPUT(value="水平"+str(col),id="th"+str(col)))
+    for i in range(1,b+1):
+        document["td"+str(i)] <= TD(INPUT(value="",id="td"+str(i)+str(col)))
+
+def del_col(ev):
+    global col
+    global row
+    b=row
+    col-=1
+    document["th-factor"].clear()
+    document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col)
+    document["th"].clear()
+    for i in range(1,col+1):
+        document["th"] <= TH(INPUT(id="th"+str(i),value="水平"+str(i)))
+    for i in range(1,b+1):
+        document["td"+str(i)].clear()
+        for j in range(1,col+1):
+            document["td"+str(i)] <= TD(INPUT(id="td"+str(i)+str(j),value=""))
+
+def add_row(ev):
+    global col
+    global row
+    row+=1
+    a=col
+    document["data"] <= TR([TD(INPUT(value="",id="td"+str(row)+str(j))) for j in range(1,a+1)],id="td"+str(row))
+
+def del_row(ev):
+    global col
+    global row
+    row-=1
+    table=TABLE(id="data")
+    table <= TR(TH("因素",colspan=col,id="factor"),id="th-factor")
+    table <= TR([TH(INPUT(id="th"+str(i),value="水平"+str(i))) for i in range(1,col+1)],id="th")
+    for i in range(1,row+1):
+        table <= TR([TD(INPUT(value="",id="td"+str(i)+str(j))) for j in range(1,col+1)],id="td"+str(i))
+    document["all-data"].clear()
+    document["all-data"] <= table
+
+# 方差分析
+def single_anova(ev):
+    global col
+    global row
+    table=TABLE(id="mean")
+    me=[]
+    le=[]
+    es=[]
+    total=0
+    for j in range(1,col+1):
+        l=[]
+        for i in range(1,row+1):
+            if document["td"+str(i)+str(j)].value:
+                l.append(eval(document["td"+str(i)+str(j)].value))
+                total+=eval(document["td"+str(i)+str(j)].value)
+            else:
+                break
+        le.append(len(l))
+        me.append(round(sum(l)/len(l),4))
+        es.append(sum([round((k-me[j-1])**2,4) for k in l]))
+    table <= TR(TH("样本均值与样本量",colspan=col+1))
+    table <= TR([TH("计算值")]+[TH(document["th"+str(j)].value) for j in range(1,col+1)])
+    table <= TR([TD("各样本均值")]+[TD(str(me[j])) for j in range(col)])
+    table <= TR([TD("各样本误差平方和")]+[TD(str(es[j])) for j in range(col)])
+    table <= TR([TD("各样本组间误差平方和")]+[TD(round(le[j]*(me[j]-total/sum(le))**2,4)) for j in range(col)])
+    table <= TR([TD("样本量")]+[TD(str(le[j])) for j in range(col)])
+    table <= TR(TD(f"总均值={round(total/sum(le),4)}",colspan=col+1))
+    #方差分析
+    #组内平方和
+    SSE=sum(es)
+    SSA=round(sum([k*(j-total/sum(le))**2 for j,k in zip(me,le)]),4)
+    SST=SSE+SSA
+    table2=TABLE(id="f-test")
+    table2 <= TR(TH(i) for i in ["误差来源","平方和SS","自由度df","均方MS","F值"])
+    table2 <= TR(
+    [TD("组间(因素影响)"),
+    TD(f"SSA={SSA}"),
+    TD(f"df={col-1}"),
+    TD(f"MSA={round(SSA/(col-1),4)}"),
+    TD(f"MSA/MSE={round(SSA/(col-1)/(SSE/(sum(le)-col)),3)}",rowspan=3)
+    ]
+    )
+    table2 <= TR(
+    [TD("组内(误差)"),
+    TD(f"SSE={SSE}"),
+    TD(f"df={sum(le)-col}"),
+    TD(f"MSE={round(SSE/(sum(le)-col),4)}"),
+    ]
+    )
+    table2 <= TR(
+    [TD("组间(因素影响)"),
+    TD(f"SST={SST}"),
+    TD(f"df={sum(le)-1}"),
+    TD("")
+    ]
+    )
+    table2 <= TR(TD(f"R^2={SSA/SST}",colspan=5))
+    document["mean-container"].clear()
+    document["mean-container"] <= table
+    document["f-container"].clear()
+    document["f-container"] <= table2
+
+document["add-col"].bind("click",add_col)
+document["del-col"].bind("click",del_col)
+document["add-row"].bind("click",add_row)
+document["del-row"].bind("click",del_row)
+document["tijiao"].bind("click",single_anova)
+
+</script>
+
+<div style="float: left;">
+    <button id="add-col" style="display: block;">+增加列数</button>
+    <button id="del-col" style="display: block;">-减少列数</button>
+    <button id="add-row" style="display: block;">+增加行数</button>
+    <button id="del-row" style="display: block;">-减少行数</button>
+    <button id="tijiao" style="display: block;">单因素方差分析</button>
+</div>
+
+<div id="all-data" style="float: left;">
+<table id="data" style="float:left ;">
+    <tr id="th-factor">
+        <th id="factor" colspan=2>因素</th>
+    </tr>
+    <tr id="th">
+        <th><input value="水平1"  id="th1"></th>
+        <th><input value="水平2"  id="th2"></th>
+    </tr>
+    <tr id="td1">
+        <td><input id="td11"></td>
+        <td><input id="td12"></td>
+    </tr>
+    <tr id="td2">
+        <td><input id="td21"></td>
+        <td><input id="td22"></td>
+    </tr>
+    <tr id="td3">
+        <td><input id="td31"></td>
+        <td><input id="td32"></td>
+    </tr>
+    <tr id="td4">
+        <td><input id="td41"></td>
+        <td><input id="td42"></td>
+    </tr>
+    <tr id="td5">
+        <td><input id="td51"></td>
+        <td><input id="td52"></td>
+    </tr>
+</table>
+</div>
+
+<div id="mean-container" style="float: left;"></div>
+<div id="f-container"></div>
+</body>
+</html>

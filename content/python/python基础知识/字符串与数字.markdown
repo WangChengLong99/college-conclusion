@@ -1,0 +1,3651 @@
+---
+title: 字符串与数字
+date: 2022-12-4
+lastmod: '2022-12-094T16:44:38+08:00'
+summary: 介绍了python中字符串与数字的使用
+weight: 20
+toc: true
+type: book
+---
+
+## python数据类型
+
+* python 创建和控制的实体称为对象（object),它们可以是变量、数组、字符串、函数或结构。
+* 由于 python是一种所见即所得的脚本语言,故不需要编译。
+* 在 python里,对象是通过名字创建和保存的。
+* 可以用who 命令来查看当前打开的 python 环境里的对象,用 del删除这些对象。
+
+        who
+        c=3
+        who
+        del c
+        who
+    
+显示：
+
+    notebook	 sys
+    c	 notebook	 sys
+    notebook	 sys
+
+上面列出的是新创建的数据对象x的名称。python 对象的名称必须以一个英文字母打头, 并由一串大小写字母、数字或下画线组成。创建对象时不要用点号，容易跟属性造成混淆。
+
+注意:python 区分大小写,比如,Orange与 orange 数据对象是不同的。
+
+不要用 python的内置函数名作为对象的名称,如 who/del 等。
+
+## python基本数据类型
+
+Python3 中有六个标准的数据类型：
+
+Number（数值）     
+String（字符串）    
+List（列表）   
+Tuple（元组）   
+Set（集合）   
+Dictionary（字典）   
+
+Python3 的六个标准数据类型中：
+
+    不可变数据（3 个）：Number（数字）、String（字符串）、Tuple（元组）；
+    可变数据（3 个）：List（列表）、Dictionary（字典）、Set（集合）。
+
+* 数值
+  
+数字的基本类型
+
+Python 支持五种基本数字类型:
+
+int (有符号整数)  
+long (长整数)  
+bool (布尔值)  
+float (浮点值)  
+complex (复数)  
+
+这里要特别注意：  
+ 1.在Python2中支持的long，在Python3中不再支持。在Python 3里，只有一种整数类型int，表示为长整型。    
+ 2.在 Python2 中是没有布尔型的，它用数字 0 表示 False，用 1 表示 True。到 Python3 中，把 True 和 False 定义成关键字了，但它们的值还是 1 和 0，它们可以和数字相加。
+
+数值运算
+
+实例：
+
+    >>> 5 + 4  # 加法
+    9
+    >>> 4.3 - 2 # 减法
+    2.3
+    >>> 3 * 7  # 乘法
+    21
+    >>> 2 / 4  # 除法，得到一个浮点数
+    0.5
+    >>> 2 // 4 # 除法，得到一个整数
+    0
+    >>> 17 % 3 # 取余
+    2
+    >>> 2 ** 5 # 乘方
+    32
+
+原文链接：https://blog.csdn.net/qq_41575507/article/details/106060204
+
+### 数值型
+
+#### 整数类型：int
+
+ Python3 中的整数最大的特点就是“不限制大小”。在Python2 中支持的 long ，在 Python3 中不再支持。在 Python3 里，只有一种整数类型 int，表示为长整型。那么这个 int 在 Python 中所表示的范围到底能有多大呢？给出的解释是：Python 长整数仅受限于用户计算机的虚拟内存总数。基本可以这么说：Python3 的int长度理论上是无限的。所以在 Python 你不必像在C语言或者 java 中一样考虑我是用 int 还是 long 还是 long long 等等。在 Python3 中我们只需要计算就可以了。比如我们计算一下2的100次方等于多少：
+
+    >>> 2**100
+    1267650600228229401496703205376
+
+我们直接在Python自带的IDLE中输入2**100即可计算出结果，如果我们是使用的C语言无论是使用long型还是long long型，肯定会出现数据溢出的情况。因为在C语言中：
+
+long型所表示的范围为：-2147483648 ~ +2147483647 (4 Bytes)  
+long long所表示的范围为：-9223372036854775808 ~ +9223372036854775807 (8 Bytes)
+
+通过这个例子，我们直接就体会到了Python对于大数的处理的方便性。在Python中无论多复杂的算式都可以直接的出结果。
+
+* 常见的运算
+
+我们还可以使用divmod()这一内置函数直接求整数除法和余数。例如我们求`divmod(m,n)`
+使用这个方法会得到两个整数，一个是`m // n`，另一个是`m %n`。
+
+m ** n 求乘方，即整数m的n次方，上面的2 ** 100就是2的100次方。
+abs(m) 求m的绝对值
+bin(m) 将数值m转换为二进制数，例如
+
+    >>> x = 10
+    >>> x
+    10
+    >>> bin(x)
+    '0b1010'
+
+oct(x) 将数值x转换为八进制，例如：
+
+    >>> n = 0b1001
+    >>> oct(n)
+    '0o11'
+
+hex(x) 将数值x转换为十六进制，例如：
+
+    >>> x = 0o11
+    >>> x
+    9
+    >>> hex(x)
+    '0x9'
+
+直接输出x，Python默认将该数值转换为10进制输出
+
+* 其他常用的数学运算函数
+
+{{%figure src=\"graph-python-python基础知识/常用数学运算函数.png\" %}}
+
+* 随机数函数
+
+&Python3中的随机数函数用于生成随机数，比如我们要写一个猜数字的游戏就需要用到随机数，或者是当我们写一个游戏需要使用到随机数时（比如大富翁游戏的掷骰子）等等。常见的随机数的生成函数有以下几种：
+
+例如：
+
+    ## 生成10个随机数
+    >>> import random
+    >>> for i in range(10):
+        print(random.randint(0,100))
+        
+    97
+    2
+    40
+    28
+    86
+    25
+    67
+    69
+    91
+    58
+
+{{%figure src=\"graph-python-python基础知识/随机数函数.png\"%}}
+
+* 大小比较
+  
+ 在Python中我们也可以对数值的大小进行比较。我们可以使用比较运算符来进行两个数的比较，在Python中我们还可以进行连续的比较，比如：
+
+    >>> 7 > 3 >= 2
+    True
+    >>> 7 < 3 >= 0
+    False
+
+我们会发现和上面表中的一样，如果表达式正确，那么会返回True，错误则会返回False。我们可以用这个来控制循环，比如满足条件就继续循环，不满足就结束循环，这个在以后的博客中也会详细的说明。
+
+* 数的进制
+
+ 在常见运算中也写到了关于进制转换的内置函数，Python中同样也有二进制、八进制、十进制、十六进制。
+
+在Python中二进制(binary)以前缀0b或者0B开头，注意这里的是阿拉伯数字0而不是字母o，千万不要输错了。使用`bin()`函数来返回对应数值的二进制。比如：
+
+    >>> x = 0b1111
+    >>> x
+    15
+    >>> bin(x)
+    '0b1111'
+    >>> x = 0B1101
+    >>> x
+    13
+    >>> bin(13)
+    '0b1101'
+
+八进制(octal)以前缀0o或者0O开头，同样也要注意是阿拉伯数字0和字母o | O,要注意区分。使用oct()函数返回相应数值的八进制。
+
+十进制无前缀数字，使用int()即可将其他进制转换为十进制。
+
+十六进制(hexadecimal)以前缀0x或者0X开头，使用hex()函数将其他数值转换为十六进制。
+
+#### 浮点数类型：float
+
+浮点数的操作与上面的整数操作类似。但是浮点数受到17位有效数字的限制，浮点数一般只有17位有效数字，如果超过17位那么就要使用科学计数法来表示
+
+* 浮点数的特性
+
+由于浮点数在计算机中是以二进制来表示的，所以有些时候浮点数在转换以及运算过程中难免会产生一些误差。所以有的时候我们会发现一些匪夷所思的错误。比如我们计算一下2.1+4.2结果肯定为6.3呀，但是如果我们在IDLE中计算一下，却发现结果为6.300000000000001，比较的结果是False。
+
+    >>> 2.1 + 4.2
+    6.300000000000001
+    >>> 2.1 + 4.2 == 6.3
+    False
+
+为什么会这样呢？？？其实就是因为在计算机进行进制转换的时候产生了微小的误差。所以我们用到浮点数的时候，当我们进行比较的时候最好不要用 ==来比较。而是将它们做差，如果他们之间的差小于一个很小很小的数，我们就认为这两个浮点数相等。
+
+#### 复数类型
+
+Python中内置了复数类型。Python可以支持所有有关复数的常见运算。比如加、减、乘、除、乘方等等。我们可以使用`.real`来取出复数的实部，使用`.imag`取出复数的虚部。
+
+复数的表示在数学中是a+bi，但是在实际编程中因为i与阿拉伯数字1太接近了，不好区分，所以在Python中用j代表i，即a+bj。
+
+* 复数的比较
+
+复数之间只能比较是否相等，不能比较大小。这也是数学上的真理，所以在Python中的复数也只能比较两个复数是否相等，不能比较大小。
+
+* 复数的应用
+
+求平面上两个点(x1,x2)和(y1,y2)之间的距离。
+
+>>> abs((4+3j)+(1+6j))
+10.295630140987
+>>> abs(1+1j)
+1.4142135623730951
+
+* 更多的数学函数
+
+ Python中不止有上面提到的数学函数，还有很多其他的函数。Python 中数学运算常用的函数基本都在 math 模块、cmath 模块中。
+
+Python math 模块提供了许多对浮点数的数学运算函数。
+
+Python cmath 模块包含了一些用于复数运算的函数。
+
+cmath 模块的函数跟 math 模块函数基本一致，区别是 cmath 模块运算的是复数，math 模块运算的是数学运算。
+
+使用math或者cmath函数必须先导入。使用import math导入math模块，使用import cmath导入cmath模块。
+
+math模块中包含的函数
+
+我们可以使用dir()函数显示出我们导入模块所包含的内容：
+
+    >>> import math
+    >>> dir(math)
+    ['__doc__', '__loader__', '__name__', '__package__', '__spec__', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atan2', 'atanh', 'ceil', 'copysign', 'cos', 'cosh', 'degrees', 'e', 'erf', 'erfc', 'exp', 'expm1', 'fabs', 'factorial', 'floor', 'fmod', 'frexp', 'fsum', 'gamma', 'gcd', 'hypot', 'inf', 'isclose', 'isfinite', 'isinf', 'isnan', 'ldexp', 'lgamma', 'log', 'log10', 'log1p', 'log2', 'modf', 'nan', 'pi', 'pow', 'radians', 'remainder', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'tau', 'trunc']
+
+其中包含的函数这里就不再详细的解释了，如果想知道某一个函数的使用方法，直接百度即可。
+
+cmath模块中包含的函数
+
+    >>> import cmath
+    >>> dir(cmath)
+    ['__doc__', '__loader__', '__name__', '__package__', '__spec__', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', ...
+
+* 数字类型总结
+
+整数类型（二进制（以0b或0B开头）、八进制（以0o或者0O开头）、十进制、十六进制（以0x或者0X开头）
+
+浮点数类型 （带有小数点的数据，可以用科学计数法表示）
+
+复数类型（与数学中的复数概念一致）
+
+三种数据类型存在“扩展”关系(整数可以看做是浮点数的特例，浮点数可以看做复数的特例）
+
+不同数据类型之间可以进行混合运算，最终的运算结果为最宽类型（整数宽度<浮点数<复数）宽度低的数据可以强制转换成宽度高的数据，反之则不可以。
+
+int(x),float(x),complex(x),将x转换成相应的数据类型
+
+可以使用函数type()，返回数据的类型，来确定数据的类型
+
+**数值类型没有很多方法或属性，主要就是看实部和虚部，不做过多总结**
+
+### 字符型
+
+* 字符型数据为夹在引号之间的字符串，如 "MR", 'MR'。注意一定要用**英文引号**。很容易因为符号中英文的问题导致程序出错。
+* 而python中的字符串主要包括数字，字母，下划线，空格。它是python编程语言中表示文本的数据类型。
+
+Unicode 字符串
+
+在Python2中，普通字符串是以8位ASCII码进行存储的，而Unicode字符串则存储为16位unicode字符串，这样能够表示更多的字符集。使用的语法是在字符串前面加上前缀 u。
+
+在Python3中，所有的字符串都是Unicode字符串。
+
+输出带有引号的字符串可以使用转义字符\，例如输出"I love you",可以写为print("\"I love you\"")或者输入print(' "I love you" ')使用单引号将要输出的字符串引起来。也可以通过转移符加反斜杠(\\)来输出带有反斜杠的字符串
+
+字符串属于序列类型，根据字符串内容的多少可以将字符串分为单行字符串和多行字符串，其中单行字符串可以由一对双引号\(" ")或一对单引号\(' ')表示，单引号和双引号等效多行字符串可由一对三单引号\(''' ''')或一对三双引号\(""" """)表示，三单引号和三双引号也等效。  
+
+    Python三引号
+    python三引号允许一个字符串跨多行，字符串中可以包含换行符、制表符以及其他特殊字符。实例如下
+
+    实例(Python 3.0+)
+    #!/usr/bin/python3
+    
+    para_str = """这是一个多行字符串的实例
+    多行字符串可以使用制表符
+    TAB ( \t )。
+    也可以使用换行符 [ \n ]。
+    """
+    print (para_str)
+    以上实例执行结果为：
+
+    这是一个多行字符串的实例
+    多行字符串可以使用制表符
+    TAB (    )。
+    也可以使用换行符 [ 
+    ]。
+
+三引号让程序员从引号和特殊字符串的泥潭里面解脱出来，自始至终保持一小块字符串的格式是所谓的WYSIWYG（所见即所得）格式的。
+
+一个典型的用例是，当你需要一块HTML或者SQL时，这时用字符串组合，特殊字符串转义将会非常的繁琐。
+
+    errHTML = '''
+    <HTML><HEAD><TITLE>
+    Friends CGI Demo</TITLE></HEAD>
+    <BODY><H3>ERROR</H3>
+    <B>%s</B><P>
+    <FORM><INPUT TYPE=button VALUE=Back
+    ONCLICK="window.history.back()"></FORM>
+    </BODY></HTML>
+    '''
+    cursor.execute('''
+    CREATE TABLE users (  
+    login VARCHAR(8), 
+    uid INTEGER,
+    prid INTEGER)
+    ''')
+
+Python标准库string中定义数字字符、标点符号、英文字母、大写字母、小写字母等常量。
+
+    >>> import string
+    >>> string.digits
+    '0123456789'
+    >>> string.punctuation
+    '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+    >>> string.ascii_letters
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    >>> string.ascii_lowercase
+    'abcdefghijklmnopqrstuvwxyz'
+    >>> string.ascii_uppercase
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+#### Python转义字符
+
+在需要在字符中使用特殊字符时，python用反斜杠(\)转义字符。如下表：
+
+转义字符|	描述
+-|-
+\\(在行尾时)|	续行符
+\\\	|反斜杠符号
+\'	|单引号
+\"	|双引号
+\\a	|响铃
+\\b	|退格(Backspace)
+\\000|	空
+\\n	|换行
+\\v	|纵向制表符
+\\t	|横向制表符
+\\r	|回车
+\\f	|换页
+\\oyy|	八进制数，yy 代表的字符，例如：\o12 代表换行，其中 o 是字母，不是数字 0。
+\\xyy|	十六进制数，yy代表的字符，例如：\x0a代表换行
+\\other|	其它的字符以普通格式输出
+
+字符串之间可以通过+或者*进行连接，+将两个字符创进行连接，*构建一个由本身字符串重复连接的新字符串。
+
+len()函数可以返回字符串的长度
+
+字符串使用实例：输入一个月份的数字返回对应月份的名称缩写
+
+代码如下：
+
+    months="JanFebMarAprMayJunJulAugSepOctNovDec"
+
+    n=input("请输入月份数（1-12):")
+
+    pos=(int(n)-1)*3
+
+    monthAbbrev=months[pos:pos+3]
+
+    print("月份的简写是"+monthAbbrev+".")
+ 
+原文链接：https://blog.csdn.net/qq_41575507/article/details/81873448
+
+#### Python字符串运算符
+
+操作符	|描述	|实例
+-|-|-
+\+	|字符串连接|	a + b 输出结果： HelloPython
+\*	|重复输出字符串|	a*2 输出结果：HelloHello
+\[\]|	通过索引获取字符串中字符|	a[1] 输出结果 e
+\[ \: \]	|截取字符串中的一部分，遵循左闭右开原则，str[0:2] 是不包含第 3 个字符的。|	a[1:4] 输出结果 ell
+in|	成员运算符 - 如果字符串中包含给定的字符返回 True|	'H' in a 输出结果 True
+not in|	成员运算符 - 如果字符串中不包含给定的字符返回 True|	'M' not in a 输出结果 True
+r/R|	原始字符串 - 原始字符串：所有的字符串都是直接按照字面的意思来使用，没有转义特殊或不能打印的字符。 原始字符串除在字符串的第一个引号前加上字母 r（可以大小写）以外，与普通字符串有着几乎完全相同的语法。|	print( r'\n' )print( R'\n' )
+%|	格式字符串|	请看下一节内容。
+
+在 Python 3.8 的版本中可以使用 = 符号来拼接运算表达式与结果：
+
+    实例
+    >>> x = 1
+    >>> print(f'{x+1}')   ## Python 3.6
+    2
+
+    >>> x = 1
+    >>> print(f'{x+1=}')   ## Python 3.8
+    'x+1=2'
+
+#### 字符串的索引
+
+有两种索引方式，一种是从左向右索引一种是从右向左索引，两种索引字符串中的字符被赋予的相对坐标是不同的,索引格式为在字符串后跟一个\[],\[]里面放入索引值
+
+从左向右：第一个字符的索引值为0，依次往后加一。即0,1,2,3···
+从右向左：最后一个字符的索引值为-1，依次往前减一。即···,-3,-2,-1
+
+#### Python字符串格式化
+
+Python 支持格式化字符串的输出 。尽管这样可能会用到非常复杂的表达式，但最基本的用法是将一个值插入到一个有字符串格式符 %s 的字符串中。在 Python 中，字符串格式化使用与 C 中 sprintf 函数一样的语法。
+
+如下实例：
+
+    print "My name is %s and weight is %d kg!" % ('Zara', 21) 
+
+以上实例输出结果：
+
+    My name is Zara and weight is 21 kg!
+    python字符串格式化符号:
+
+符号	|描述
+-|-
+%c	| 格式化字符及其ASCII码
+%s	 |格式化字符串
+%d	 |格式化整数
+%u	 |格式化无符号整型
+%o	 |格式化无符号八进制数
+%x	 |格式化无符号十六进制数
+%X	 |格式化无符号十六进制数（大写）
+%f	 |格式化浮点数字，可指定小数点后的精度
+%e	 |用科学计数法格式化浮点数
+%E	 |作用同%e，用科学计数法格式化浮点数
+%g	 |%f和%e的简写
+%G	 |%f 和 %E 的简写
+%p	 |用十六进制数格式化变量的地址
+
+格式化操作符辅助指令:
+
+符号|	功能
+-|-
+*|	定义宽度或者小数点精度
+-|	用做左对齐
++|	在正数前面显示加号( + )
+\<sp>|	在正数前面显示空格	在八进制数前面显示零('0')，在十六进制前面显示'0x'或者'0X'(取决于用的是'x'还是'X')
+0|	显示的数字前面填充'0'而不是默认的空格
+%|	'%%'输出一个单一的'%'
+(var)|	映射变量(字典参数)
+m.n.|	m 是显示的最小总宽度,n 是小数点后的位数(如果可用的话)
+
+Python2.6 开始，新增了一种格式化字符串的函数 str.format()，它增强了字符串格式化的功能。
+
+f-string
+
+f-string 是 python3.6 之后版本添加的，称之为字面量格式化字符串，是新的格式化字符串的语法。之前我们习惯用百分号 (%):
+
+    实例
+    >>> name = 'Runoob'
+    >>> 'Hello %s' % name
+    'Hello Runoob' 
+    f-string 格式化字符串以 f 开头，后面跟着字符串，字符串中的表达式用大括号 {} 包起来，它会将变量或表达式计算后的值替换进去，实例如下：
+
+    实例
+    >>> name = 'Runoob'
+    >>> f'Hello {name}'  ## 替换变量
+
+    >>> f'{1+2}'         ## 使用表达式
+    '3'
+
+    >>> w = {'name': 'Runoob', 'url': 'www.runoob.com'}
+    >>> f'{w["name"]}: {w["url"]}'
+    'Runoob: www.runoob.com'
+
+用了这种方式明显更简单了，不用再去判断使用 %s，还是 %d。
+
+#### python的字符串内建函数
+
+字符串方法是从python1.6到2.0慢慢加进来的——它们也被加到了Jython中。这些方法实现了string模块的大部分方法，如下表所示列出了目前字符串内建支持的方法，所有的方法都包含了对Unicode的支持，有一些甚至是专门用于Unicode的。
+
+方法|	描述
+-|-
+[string.capitalize()](#b1)|把字符串的第一个字符大写
+[string.center(width)](#b2)|返回一个原字符串居中,并使用空格填充至长度 width 的新字符串
+[string.count(str, beg=0, end=len(string))](#b3)|返回 str 在 string 里面出现的次数，如果 beg 或者 end 指定则返回指定范围内 str 出现的次数
+[string.decode(encoding='UTF-8', errors='strict')](#b4)|以 encoding 指定的编码格式解码 string，如果出错默认报一个 ValueError 的 异 常 ， 除 非 errors 指 定 的 是 'ignore' 或 者'replace'
+[string.encode(encoding='UTF-8', errors='strict')](#b5)|以 encoding 指定的编码格式编码 string，如果出错默认报一个ValueError 的异常，除非 errors 指定的是'ignore'或者'replace'
+[string.endswith(obj, beg=0, end=len(string))](#b6)|检查字符串是否以 obj 结束，如果beg 或者 end 指定则检查指定的范围内是否以 obj 结束，如果是，返回 True,否则返回 False.
+[string.expandtabs(tabsize=8)](#b7)|把字符串 string 中的 tab 符号转为空格，默认的空格数 tabsize 是 8.
+[string.find(str, beg=0, end=len(string))](#b8)|检测 str 是否包含在 string 中，如果 beg 和 end 指定范围，则检查是否包含在指定范围内，如果是返回开始的索引值，否则返回-1
+[string.index(str, beg=0, end=len(string))](#b9)|跟find()方法一样，只不过如果str不在 string中会报一个异常.
+[string.isalnum()](#b10)|如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False
+[string.isalpha()](#b11)|如果 string 至少有一个字符并且所有字符都是字母则返回 True,否则返回 False
+[string.isdecimal()](#b12)|如果 string 只包含十进制数字则返回 True 否则返回 False.
+[string.isdigit()](b13)|如果 string 只包含数字则返回 True 否则返回 False.
+[string.islower()](#b14)|如果 string 中包含至少一个区分大小写的字符，并且所有这些(区分大小写的)字符都是小写，则返回 True，否则返回 False
+[string.isnumeric()](#b15)|如果 string 中只包含数字字符，则返回 True，否则返回 False
+[string.isspace()](#b16)|如果 string 中只包含空格，则返回 True，否则返回 False.
+[string.istitle()](#b17)|如果 string 是标题化的(见 title())则返回 True，否则返回 False
+[string.isupper()](#b18)|如果 string 中包含至少一个区分大小写的字符，并且所有这些(区分大小写的)字符都是大写，则返回 True，否则返回 False
+[string.join(seq)](#b19)|Merges (concatenates)以 string 作为分隔符，将 seq 中所有的元素(的字符串表示)合并为一个新的字符串
+[string.ljust(width)](#b20)|返回一个原字符串左对齐,并使用空格填充至长度 width 的新字符串
+[string.lower()](#b21)|转换 string 中所有大写字符为小写.
+[string.lstrip()](#b22)|截掉 string 左边的空格
+[string.maketrans(intab, outtab)](#b23)maketrans()| 方法用于创建字符映射的转换表，对于接受两个参数的最简单的调用方式，第一个参数是字符串，表示需要转换的字符，第二个参数也是字符串表示转换的目标。
+max(str)|返回字符串 str 中最大的字母。
+min(str)|返回字符串 str 中最小的字母。
+[string.partition(str)](#b24)|有点像 find()和 split()的结合体,从 str 出现的第一个位置起,把 字 符 串 string 分 成 一 个 3 元 素 的 元 组 (string_pre_str,str,string_post_str),如果 string 中不包含str 则 string_pre_str == string.
+[string.replace(str1, str2,  num=string.count(str1))](#b25)|把 string 中的 str1 替换成 str2,如果 num 指定，则替换不超过 num 次.
+[string.rfind(str, beg=0,end=len(string) )](#b26)|类似于 find()函数，不过是从右边开始查找.
+[tring.rindex( str, beg=0,end=len(string))](#b27)|类似于 index()，不过是从右边开始.
+[string.rjust(width)](#b28)|返回一个原字符串右对齐,并使用空格填充至长度 width 的新字符串
+[string.rpartition(str)](#b29)|类似于 partition()函数,不过是从右边开始查找.
+[string.rstrip()](#b30)|删除 string 字符串末尾的空格.
+[string.split(str="", num=string.count(str))](#b31)|以 str 为分隔符切片 string，如果 num有指定值，则仅分隔 num 个子字符串
+[string.splitlines(num=string.count('\n'))](#b32)|按照行分隔，返回一个包含各行作为元素的列表，如果 num 指定则仅切片 num 个行.
+[string.startswith(obj, beg=0,end=len(string))](#b33)|检查字符串是否是以 obj 开头，是则返回 True，否则返回 False。如果beg 和 end 指定值，则在指定范围内检查.
+[string.strip([obj])](#b40)|在 string 上执行 lstrip()和 rstrip()
+[string.swapcase()](#34)|翻转 string 中的大小写
+[string.title()](#35)|返回"标题化"的 string,就是说所有单词都是以大写开始，其余字母均为小写(见 istitle())
+[string.translate(str, del="")](#36)|根据 str 给出的表(包含 256 个字符)转换 string 的字符,要过滤掉的字符放到 del 参数中
+[string.upper()](#37)|转换 string 中的小写字母为大写
+[string.zfill(width)](#38)|返回长度为 width 的字符串，原字符串 string 右对齐，前面填充0
+[string.isdecimal()](#39)|isdecimal()方法检查字符串是否只包含十进制字符。这种方法只存在于unicode对象。
+
+来源：<https://blog.csdn.net/lqh4188/article/details/50379349?utm_source=app>
+
+参考：<https://www.runoob.com/python/att-string-decode.html>
+
+### 字符型的方法（操作）
+
+#### 解决英文单词大小写问题：
+
+##### capitalize()函数{#b1}
+
+描述：将字符串的第一个字母变成大写，其余字母变为小写。
+
+语法：str.capitalize()  —> str 返回字符串
+
+程序示例：
+
+
+```python
+str1 = "i Love python"
+str2 = " i Love python" #字母i前有空格
+str3 = "I Love python"
+print(str1.capitalize())
+```
+
+```
+## I love python
+```
+
+```python
+print(str2.capitalize())
+```
+
+```
+##  i love python
+```
+
+```python
+print(str3.capitalize())
+
+# 第二个示例
+```
+
+```
+## I love python
+```
+
+```python
+str1="i "#i后面有空格
+str2="love "#love后面有空格
+str3="python"
+str1.capitalize()+str2.capitalize()+str3.capitalize()
+```
+
+```
+## 'I Love Python'
+```
+
+##### title()函数{#b35}
+
+描述：返回一个满足标题格式的字符串。即 **所有英文单词** 首字母大写，其余英文字母小写。
+
+语法：str.title() -> str 返回一个字符串
+
+程序示例：
+
+
+```python
+str = "i love python"
+print(str.title()) #将字符串str的所有单词首字母大写，其余字母小写
+```
+
+```
+## I Love Python
+```
+
+##### swapcase()函数{#b34}
+
+描述：将字符串str中的大小写字母同时进行互换。即将字符串str中的大写字母转换为小写字母，将小写字母转换为大写字母。
+
+语法：str.swapcase() -> str 返回字符串
+
+程序示例：
+
+
+```python
+str1 = "I Love PYTHON"
+str2 = "我爱python Python pYTHON"
+print(str1.swapcase()) #将字符串str1中的大写字母转为小写字母，小写字母转换为大写字母。
+```
+
+```
+## i lOVE python
+```
+
+```python
+print(str2.swapcase())
+```
+
+```
+## 我爱PYTHON pYTHON Python
+```
+
+##### lower()函数 {#b21}
+
+描述：将字符串中的所有大写字母转换为小写字母。
+
+语法：str.lower()  -> str  返回字符串
+
+程序示例：
+
+
+```python
+str1 = "I Love Python"
+str2 = "Groß - α" #德语 大写α
+print(str1.casefold())
+```
+
+```
+## i love python
+```
+
+```python
+print(str1.lower())
+```
+
+```
+## i love python
+```
+
+```python
+print(str2.casefold())
+```
+
+```
+## gross - α
+```
+
+```python
+print(str2.lower())
+```
+
+```
+## groß - α
+```
+
+注意 lower()函数和casefold()函数的区别：
+
+lower() 方法只对ASCII编码，即‘A-Z’有效，对于**其它语言**(非英语)**中把大写转换为小写的情况无效，只能用 casefold() 函数。
+
+#### upper()函数{#b37}
+
+描述：将字符串中的所有小写字母转换为大写字母。
+
+语法： str.upper() -> str  返回字符串
+
+程序示例：
+
+
+```python
+str1 = "i love python"  #全为小写字母
+str2 = "I Love Python"  #所有单词首字母大写
+print(str1.upper())
+```
+
+```
+## I LOVE PYTHON
+```
+
+```python
+print(str2.upper())
+```
+
+```
+## I LOVE PYTHON
+```
+
+##### casefold()函数
+
+描述：将字符串中的所有大写字母转换为小写字母。也可以将非英文语言中的大写转换为小写。
+
+注意 lower() 函数和 casefold() 函数的区别：lower() 方法只对ASCII编码，即‘A-Z’有效，对于其它语言中把大写转换为小写的情况无效，只能用 casefold() 函数。见[lower](#b21)
+
+#### 解决字符串填充问题
+
+##### center()函数{#b2}
+
+描述：返回一个长度为width,两边用fillchar(单字符)填充的字符串，即字符串str居中，两边用fillchar填充。若字符串的长度大于width,则直接返回字符串str。
+
+语法：str.center(width , "fillchar")  -> str  返回字符串  
+     
+**注意：引号不可省**
+
+width —— 指定字符串长度。
+
+fillchar —— 要填充的单字符，默认为空格。
+
+程序示例：
+
+
+```python
+str = "i love python"
+print(str.center(20,"*")) #指定字符串长度为20 用单字符"*"填充
+```
+
+```
+## ***i love python****
+```
+
+```python
+print(str.center(1,"*")) #指定字符串长度为1，小于原字符串的长度。
+```
+
+```
+## i love python
+```
+
+```python
+print(str.center(20,"8"))
+```
+
+```
+## 888i love python8888
+```
+
+```python
+print(str.center(20)) #fillchar 默认为空格
+```
+
+```
+##    i love python
+```
+
+##### ljust()函数{#b20}
+
+描述：返回一个原字符串左对齐,并使用fillchar填充(默认为空格)至指定长度的新字符串。如果指定的长度小于原字符串的长度则返回原字符串。
+
+语法： str.ljust(width, fillchar)  -> str 返回一个新的字符串
+
+width —— 指定字符串的输出长度。
+
+fillchar—— 将要填充的单字符，默认为空格。
+
+程序示例：
+
+
+```python
+str = "python"
+print(str.ljust(30,"*")) #指定宽度为30，填充字符为*
+```
+
+```
+## python************************
+```
+
+```python
+print(str.ljust(30))  #指定宽度为30，填充字符默认为空格
+```
+
+```
+## python
+```
+
+```python
+print(str.ljust(30),"1") #对比
+```
+
+```
+## python                         1
+```
+
+##### rjust()函数{#b28}
+
+描述：返回一个原字符串右对齐,并使用fillchar填充(默认为空格)至指定长度的新字符串。如果指定的长度小于原字符串的长度则返回原字符串。
+
+语法： str.ljust(width, fillchar)  -> str 返回一个新的字符串
+
+程序示例：
+
+
+```python
+str = "python"
+print(str.rjust(30,"*")) #指定宽度为30，填充字符为*
+```
+
+```
+## ************************python
+```
+
+```python
+print(str.rjust(30))  #指定宽度为30，填充字符默认为空格
+```
+
+```
+##                         python
+```
+
+```python
+print("1",str.rjust(30)) #对比
+```
+
+```
+## 1                         python
+```
+
+##### zfill()函数{#b38}
+
+描述：返回指定长度的字符串，使原字符串右对齐，前面用0填充到指定字符串长度。
+
+语法：str.zfill(width) -> str 返回一个字符串
+
+width —— 指定字符串的长度,但不能为空。若指定长度小于字符串长度，则直接输出原字符串。
+
+程序示例：
+
+
+```python
+str = "i love python"
+print(str.zfill(30)) #指定字符串长度为30
+```
+
+```
+## 00000000000000000i love python
+```
+
+```python
+print(str.zfill(2)) #指定字符串长度为2，小于原字符串长度。
+#print(str.zfill()) #参数width为空，报错.
+```
+
+```
+## i love python
+```
+
+#### 解决统计字符次数问题
+
+##### count(）函数{#b3}
+
+描述：统计字符串里某个字符出现的次数。可以选择字符串索引的起始位置和结束位置。           
+
+语法：str.count("char", start,end)  或 str.count("char")    -> int    返回整数
+
+str —— 为要统计的字符(可以是单字符，也可以是多字符)。
+star —— 为索引字符串的起始位置，默认参数为0。
+end —— 为索引字符串的结束位置，默认参数为字符串长度即len(str)。
+
+程序示例：
+
+
+```python
+str = "i love python,i am learning python"
+print(str.count("i")) #star 和end 为默认参数
+```
+
+```
+## 3
+```
+
+```python
+print(str.count("i",2)) ## star值为2，end值为默认参数
+```
+
+```
+## 2
+```
+
+```python
+print(str.count("i",2,5)) #star值为2，end值为5
+```
+
+```
+## 0
+```
+
+```python
+print(str.count("am"))  #多字符统计
+```
+
+```
+## 1
+```
+
+```python
+str.count(" ")#空格
+```
+
+```
+## 5
+```
+
+#### 解决编码问题
+
+##### encode()函数{#b5}
+
+描述：以指定的编码格式编码字符串，默认编码为 'utf-8'。
+
+语法：str.encode(encoding='utf-8', errors='strict')     -> bytes (获得bytes类型对象)
+
+* encoding 参数可选，即要使用的编码，默认编码为 'utf-8'。字符串编码常用类型有：utf-8,gb2312,cp936,gbk等。
+
+* errors 参数可选，设置不同错误的处理方案。默认为 'strict',意为编码错误引起一个UnicodeEncodeError。 其它可能值有 'ignore', 'replace', 'xmlcharrefreplace'以及通过 codecs.register_error() 注册其它的值。
+
+程序示例：
+
+
+```python
+str1 = "我爱祖国"
+str2 = "I love my country"
+print("utf8编码：",str1.encode(encoding="utf8",errors="strict")) #等价于print("utf8编码：",str1.encode("utf8"))
+```
+
+```
+## utf8编码： b'\xe6\x88\x91\xe7\x88\xb1\xe7\xa5\x96\xe5\x9b\xbd'
+```
+
+```python
+print("utf8编码：",str2.encode(encoding="utf8",errors="strict"))
+```
+
+```
+## utf8编码： b'I love my country'
+```
+
+```python
+print("gb2312编码：",str1.encode(encoding="gb2312",errors="strict"))#以gb2312编码格式对str1进行编码，获得bytes类型对象的str
+```
+
+```
+## gb2312编码： b'\xce\xd2\xb0\xae\xd7\xe6\xb9\xfa'
+```
+
+```python
+print("gb2312编码：",str2.encode(encoding="gb2312",errors="strict"))
+```
+
+```
+## gb2312编码： b'I love my country'
+```
+
+```python
+print("cp936编码：",str1.encode(encoding="cp936",errors="strict"))
+```
+
+```
+## cp936编码： b'\xce\xd2\xb0\xae\xd7\xe6\xb9\xfa'
+```
+
+```python
+print("cp936编码：",str2.encode(encoding="cp936",errors="strict"))
+```
+
+```
+## cp936编码： b'I love my country'
+```
+
+```python
+print("gbk编码：",str1.encode(encoding="gbk",errors="strict"))
+```
+
+```
+## gbk编码： b'\xce\xd2\xb0\xae\xd7\xe6\xb9\xfa'
+```
+
+```python
+print("gbk编码：",str2.encode(encoding="gbk",errors="strict"))
+```
+
+```
+## gbk编码： b'I love my country'
+```
+
+注：在python中encode和decode分别指编码和解码
+
+##### decode()函数{#b4}
+
+描述：以 encoding 指定的编码格式解码字符串，默认编码为字符串编码。
+
+语法：str.decode(encoding='utf-8', errors='strict')
+
+encoding ——要使用的编码，如：utf-8,gb2312,cp936,gbk等。
+
+errors ——设置不同解码错误的处理方案。默认为 'strict',意为编码错误引起一个 UnicodeDecodeError。 其它可能得值有 'ignore', 'replace'以及通过 codecs.register_error() 注册的1其它值。
+
+程序示例：
+
+
+```python
+s = "我爱祖国"
+str1 = s.encode(encoding="utf-8",errors="strict")
+str2 = s.encode("gb2312") #编码错误的处理方案默认为"strict"
+str3 = s.encode("gbk")
+print(str1.decode(encoding="utf-8",errors="strict"))#用utf-8的解码格式，解码str1.
+```
+
+```
+## 我爱祖国
+```
+
+```python
+print(str1.decode(encoding="gbk",errors="ignore"))##如果以gbk的解码格式对str1进行解码得，将无法还原原来的字符串内容
+```
+
+```
+## 鎴戠埍绁栧浗
+```
+
+```python
+print(str1.decode(encoding="gbk",errors="strict"))
+```
+
+```
+## 鎴戠埍绁栧浗
+```
+
+```python
+print(str1.decode(encoding="gbk",errors="replace"))
+```
+
+```
+## 鎴戠埍绁栧浗
+```
+
+```python
+print("\n")
+```
+
+```python
+print(str2.decode("gb2312"))
+```
+
+```
+## 我爱祖国
+```
+
+```python
+print(str3.decode("gbk"))
+```
+
+```
+## 我爱祖国
+```
+
+注：在python3.x中，encode()函数只能用于字符串类型，而decode()函数只能用于字节数据类型。程序示例中 str1,str2,str3都是字节数据类型通过encode()函数把 字符串类型s 转换为字节数据类型。
+
+##### expandtabs()函数{#b7}
+
+描述：返回一个字符串的副本。使原字符串中的制表符（"\t"）的使用空间变大。使用空格来扩展空间。
+
+语法： str.expandtabs(tabsize=8)  —> str  返回字符串
+
+tabsize 的默认值为8。tabsize值为0到7等效于tabsize=8。tabsize每增加1，原字符串中“\t”的空间会多加一个空格。也就是tabsize的值从0到8是不变的，8以后每增加1就会增加一个空格。
+
+程序示例：
+
+
+```python
+str = "i love\tpython"
+print(str)
+```
+
+```
+## i love	python
+```
+
+```python
+print(str.expandtabs())#默认值为8
+```
+
+```
+## i love  python
+```
+
+```python
+print(str.expandtabs(tabsize=8))
+```
+
+```
+## i love  python
+```
+
+```python
+print(str.expandtabs())
+```
+
+```
+## i love  python
+```
+
+```python
+print(str.expandtabs(2)) #tabsize值为0到7，与tabsize值为8相同
+```
+
+```
+## i love  python
+```
+
+```python
+print(str.expandtabs(tabsize=2))
+```
+
+```
+## i love  python
+```
+
+```python
+print(str.expandtabs(tabsize=9))      
+```
+
+```
+## i love   python
+```
+
+```python
+print(str.expandtabs(tabsize=10))
+```
+
+```
+## i love    python
+```
+
+#### 解决查找指定字符(子字符串)位置问题
+
+##### find()函数{#b8}
+
+描述：查找字符串中指定的子字符串sub第一次出现的位置，可以规定字符串的索引查找范围。若无则返回 -1。
+
+语法：str.find(sub,start,end) -> int 返回整数
+
+sum —要索引的子字符串。
+
+start —索引的起始位置。默认值为0。
+
+end —索引的结束位置。默认值为字符串长度len(str)。
+
+[start,end) 不包括end。
+
+程序示例：
+
+
+```python
+str = "i love python"
+print(str.find("o")) #索引子字符串"o"
+```
+
+```
+## 3
+```
+
+```python
+print(str.find("0",4))#索引起始位置为4 索引范围为：ve python
+```
+
+```
+## -1
+```
+
+```python
+print(str.find("o",4,12))#索引起始位置为4,结束位置为12 索引范围为：ve pytho
+```
+
+```
+## 11
+```
+
+```python
+print(str.find(""))#不加字符串，返回0
+```
+
+```
+## 0
+```
+
+```python
+str2="jpq"
+print(str2.find(""))
+```
+
+```
+## 0
+```
+
+```python
+print(str.find(" "))#返回第一个空格出现的位置。
+```
+
+```
+## 1
+```
+
+```python
+print(str.find("k")) #索引子字符串"k",不存在，返回-1
+```
+
+```
+## -1
+```
+
+#####  rfind()函数{#b26}
+
+描述：查找字符串中指定的子字符串sub最后一次出现的位置，可以规定字符串的索引查找范围。若无则返回 -1。
+
+语法：str.rfind(sub,start,end) -> int 返回整数
+
+sub —要索引的子字符串。
+
+start —索引的起始位置。默认值为0。
+
+end —索引的结束位置。默认值为字符串长度len(str)。
+
+[start,end) 不包括end。
+
+注：rfind()函数用法与find()函数相似，rfind()函数返回指定子字符串最后一次出现的位置，find()函数返回指定子字符串第一次出现的位置。
+
+程序示例：
+
+
+```python
+str = "i love python python"
+str.rfind("n")
+```
+
+```
+## 19
+```
+
+```python
+str.rfind("n",0,19)#19不被包括
+```
+
+```
+## 12
+```
+
+```python
+str.rfind("n",0,20)
+```
+
+```
+## 19
+```
+
+```python
+print(str.rfind("o")) #默认索引整个字符串str
+```
+
+```
+## 18
+```
+
+```python
+print(str.rfind("o",11)) #索引范围为：on python
+```
+
+```
+## 18
+```
+
+```python
+print(str.rfind("o",0,12)) #索引范围为 i love pytho
+```
+
+```
+## 11
+```
+
+```python
+print(str.rfind("python")) #返回最后一次出现"python"的位置,即字母"p"最后一次出现的位置。
+```
+
+```
+## 14
+```
+
+```python
+print(str.rfind("")) #等效于返回字符串str的长度。
+```
+
+```
+## 20
+```
+
+```python
+print(str.rfind(" "))#返回最后一个空格出现的位置
+```
+
+```
+## 13
+```
+
+```python
+print(str.rfind("2"))  #字符串str中不存在字符"2",返回值为 -1
+```
+
+```
+## -1
+```
+
+##### index()函数{#b9} 
+
+描述：查找字符串中第一次出现的子字符串的位置，可以规定字符串的索引查找范围[star,end)。**若无则会报错**。注意find函数和rfind函数没有返回的是-1。
+
+语法：str.index(sub, start, end)  -> int  返回整数
+
+sub —— 查找的子字符串。
+
+start —— 索引的起始位置，默认为0。
+
+end  —— 索引的结束位置，默认为字符串的长度。
+
+[star,end)
+
+程序示例：
+
+
+```python
+str = "i love python"
+print(str.index("o"))  #默认索引整个字符串
+```
+
+```
+## 3
+```
+
+```python
+print(str.index("o",4))  #索引 ve python
+```
+
+```
+## 11
+```
+
+```python
+print(str.index("o",4,12)) #索引 ve pytho
+```
+
+```
+## 11
+```
+
+```python
+print(str.index("love"))    #索引多个字符
+# print(str.index("k"))    #索引字符串不存在，报错
+```
+
+```
+## 2
+```
+
+#### rindex()函数{#b27}
+
+描述：查找字符串中最后一次出现的子字符串的位置，可以规定字符串的索引查找范围[star,end)，若无则会报错。
+
+语法：str.rindex(sub, start, end) -> int   返回整数。
+
+sub —— 查找的子字符串。
+
+start —— 索引的起始位置，默认为0。
+
+end  ——  索引的结束位置，默认为字符串的长度。
+
+[star,end)
+
+注：rindex()函数用法与index()函数相似，rindex()函数返回指定子字符串最后一次出现的位置，index()函数返回指定子字符串第一次出现的位置。
+
+程序示例：
+
+
+```python
+str = "i love python python"
+print(str.rindex("p")) #默认索引整个字符串
+```
+
+```
+## 14
+```
+
+```python
+print(str.rindex("o",5)) #索引的范围为：e python python
+```
+
+```
+## 18
+```
+
+```python
+print(str.rindex("o",5,13)) #索引范围为：e python
+```
+
+```
+## 11
+```
+
+```python
+print(str.rindex("python")) #返回最后一次出现"python"的位置,即字母"p"最后一次出现的位置。
+# print(str.rindex("k"))  #索引字符串不存在，报错
+```
+
+```
+## 14
+```
+
+```python
+len(str),str[5:13]
+```
+
+```
+## (20, 'e python')
+```
+
+#### 解决格式化输出问题
+
+##### format()函数
+
+描述：返回一个格式化的字符串。
+
+语法：str.format(*args, **kwargs) ——> str 返回字符串 
+
+"模板字符串".format\(逗号分隔的参数) 或  \{参数序号:格式控制标记}.format\(逗号分隔的参数) 
+
+它是通过{}和:来代替%。
+
+模板字符串是一个由槽(用大括号{}来表示)和字符串组成的字符串，用来控制字符串的显示效果。大括号{}对应着format()中逗号分隔的参数。
+
+* format()基本用法 
+
+语法：[模板字符串].format(逗号分隔的参数) 
+ 
+程序示例:
+
+
+```python
+print("用法一:")
+```
+
+```
+## 用法一:
+```
+
+```python
+print("一日之计在于{}".format("晨"))
+```
+
+```
+## 一日之计在于晨
+```
+
+```python
+print("一日".format(0))# 如果没给槽，就插不进去
+
+# 如果模板字符串有多个槽{}，并且槽内没有指定的序号，则按照槽{}出现的顺序一一对应#format()函数中的不同参数
+```
+
+```
+## 一日
+```
+
+```python
+print("用法二：")
+```
+
+```
+## 用法二：
+```
+
+```python
+print("{}之计在于{}".format("一日","晨"))
+ 
+# 也可以通过在槽{}中指定format()函数中参数的序号来使用，参数是从0开始编号的。
+```
+
+```
+## 一日之计在于晨
+```
+
+```python
+print("用法三：")
+```
+
+```
+## 用法三：
+```
+
+```python
+print("{0}之计在于{1}".format("一日","晨"))
+```
+
+```
+## 一日之计在于晨
+```
+
+```python
+print("{1}之计在于{0}".format("晨","一日"))
+ 
+## 如果想要在模板字符串中输出大括号("{}"),则使用{{ 来表示 {   用 }} 来表示 }
+```
+
+```
+## 一日之计在于晨
+```
+
+```python
+print("用法四：")
+```
+
+```
+## 用法四：
+```
+
+```python
+print("{0}说得好：{{一{1}之计在于晨 一{2}之计在于春}}".format("俗话","日","年"))
+ 
+# 如果模板字符串中出现的槽{}和format()函数中参数个数不一致，
+# 则必须要在槽{}中使用序号来指定参数的使用，否者会产生IndexError的错误。
+```
+
+```
+## 俗话说得好：{一日之计在于晨 一年之计在于春}
+```
+
+```python
+print("用法五：")
+```
+
+```
+## 用法五：
+```
+
+```python
+print("{0}日之计在于晨, {0}年之计在于春".format("一"))
+# print("{}日之计在于晨, {}年之计在于春".format("一")) #槽中没有指定参数序号，会报错。
+```
+
+```
+## 一日之计在于晨, 一年之计在于春
+```
+
+* 通过关键字参数 
+
+程序示例： 
+
+
+```python
+print("{year}之计在于{season}".format(year="一年",season="春"))
+```
+
+```
+## 一年之计在于春
+```
+
+程序示例：
+
+
+```python
+l = ["一日","晨","一年","春"]#l是一个字符串列表
+a = ["一日","晨"]
+b = ["一年","春"]
+print("{0[0]}之计在于{0[1]}, {0[2]}之计在于{0[3]}".format(l))#l整体被记为0
+#format()函数中的参数可以是一个或多个列表，但要注意槽中序号的差异。
+```
+
+```
+## 一日之计在于晨, 一年之计在于春
+```
+
+```python
+print("{0[0]}之计在于{0[1]}, {1[0]}之计在于{1[1]}".format(a,b)) 
+```
+
+```
+## 一日之计在于晨, 一年之计在于春
+```
+
+* 通过字典
+
+程序示例：
+
+
+```python
+d1 = {"year":"一年","season":"春"}
+print(" {year}之计在于{season}".format(**d1))
+```
+
+```
+##  一年之计在于春
+```
+
+```python
+d2 = {"time":["一日","一年"],"season":["晨","春"]}
+print("{time[0]}之计在于{season[0]},{time[1]}之计在于{season[1]}".format(**d2))
+```
+
+```
+## 一日之计在于晨,一年之计在于春
+```
+
+* format()函数格式控制方法
+
+语法：{参数序号:格式控制标记}.format(逗号分隔的参数) 
+ 
+槽中格式控制标记规则
+
+  ：|	  [填充]| [对齐] | [宽度] |	[,]	 |[.精度] | [类型]
+ -|-|-|-|-|-|-
+引导符号|要填充的单个字符	|< 左对齐 > 右对齐 ^ 居中对齐|设定槽的输出宽度	|数字的千位分隔符 适用于整数和浮点数|用于控制浮点数小数部分的精度(长度)或字符串的最大输出长度| 整数类型：b,c,d,o,x,X 浮点数类型：e,E,f,%
+
+[填充]——只能填充单个字符。填充字符时，一定要选择对齐方式，否者会有 Invalid format specifier 的报错
+
+[对齐]——默认对齐方式为左对齐。
+
+[宽度]——指的是槽的输出宽度，当槽的实际宽度比槽的设定宽度大，则输出槽的实际宽度，否者按设定的宽度输出。
+
+[类型]——解析如下表：
+
+整数和浮点数类型的输出格式:
+
+类型|	描述|	类型|	描述
+:-:|:-|:-:|:-
+b|	输出整数的二进制形式|	e	|输出浮点数对应的小写字母e的指数形式
+c	|输出整数对应的Unicode字符|	E	|输出浮点数对应的大写字母E的指数形式
+d	|输出整数的十进制形式|	f|	输出标准浮点数形式
+o|	输出整数的八进制形式|	%|	输出浮点数的百分比形式
+x|	输出整数的小写十六进制形式||	 	 
+X|	输出整数的大写写十六进制形式||	
+ 	 
+格式控制标记规则:[填充], [对齐], [宽度], [,], [.精度], [类型]  这六个规则是可以任意组合使用的，但要按以上顺序使用。不过一般可以分为两组。
+
+一组为：[填充] [对齐] [宽度]   主要用于规范字符串的显示格式。
+
+程序示例：
+
+
+```python
+s = "厉害了，我的国"
+print("{0:30}".format(s))  #默认为左对齐，宽度为30,序号0可省
+```
+
+```
+## 厉害了，我的国
+```
+
+```python
+print("{0:>30}".format(s))  #右对齐  
+```
+
+```
+##                        厉害了，我的国
+```
+
+```python
+print("{0:*>30}".format(s)) #填充*字符，右对齐
+```
+
+```
+## ***********************厉害了，我的国
+```
+
+```python
+print("{0:*^30}".format(s)) #居中对齐
+## print("{0:*30}".format(s)) #填充字符时，没有选择对齐方式，会有 Invalid formatspecifier 的报错
+```
+
+```
+## ***********厉害了，我的国************
+```
+
+格式控制标记规则也可以用变量来表示，即用槽{}来指定对应的格式控制标记规则。
+
+程序示例：
+
+
+```python
+s = "厉害了，我的国"
+a = "*"
+b = "^"
+c = 30
+d = ["<","^",">"]
+print("{0:{1}{2}{3}}".format(s,a,b,c))  #居中对齐，宽度为30，填充字符为*
+```
+
+```
+## ***********厉害了，我的国************
+```
+
+```python
+print("{0:{1}{2[2]}{3}}".format(s,a,d,c))#右对齐，用列表选择对齐方式。
+```
+
+```
+## ***********************厉害了，我的国
+```
+
+```python
+print("{0:{1}{2[0]}{3}}".format(s,a,d,c)) 
+```
+
+```
+## 厉害了，我的国***********************
+```
+
+另一组为：[,]  [.精度]  [类型]   主要于规范数字的输出格式和控制字符串的输出长度。
+
+程序示例：
+
+
+```python
+print("{0:,}".format(123456789)) ## 千位分隔符
+```
+
+```
+## 123,456,789
+```
+
+```python
+print("{:,.3}".format(123456.123)) #保留3位有效数字
+```
+
+```
+## 1.23e+05
+```
+
+```python
+print("{:.3}".format("厉害了，我的国")) ## 输出前三个字符
+
+# 输出整数类型的格式化规则：
+```
+
+```
+## 厉害了
+```
+
+```python
+print("输出整数的二进制形式:{0:b}\n输出整数对应的Unicode字符:{0:c}\n输出整数的十进制形式:{0:d}\n输出整数的八进制形式:{0:o}\n输出整数的小写十六进制形式:{0:x}\n输出整数的大写写十六进制形式:{0:X}".format(123456))
+
+# 等效于一下语句：
+```
+
+```
+## 输出整数的二进制形式:11110001001000000
+## 输出整数对应的Unicode字符:𞉀
+## 输出整数的十进制形式:123456
+## 输出整数的八进制形式:361100
+## 输出整数的小写十六进制形式:1e240
+## 输出整数的大写写十六进制形式:1E240
+```
+
+```python
+print("输出整数的二进制形式: {:b}".format(123456))
+```
+
+```
+## 输出整数的二进制形式: 11110001001000000
+```
+
+```python
+print("输出整数对应的Unicode字符: {:c}".format(123456))
+```
+
+```
+## 输出整数对应的Unicode字符: 𞉀
+```
+
+```python
+print("输出整数的十进制形式: {:d}".format(123456))
+```
+
+```
+## 输出整数的十进制形式: 123456
+```
+
+```python
+print("输出整数的八进制形式: {:o}".format(123456))
+```
+
+```
+## 输出整数的八进制形式: 361100
+```
+
+```python
+print("输出整数的小写十六进制形式: {:x}".format(123456))
+```
+
+```
+## 输出整数的小写十六进制形式: 1e240
+```
+
+```python
+print("输出整数的大写写十六进制形式: {:X}".format(123456))
+  
+# 输出浮点数类型的格式化规则：
+```
+
+```
+## 输出整数的大写写十六进制形式: 1E240
+```
+
+```python
+print("输出浮点数对应的小写字母e的指数形式: {:e}".format(123456.123456))
+```
+
+```
+## 输出浮点数对应的小写字母e的指数形式: 1.234561e+05
+```
+
+```python
+print("输出浮点数对应的大写字母E的指数形式: {:E}".format(123456.123456))
+```
+
+```
+## 输出浮点数对应的大写字母E的指数形式: 1.234561E+05
+```
+
+```python
+print("输出标准浮点数形式: {:f}".format(123456.123456))
+```
+
+```
+## 输出标准浮点数形式: 123456.123456
+```
+
+```python
+print("输出浮点数的百分比形式: {:%}".format(123456.123456))
+ 
+# 对比  [.精度]可以控制小数部分的输出长度
+```
+
+```
+## 输出浮点数的百分比形式: 12345612.345600%
+```
+
+```python
+print("输出浮点数对应的小写字母e的指数形式: {:.3e}".format(123456.123456))
+```
+
+```
+## 输出浮点数对应的小写字母e的指数形式: 1.235e+05
+```
+
+```python
+print("输出浮点数对应的大写字母E的指数形式: {:.3E}".format(123456.123456))
+```
+
+```
+## 输出浮点数对应的大写字母E的指数形式: 1.235E+05
+```
+
+```python
+print("输出标准浮点数形式: {:.3f}".format(123456.123456))
+```
+
+```
+## 输出标准浮点数形式: 123456.123
+```
+
+```python
+print("输出浮点数的百分比形式: {:.3%}".format(123456.123456))
+```
+
+```
+## 输出浮点数的百分比形式: 12345612.346%
+```
+
+* 综合运用实例
+
+程序示例：
+
+
+```python
+print("{:*^30,.2f}".format(123456.1235))#用*字符填充，居中对齐，宽度为30，千位分隔符，保留小数点后两位，输出标准浮点数
+```
+
+```
+## **********123,456.12**********
+```
+
+```python
+s = "一年有:"
+a = 365.0000
+b = "天"
+print("{0:*>8}{1:,.1f}{2:*<5}".format(s,a,b))
+```
+
+```
+## ****一年有:365.0天****
+```
+
+##### format_map()函数
+
+描述：返回字符串的格式化版本。
+
+语法：str.format_map(mapping)  -> str 返回字符串
+
+程序示例：
+
+
+```python
+student = {"name":["张三","李四"],"idcard":[1,2]} 
+print("我的名字是{name[0]}，我的学号是{idcard[0]}".format_map(student))
+```
+
+```
+## 我的名字是张三，我的学号是1
+```
+
+```python
+print("我的名字是{name[0]}，我的学号是{idcard[1]}".format_map(student))
+  
+```
+
+```
+## 我的名字是张三，我的学号是2
+```
+
+```python
+print(["我的名字是{}，我的学号是{}".format(*x) for x in zip(student["name"],student["idcard"])]) #以列表的形式输出
+```
+
+```
+## ['我的名字是张三，我的学号是1', '我的名字是李四，我的学号是2']
+```
+
+```python
+print("我的名字是{}，我的学号是{}".format(*x) for x in zip(student["name"],student["idcard"]))
+ 
+```
+
+```
+## <generator object <genexpr> at 0x0000018BC1EA39C8>
+```
+
+```python
+print(["我的名字是{}，我的学号是{}".format(*x) for x in zip(*map(student.get,["name","idcard"]))]) #以列表的形式输出
+```
+
+```
+## ['我的名字是张三，我的学号是1', '我的名字是李四，我的学号是2']
+```
+
+```python
+print("我的名字是{}，我的学号是{}".format(*x) for x in zip(*map(student.get,["name","idcard"]))) 
+ 
+```
+
+```
+## <generator object <genexpr> at 0x0000018BC1E70E48>
+```
+
+```python
+for i in range(len(student)):
+    print("我的名字是{{name[0]}}，我的学号是{{idcard[0]}}".format(i).format_map(student))
+    #先用format（i）将{{}}转化为含{}的字符串，这样后面的format_map就可以插入了。
+    ## {{ }} 等效于{ }  
+```
+
+```
+## 我的名字是张三，我的学号是1
+## 我的名字是张三，我的学号是1
+```
+
+#### 解决判断问题(返回bool类型)
+
+##### endswith()函数{#b6}
+
+描述：判断字符串是否以指定字符或子字符串结尾。
+
+语法：str.endswith("suffix", start, end) 或 str[start,end].endswith("suffix")， 用于判断字符串中某段字符串是否以指定字符或子字符串结尾。
+
+suffix — 后缀，可以是单个字符，也可以是字符串，还可以是元组（"suffix"中的引号要省略，常用于判断文件类型）。
+
+start —索引字符串的起始位置。
+
+end — 索引字符串的结束位置。
+
+str.endswith(suffix)  star默认为0，end默认为字符串的长度len(str)
+
+**注意**：空字符的情况。返回值通常为True
+
+程序示例：
+
+
+```python
+str = "i love python"
+print("1:",str.endswith("n")) 
+```
+
+```
+## 1: True
+```
+
+```python
+print("2:",str.endswith("python"))
+```
+
+```
+## 2: True
+```
+
+```python
+print("3:",str.endswith("n",0,6))## 索引 i love 是否以“n”结尾。
+```
+
+```
+## 3: False
+```
+
+```python
+print("4:",str.endswith("")) #空字符
+```
+
+```
+## 4: True
+```
+
+```python
+print("5:",str[0:6].endswith("n")) ## 只索引 i love
+```
+
+```
+## 5: False
+```
+
+```python
+print("6:",str[0:6].endswith("e"))
+```
+
+```
+## 6: True
+```
+
+```python
+print("7:",str[0:6].endswith(""))
+```
+
+```
+## 7: True
+```
+
+```python
+print("8:",str.endswith(("n","z")))#遍历元组的元素，结尾是其中之一即返回True，否者返回False
+```
+
+```
+## 8: True
+```
+
+```python
+print("9:",str.endswith(("k","m")))
+  
+#元组案例
+```
+
+```
+## 9: False
+```
+
+```python
+file = "python.txt"
+if file.endswith("txt"):
+    print("该文件是文本文件")
+elif file.endswith(("AVI","WMV","RM")):
+    print("该文件为视频文件")
+else:
+    print("文件格式未知")
+```
+
+```
+## 该文件是文本文件
+```
+
+##### startswith()函数{#b33}
+
+描述：判断字符串是否以指定字符或子字符串开头。
+
+语法：str.endswith("suffix", start, end) 或 str[start,end].endswith("suffix") 用于判断字符串中某段字符串是否以指定字符或子字符串结尾。
+
+suffix — 后缀，可以是单个字符，也可以是字符串，还可以是元组（"suffix"中的引号要省略）。
+
+str.endswith(suffix)  star默认为0，end默认为字符串的长度。
+
+注意：空字符的情况。返回值通常也为True
+
+程序示例：
+
+
+```python
+str = "hello,i love python"
+print("1:",str.startswith("h"))
+```
+
+```
+## 1: True
+```
+
+```python
+print("2:",str.startswith("l",2,10))## 索引 llo,i lo 是否以“n”结尾。
+```
+
+```
+## 2: True
+```
+
+```python
+print("3:",str.startswith("")) #空字符
+```
+
+```
+## 3: True
+```
+
+```python
+print("4:",str[0:6].startswith("h")) ## 只索引  hello,
+```
+
+```
+## 4: True
+```
+
+```python
+print("5:",str[0:6].startswith("e"))
+```
+
+```
+## 5: False
+```
+
+```python
+print("6:",str[0:6].startswith(""))
+```
+
+```
+## 6: True
+```
+
+```python
+print("7:",str.startswith(("h","z")))#遍历元组的元素，存在即返回True，否者返回False
+```
+
+```
+## 7: True
+```
+
+```python
+print("8:",str.startswith(("k","m")))
+```
+
+```
+## 8: False
+```
+
+```python
+str2="a"
+str2.startswith("a")
+```
+
+```
+## True
+```
+
+```python
+str2.startswith("a",0,0)
+```
+
+```
+## False
+```
+
+##### isalnum()函数{#b10}
+
+描述：检测字符串是否由字母和数字组成。
+
+语法：str.isalnum()  -> bool  返回值为布尔类型（True,False）
+
+str中至少有一个字符且所有字符都是字母或数字则返回 True,否则返回 False
+
+程序示例：
+
+
+```python
+str1 = "i love python 666"  #有空格，不全是字母或数字
+str2 = "python" #全为字母
+str3 = "123"  #全为数字
+str4 = "python666"  #字母和数字的组合
+print(str1.isalnum())
+```
+
+```
+## False
+```
+
+```python
+print(str2.isalnum())
+```
+
+```
+## True
+```
+
+```python
+print(str3.isalnum())
+```
+
+```
+## True
+```
+
+```python
+print(str4.isalnum())
+```
+
+```
+## True
+```
+
+##### isalpha()函数{#b11}
+
+描述：检测字符串是否只由字母组成。
+
+语法：str.isalpha()  -> bool  返回值为布尔类型（True,False）
+
+字符串中至少有一个字符且所有字符都是字母则返回 True,否则返回 False。
+
+程序示例：
+
+
+```python
+str1 = "python" #全为字母
+str2 = " python" #存在空格
+str3 = "123"  #全为数字
+str4 = "python666"   #字母和数字的组合
+print(str1.isalpha())
+```
+
+```
+## True
+```
+
+```python
+print(str2.isalpha())
+```
+
+```
+## False
+```
+
+```python
+print(str3.isalpha())
+```
+
+```
+## False
+```
+
+```python
+print(str4.isalpha())
+```
+
+```
+## False
+```
+
+##### isdecimal()函数{#b12}
+
+描述：检查字符串是否只包含十进制字符。该方法只存在于unicode对象中。
+
+**注意**:定义一个十进制字符串，只需要在字符串前添加前缀 'u' 即可。
+
+语法： str.isdecimal()  -> bool  返回值为布尔类型（True,False）
+
+字符串中若只包含十进制字符返回True，否则返回False。
+
+程序示例：
+
+
+```python
+str1 = u"123456" 
+str2 = u"python666"
+str3 = "123456"
+str4 = "python666"
+print(str1.isdecimal())
+```
+
+```
+## True
+```
+
+```python
+print(str2.isdecimal())
+```
+
+```
+## False
+```
+
+```python
+print(str3.isdecimal())
+```
+
+```
+## True
+```
+
+```python
+print(str4.isdecimal())
+```
+
+```
+## False
+```
+
+##### isdigit()函数{#b13}
+
+描述：检测字符串是否只由数字组成.
+
+语法： str.isdigit()  -> bool  返回值为布尔类型（True,False）
+
+字符串中至少有一个字符且所有字符都是数字则返回True,否则返回 False。
+
+注：能判断“①”，不能判断中文数字。但 isnumeric() 函数可以。
+
+程序示例：
+
+
+```python
+str1 = "python" #全为字母
+str2 = " python" #存在空格
+str3 = "123"  #全为数字
+str4 = "python666"   #字母和数字的组合
+str5 = "一二三四五六七" #中文数字输出False
+str6 = "①"  
+print(str1.isdigit())
+```
+
+```
+## False
+```
+
+```python
+print(str2.isdigit())
+```
+
+```
+## False
+```
+
+```python
+print(str3.isdigit())
+```
+
+```
+## True
+```
+
+```python
+print(str4.isdigit())
+```
+
+```
+## False
+```
+
+```python
+print(str5.isdigit())
+```
+
+```
+## False
+```
+
+```python
+print(str6.isdigit())
+```
+
+```
+## True
+```
+
+##### isidentifier()函数
+
+描述：判断str是否是有效的标识符。str为符合命名规则的变量，保留标识符则返回True,否者返回False。
+
+语法：str.isidentifier()  -> bool  返回值为布尔类型（True,False）
+
+程序示例：
+
+
+```python
+
+str1 = "123"  #变量名为123
+str2 = "def"  #变量名为保留字
+str3 = "_123"  #变量名有下划线开头
+str4 = "student"#变量名由字母开端
+str5="dd d"
+print(str1.isidentifier())
+```
+
+```
+## False
+```
+
+```python
+print(str2.isidentifier())
+```
+
+```
+## True
+```
+
+```python
+print(str3.isidentifier())
+```
+
+```
+## True
+```
+
+```python
+print(str4.isidentifier())
+```
+
+```
+## True
+```
+
+```python
+print(str5.isidentifier())
+```
+
+```
+## False
+```
+
+##### islower()函数{#b14}
+
+描述：检测字符串中的字母是否全由小写字母组成。（字符串中可包含非字母字符）
+
+语法：str.islower()  -> bool   返回值为布尔类型（True,False）
+
+字符串中包含**至少一个区分大小写的字符**，且所有这些区分大小写的字符都是小写，则返回 True，否则返回False。
+
+程序示例：
+
+
+```python
+str1 = "i love python"  #字符串中的字母全为小写
+str2 = "我爱python！"  #字符串中的字母全为小写，也存在非字母的字符
+str3 = "I love python" #字符串中有大写字符
+print(str1.islower())
+```
+
+```
+## True
+```
+
+```python
+print(str2.islower())
+```
+
+```
+## True
+```
+
+```python
+print(str3.islower())
+```
+
+```
+## False
+```
+
+##### isupper()函数{#b18}
+
+描述：检测字符串中的字母是否全由大写字母组成。（字符串中可包含非字母字符）。
+
+语法：str.isupper()  -> bool  返回值为布尔类型（True,False）
+
+字符串中包含至少一个区分大小写的字符，且所有这些区分大小写的字符都是大写，则返回 True，否则返回 False。
+
+程序示例：
+
+
+```python
+str1 = "I LOVE PYTHON"  #全为大写字母
+str2 = "i LOVE PYTHON"  #存在小写字母
+str3 = "我爱PYTHON"   #存在非字母的字符
+print(str1.isupper())
+```
+
+```
+## True
+```
+
+```python
+print(str2.isupper())
+```
+
+```
+## False
+```
+
+```python
+print(str3.isupper())
+```
+
+```
+## True
+```
+
+##### isnumeric()函数{#b15}
+
+描述：测字符串是否只由数字组成。这种方法是**只适用于unicode对象**。
+
+注：把一个字符串定义为Unicode，只需要在字符串前添加前缀 'u' 
+
+语法：str.isnumeric()  -> bool  返回值为布尔类型（True,False）
+
+字符串中只包含数字字符，则返回 True，否则返回 False。
+
+与isdigit()函数类似，但isnumeric()函数可以判断中文数字，功能更强大。
+
+程序示例：
+
+
+```python
+str1 = u"123456"  #全为数字
+str2 = "123456"
+str3 = "python666"  #字母数字组合
+str4 = "一二三四五六"  #中文数字
+str5 = "①"
+print(str1.isnumeric())
+```
+
+```
+## True
+```
+
+```python
+print(str2.isnumeric())
+```
+
+```
+## True
+```
+
+```python
+print(str3.isnumeric())
+```
+
+```
+## False
+```
+
+```python
+print(str4.isnumeric())
+```
+
+```
+## True
+```
+
+```python
+print(str5.isnumeric())
+```
+
+```
+## True
+```
+
+##### isprintable()函数
+
+描述：判断字符串中是否有打印后不可见的内容。如：\\n ,\\t  等字符。
+
+语法：  str.isprintable()  -> bool 返回值为布尔类型（True,False）
+
+若字符串中不存在\\n ,\\t 等不可见的内容，则返回True,否者返回False。
+
+程序示例：
+
+
+```python
+str1 = "i love  python"  #不存在用print()打印后不可见的内容
+str2 = "i love python \n" #存在用print()打印后不可见的内容 \n
+#注意比较直接输出str2和print（str2）
+str2
+```
+
+```
+## 'i love python \n'
+```
+
+```python
+print(str2)
+```
+
+```
+## i love python
+```
+
+```python
+str3 = "i love \t python"
+print(str1.isprintable())
+```
+
+```
+## True
+```
+
+```python
+print(str2.isprintable())
+```
+
+```
+## False
+```
+
+```python
+print(str3.isprintable())
+```
+
+```
+## False
+```
+
+##### isspace()函数{#b16}
+
+描述： 检测字符串是否只由空格组成。
+
+语法：str.isspace()  -> bool   返回值为布尔类型（True,False）
+
+若字符串中只包含空格，则返回 True，否则返回 False。
+
+程序示例：
+
+
+```python
+str1 = "   "#空格
+str2 = "i love python" 
+print(str1.isspace())
+```
+
+```
+## True
+```
+
+```python
+print(str2.isspace())
+```
+
+```
+## False
+```
+
+```python
+print(str2[1].isspace()) #字符串str2 的第二个字符为空格
+```
+
+```
+## True
+```
+
+##### istitle()函数{#b17}
+
+描述：检测判断字符串中所有单词的首字母是否为大写，且其它字母是否为小写，字符串中可以存在其它非字母的字符。
+
+语法：str.istitle()  -> bool  返回值为布尔类型（True,False）
+
+若字符串中所有单词的首字母为大写，且其它字母为小写，则返回 True，否则返回 False.
+
+程序示例：
+
+
+```python
+str1 = "I Love Python" #各单词的首字母均为大写，其余字母为小写
+str2 = "I love python" 
+str3 = "I LOVE PYTHON"
+str4 = "我爱Python"  #存在其它非字母字符，
+print(str1.istitle())
+```
+
+```
+## True
+```
+
+```python
+print(str2.istitle())
+```
+
+```
+## False
+```
+
+```python
+print(str3.istitle())
+```
+
+```
+## False
+```
+
+```python
+print(str4.istitle())
+```
+
+```
+## True
+```
+
+#### 解决字符串两端
+
+##### strip()函数{#b40}
+
+描述：从字符串str中去掉在其左右两边chars中列出的字符。
+
+注：chars传入的是一个字符数组，编译器去除两端所有相应的字符，直到出现第一个在chars中不匹配的字符。详看示例。
+
+语法： str.strip(chars)  -> str 返回一个新的字符串
+
+chars —— 要去除的字符  **默认为空格或换行符**。
+
+程序示例：
+
+
+```python
+str = "123456789321"
+print(str.strip("123")) #除去123，对于字符串str右边，1 在 "123"中去除，2在"123"中去除，同理3也去除，但9不在"123"中,去除结束
+```
+
+```
+## 456789
+```
+
+```python
+str1 = "my name is ymyyyy"
+print(str1.strip("my"))  #"my" 无空格，字母n前的空格不去掉。
+```
+
+```
+##  name is
+```
+
+```python
+print(str1.strip("my ")) #"my "有空格，所以str1左边字母n前的空格被去掉。
+```
+
+```
+## name is
+```
+
+##### lstrip()函数{#b22}
+
+描述：从字符串str中去掉在其左边chars中列出的字符。
+
+注：chars传入的是一个字符数组，编译器去除两端所有相应的字符，直到出现第一个在chars中不匹配的字符。详看示例。
+
+语法：str.lstrip(chars)  -> str 返回一个新的字符串
+
+chars —— 要去除的字符  默认为空格或换行符。
+
+程序示例：
+
+
+```python
+str1 = "bacjabck123kluabc"
+print(str1.lstrip("abc"))  #只去掉左边的"bac",左边第4个字符j不在"abc"中，去除结束
+```
+
+```
+## jabck123kluabc
+```
+
+```python
+str2 = "12578asdfgh12"
+print(str2.lstrip("12")) #只去掉字符串str2左边的 12
+```
+
+```
+## 578asdfgh12
+```
+
+##### rstrip()函数{#b30}
+
+描述：从字符串str中去掉在其右边chars中列出的字符。
+
+注：chars传入的是一个字符数组，编译器去除两端所有相应的字符，直到出现第一个在chars中不匹配的字符。详看示例。
+
+语法：str.rstrip(chars)  -> str 返回一个新的字符串
+
+chars —— 要去除的字符  默认为空格或换行符。
+
+程序示例：
+
+
+```python
+str1 = "abcjabck123kluabcca"
+print(str1.rstrip("abc"))  #只去掉右边的"abcca",右边第6个字符u不在"abc"中，去除结束
+```
+
+```
+## abcjabck123klu
+```
+
+```python
+str2 = "12578asdfgh11112"
+print(str2.rstrip("12")) #只去掉字符串str2右边的 11112
+```
+
+```
+## 12578asdfgh
+```
+
+#### 解决 制表 翻译 问题
+
+##### maketrans()函数{#b23}
+
+描述：制作翻译表，删除表，常与translate()函数连用。 即：返回用于str.translate（）函数翻译的的转换表。
+
+语法：maketrans(x, y=None, z=None, /)  返回可用于str.translate()函数的转换表
+
+str.maketrans(x,y,z)  #返回的是Unicode映射的字典。
+ 
+bytes.maketrans(x,y)  #返回的是bytes类型.
+ 
+bytearray.maketrans(x,y)  #返回的是bytes类型。
+
+如果只有一个参数x,它必须是一个字典且为Unicode形式的映射。
+
+如果有两个参数x和y，它们必须是长度相等的字符串，并且在结果映射中，x中的每个字符都将映射到y中相同位置的字符(Unicode形式的映射)。
+
+如果有三个参数x,y和z.  x和y用法同上，z为指定要删除的字符串，其结果中的字符将一一映射为：None。
+
+bytes.maketrans(x,y) 和  bytearray.maketrans(x,y) 必须要有x和y两个参数。
+
+注：z的长度可以和x和y不同。
+
+* str.maketrans(x,y,z)形式
+
+程序示例：
+
+
+```python
+s = "123456789" 
+#只有参数x，且x为字典。
+map1 = str.maketrans({"1":"a","2":"b","3":"c"}) 
+#单字符"1" "2" "3"对应的Unicode编码值分别为：49，50,51
+#制作翻译表,将 字符串s 中的单字符"1"替换为单字符"a"，单字符"2"替换为单字符"b",一一对应。
+print(map1,type(map1),ord("1"),ord("2"),ord("3")) #map1返回的是一个Unicode形式映射的字典
+#只有参数x和参数y
+```
+
+```
+## {49: 'a', 50: 'b', 51: 'c'} <class 'dict'> 49 50 51
+```
+
+```python
+map2 = str.maketrans("123","abc")
+#单字符"1" "2" "3"对应的Unicode编码值如上，单字符"a" "b" "c"对应的Unicode编码值分别为：97，98,99
+#制作翻译表,将字符串s中的单字符"1"替换为单字符"a"，单字符"2"替换为单字符"b",一一对应
+print(map2,type(map2),ord("a"),ord("b"),ord("c"))#map2返回的也是一个Unicode形式映射的字典 
+#有x,y,z三个参数
+```
+
+```
+## {49: 97, 50: 98, 51: 99} <class 'dict'> 97 98 99
+```
+
+```python
+map3 = str.maketrans("123","abc","56k") 
+#字符串"123"和"abc"含义如上。字符串"567"为 字符串s 要删除的字符,即制作删除表。
+#单字符"5" "6" "k"对应的Unicode编码值分别为：53,54,107
+print(map3,type(map3),ord("5"),ord("6"),ord("k")) #map3返回的也是一个Unicode形式映射的字典
+
+# bytes.maketrans(x,y)形式
+```
+
+```
+## {49: 97, 50: 98, 51: 99, 53: None, 54: None, 107: None} <class 'dict'> 53 54 107
+```
+
+```python
+map4 = bytes.maketrans(b"123",b"abc")
+print(type(b"123"),type(b"abc"),type(map4),map4)
+```
+
+```
+## <class 'bytes'> <class 'bytes'> <class 'bytes'> b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !"#$%&\'()*+,-./0abc456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff'
+```
+
+```python
+map5 = bytearray.maketrans(b"123",b"abc")
+print(type(b"123"),type(b"abc"),type(map5),map5)
+```
+
+```
+## <class 'bytes'> <class 'bytes'> <class 'bytes'> b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !"#$%&\'()*+,-./0abc456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff'
+```
+   
+#### translate()函数{#b36}
+
+描述：过滤(删除)，翻译字符串。即根据maketrans()函数给出的字符映射转换表来转换字符串中的字符。
+
+注：translate()函数是先过滤(删除)，再根据maketrans()函数返回的转换表来翻译。
+
+语法：str.translate(table)  -> str 返回一个字符串
+
+str.translate(table)
+
+bytes.translate(table, deletechars)  
+
+bytearray.translate(table, deletechars)
+
+table —— 转换表，转换表是通过maketrans()函数转换而来。
+
+deletechars —— 字符串中要过滤(删除)的字符。
+
+程序示例：
+
+
+```python
+s = "123456789abc"
+s1 = b"123456789abc"
+#只有参数x，且x为字典。
+map1 = str.maketrans({"1":"a","2":"b","3":"c"}) 
+#单字符"1" "2" "3"对应的Unicode编码值分别为：49，50,51
+#制作翻译表,将 字符串s 中的单字符"1"替换为单字符"a"，单字符"2"替换为单字符"b",一一对应。
+print(map1,type(map1),ord("1"),ord("2"),ord("3")) #map1返回的是一个Unicode形式映射的字典
+ 
+#只有参数x和参数y
+```
+
+```
+## {49: 'a', 50: 'b', 51: 'c'} <class 'dict'> 49 50 51
+```
+
+```python
+map2 = str.maketrans("123","abc")
+#单字符"1" "2" "3"对应的Unicode编码值如上，单字符"a" "b" "c"对应的Unicode编码值分别为：97，98,99
+#制作翻译表,将字符串s中的单字符"1"替换为单字符"a"，单字符"2"替换为单字符"b",一一对应
+print(map2,type(map2),ord("a"),ord("b"),ord("c"))#map2返回的也是一个Unicode形式映射的字典
+ 
+#有x,y,z三个参数
+```
+
+```
+## {49: 97, 50: 98, 51: 99} <class 'dict'> 97 98 99
+```
+
+```python
+map3 = str.maketrans("123","abc","56k") 
+#字符串"123"和"abc"含义如上。字符串"567"为 字符串s 要删除的字符,即制作删除表。
+#单字符"5" "6" "k"对应的Unicode编码值分别为：53,54,107
+print(map3,type(map3),ord("5"),ord("6"),ord("k")) #map3返回的也是一个Unicode形式映射的字典
+ 
+```
+
+```
+## {49: 97, 50: 98, 51: 99, 53: None, 54: None, 107: None} <class 'dict'> 53 54 107
+```
+
+```python
+map4 = bytes.maketrans(b"123",b"abc")
+print(type(b"123"),type(b"abc"),type(map4),map4)
+ 
+```
+
+```
+## <class 'bytes'> <class 'bytes'> <class 'bytes'> b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !"#$%&\'()*+,-./0abc456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff'
+```
+
+```python
+print("\n")
+ 
+```
+
+```python
+map5 = bytearray.maketrans(b"123",b"abc")
+print(type(b"123"),type(b"abc"),type(map5),map5)
+ 
+```
+
+```
+## <class 'bytes'> <class 'bytes'> <class 'bytes'> b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !"#$%&\'()*+,-./0abc456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff'
+```
+
+```python
+print("\n\n")
+ 
+```
+
+```python
+print(s.translate(map1)) #将 字符串s 中的"123" 分别替换为 "abc"
+```
+
+```
+## abc456789abc
+```
+
+```python
+print(s.translate(map2)) #将 字符串s 中的"123" 分别替换为 "abc"
+```
+
+```
+## abc456789abc
+```
+
+```python
+print(s.translate(map3)) #先将 字符串s 中的字符 "5","6" ,"k"过滤(删除)，再将 字符串s 中的"123" 分别翻译替换为 "abc"
+```
+
+```
+## abc4789abc
+```
+
+```python
+print(s1.translate(map4))
+```
+
+```
+## b'abc456789abc'
+```
+
+```python
+print(s1.translate(map5))
+```
+
+```
+## b'abc456789abc'
+```
+
+```python
+print(s1.translate(map4,b"78b")) #先将s1中的b"78b" 过滤(删除)，再将 s1 中的b"123" 分别翻译替换为 b"abc"
+```
+
+```
+## b'abc4569ac'
+```
+
+```python
+print(s1.translate(map5,b"9"))  #先将s1中的b"9" 过滤(删除)，再将 s1 中的b"123" 分别翻译替换为 b"abc"
+```
+
+```
+## b'abc45678abc'
+```
+
+#### 解决分割字符串问题
+
+##### partition()函数{#b24}
+
+描述：根据指定的分隔符(sep)将字符串进行分割。从字符串左边开始索引分隔符sep,索引到则停止索引。
+
+语法： str.partition(sep) -> (head, sep, tail)
+
+返回一个三元元组，head:分隔符sep前的字符串，sep:分隔符本身，tail:分隔符sep后的字符串。
+
+sep —— 指定的分隔符。
+
+如果字符串包含指定的分隔符sep，则返回一个三元元组，第一个为分隔符sep左边的子字符串，第二个为分隔符sep本身，第三个为分隔符sep右边的子字符串。
+
+如果字符串不包含指定的分隔符sep,仍然返回一个三元元组，第一个元素为字符串本身，第二第三个元素为空字符串
+
+程序示例：
+
+
+```python
+str = "https://www.baidu.com/"
+print(str.partition("://")) #字符串str中存在sep"://"
+```
+
+```
+## ('https', '://', 'www.baidu.com/')
+```
+
+```python
+print(str.partition(","))  #字符串str中不存在sep",",返回了两个空字符串。
+```
+
+```
+## ('https://www.baidu.com/', '', '')
+```
+
+```python
+print(str.partition("."))  #字符串str中存在两个"." 但索引到www后的"."  停止索引。
+```
+
+```
+## ('https://www', '.', 'baidu.com/')
+```
+
+```python
+print(type(str.partition("://"))) #返回的是tuple类型， 即元组类型
+```
+
+```
+## <class 'tuple'>
+```
+
+##### rpartition()函数{#b29}
+
+描述：根据指定的分隔符(sep)将字符串进行分割。从字符串右边(末尾)开始索引分隔符sep,索引到则停止索引。
+
+语法：str.rpartition(sep)  -> (head, sep, tail)
+
+返回一个三元元组，head:分隔符sep前的字符串，sep:分隔符本身，tail:分隔符sep后的字符串。
+
+sep —— 指定的分隔符。
+
+如果字符串包含指定的分隔符sep，则返回一个三元元组，第一个为分隔符sep左边的子字符串，第二个为分隔符sep本身，第三个为分隔符sep右边的子字符串。
+
+如果字符串不包含指定的分隔符sep,仍然返回一个三元元组，第一个元素为字符串本身，第二第三个元素为空字符串。
+
+注：rpartition()函数与partition()函数用法相似，rpartition()函数从右边(末尾)开始索引，partition()函数从左边开始索引。
+
+程序示例：
+
+
+```python
+str = "https://www.baidu.com/"
+print(str.rpartition("://")) #字符串str中存在sep"://"
+```
+
+```
+## ('https', '://', 'www.baidu.com/')
+```
+
+```python
+print(str.rpartition(","))  #字符串str中不存在sep",",返回了两个空字符串。
+```
+
+```
+## ('', '', 'https://www.baidu.com/')
+```
+
+```python
+print(str.rpartition("."))  #字符串str中存在两个"." 但索引是从右边(末尾)开始，索引到du后的"."  停止索引。
+```
+
+```
+## ('https://www.baidu', '.', 'com/')
+```
+
+```python
+print(type(str.partition("://"))) #返回的也是tuple类型， 即元组类型
+```
+
+```
+## <class 'tuple'>
+```
+
+##### split()函数{#b31}
+
+描述：拆分字符串。通过指定分隔符sep对字符串进行分割，并返回分割后的字符串列表。
+
+语法： str.split(sep=None, maxsplit=-1)  -> list of strings  返回 字符串列表  或str.split(sep=None, maxsplit=-1)[n]  
+
+sep —— 分隔符，**默认为空格,但不能为空即(")。**
+
+maxsplit —— 最大分割参数，默认参数为-1,代表只要遇到分割符就分割。如果设为1，那么只在遇到第一个分隔符的时候分割。
+
+[n] —— 返回列表中下标为n的元素。列表索引的用法。
+
+程序示例：
+
+
+```python
+str1 = "i love python"
+str2 = "https://www.baidu.com"
+str3 = "script<i love python>script"
+str4 = "i \n love \n python"
+print(str1.split()) #默认空格分割。
+```
+
+```
+## ['i', 'love', 'python']
+```
+
+```python
+print(str2.split("."))#以"."为分隔符,maxsplit默认为-1
+```
+
+```
+## ['https://www', 'baidu', 'com']
+```
+
+```python
+print(str2.split(".",-1)) #maxsplit为-1
+```
+
+```
+## ['https://www', 'baidu', 'com']
+```
+
+```python
+print(str2.split(".",1)) #以"."为分隔符,分割一次。
+```
+
+```
+## ['https://www', 'baidu.com']
+```
+
+```python
+print(str2.split(".")[1]) #分割后，输出列表中下标为1的元素
+```
+
+```
+## baidu
+```
+
+```python
+print(str3.split("<")[1].split(">")[0])#循环使用
+```
+
+```
+## i love python
+```
+
+```python
+print(str4.split("\n")) #可用于去掉字符串中的"\n" "\t"等
+```
+
+```
+## ['i ', ' love ', ' python']
+```
+
+##### rsplit()函数
+
+描述：拆分字符串。通过指定分隔符sep对字符串进行分割，并返回分割后的字符串列表,类似于split()函数，只不过 rsplit()函数是从字符串右边(末尾)开始分割。
+
+语法： str.rsplit(sep=None, maxsplit=-1)  -> list of strings  返回 字符串列表  或str.rsplit(sep=None, maxsplit=-1)[n]  
+
+sep —— 分隔符，默认为空格,但不能为空即(")。
+
+maxsplit —— 最大分割参数，默认参数为-1。
+
+[n] —— 返回列表中下标为n的元素。列表索引的用法。
+
+程序示例：
+
+
+```python
+str = "https://www.baidu.com"
+print(str.rsplit()) #默认空格分割。
+```
+
+```
+## ['https://www.baidu.com']
+```
+
+```python
+print(str.rsplit(".")) #以"."为分隔符,maxsplit默认为-1
+```
+
+```
+## ['https://www', 'baidu', 'com']
+```
+
+```python
+print(str.rsplit(".",1)) #以"."为分隔符,分割一次。从字符串右边(末尾)开始分割。
+```
+
+```
+## ['https://www.baidu', 'com']
+```
+
+```python
+print(str.rsplit(".",1)[1]) #分割后，输出列表中下标为1的元素
+```
+
+```
+## com
+```
+
+##### splitlines()函数{#b32}
+
+描述：按照('\\n', '\\r', \\r\\n'等)分隔，返回一个包含各行作为元素的列表，默认不包含换行符。
+
+符号|	描述
+-|-
+\\n	|换行符
+\\r|	回车符
+\\r\\n	|回车+换行
+
+语法：str.splitlines(keepends) -> list of strings  返回 字符串列表
+
+keepends —— 默认参数为False ，译为 不保留换行符。参数为True , 译为 保留换行符。
+
+程序示例：
+
+
+```python
+s1 = """i
+love
+python
+"""
+s2 = "i\nlove\npython\n" #与s1等效。
+s3 = "123\n456\r789\r\nabc"
+print(s1.splitlines(True)) 
+```
+
+```
+## ['i\n', 'love\n', 'python\n']
+```
+
+```python
+print(s1.splitlines()) #keepends 默认为False
+```
+
+```
+## ['i', 'love', 'python']
+```
+
+```python
+print(s1.splitlines(False))
+```
+
+```
+## ['i', 'love', 'python']
+```
+
+```python
+print(s2.splitlines())
+```
+
+```
+## ['i', 'love', 'python']
+```
+
+```python
+print(s3.splitlines()) #遇到("\n"  "\r"  "\r\n"等)即分隔。
+```
+
+```
+## ['123', '456', '789', 'abc']
+```
+
+##### join()函数{#b19}
+
+描述：将iterable变量的**每一个元素**后增加一个str字符串。
+
+语法： str.join(iterable)  -> str  返回字符串 即：返回一个以str作为分隔符，将iterable中的各元素合并连接成一个新的字符串。**str合并到iterable中每一个字符后面,可以当做新字符串的分隔符**
+
+str——分隔符。可以为空。
+
+iterable—— 要连接的变量 ，可以是 字符串，元组，字典，列表等。
+
+程序示例：
+
+
+```python
+#对列表进行操作
+l = ["1","2","3"]
+print(" ".join(l)) #以空格为分隔符
+```
+
+```
+## 1 2 3
+```
+
+```python
+print(",".join(l)) #以逗号为分隔符
+ 
+ 
+#对字符串进行操作
+```
+
+```
+## 1,2,3
+```
+
+```python
+str = "python"
+print(" ".join(str)) #以空格为分隔符
+```
+
+```
+## p y t h o n
+```
+
+```python
+print(",".join(str)) #以逗号为分隔符
+ 
+#对字典进行操作
+```
+
+```
+## p,y,t,h,o,n
+```
+
+```python
+d = {"a":1,"b":2,"c":3}
+print(" ".join(d)) #以空格为分隔符
+```
+
+```
+## a b c
+```
+
+```python
+print(",".join(d)) #以逗号为分隔符
+ 
+#对元组进行操作
+```
+
+```
+## a,b,c
+```
+
+```python
+s = ("1","2","3")
+print(" ".join(s)) #以空格为分隔符
+```
+
+```
+## 1 2 3
+```
+
+```python
+print(",".join(s)) #以逗号为分隔符
+```
+
+```
+## 1,2,3
+```
+
+#### 解决替换问题
+
+##### replace()函数{#b25}
+
+描述：返回字符串str的副本，所有old子字符串被替换为new字符串。
+
+语法：str.replace(old, new, count) -> str 返回字符串str的副本
+
+old —— 将被替换的子字符串。  
+new —— 新子字符串，用于替换old子字符串。  
+count —— 替换的次数，默认全部替换。  
+
+程序示例：
+
+
+```python
+s = "i love python python "
+print(s.replace("o","w")) #默认字符串中的全部"o" 全部替换为"w"
+```
+
+```
+## i lwve pythwn pythwn
+```
+
+```python
+print(s.replace("o","w",2)) #只替换掉前两个子字符串 "o"
+```
+
+```
+## i lwve pythwn python
+```
+
+```python
+print(s.replace("python","c++"))  #子字符串可以是多个字符。
+```
+
+```
+## i love c++ c++
+```
+
+```python
+print(s.replace("python","c++",1))
+```
+
+```
+## i love c++ python
+```
+
+来源：<https://blog.csdn.net/qq_40678222/article/details/83032178?utm_source=app> 
+
+### 逻辑型
+
+* 逻辑值
+
+逻辑（bool）类型简介
+
+bool表示布尔型变量，也就是逻辑型变量的定义符，以英国数学家、布尔代数的奠基人[乔治·布](https://baike.baidu.com/item/%E4%B9%94%E6%B2%BB%C2%B7%E5%B8%83%E5%B0%94)（George Boole）命名。乔治·布尔发明了逻辑值以及逻辑值之间的运算体系。
+
+bool仅包含真(True)/假(False)两个值，0为False，非0为True。（例如-1和2都是True），在逻辑值运算中为：非真既假。
+
+* 判断与真值
+
+逻辑类型经常用来配合if/while等语句进行条件判断，如果逻辑值为真，那么控制流会做相应的操作；逻辑值为假，则会做另一种操作。
+
+* 逻辑运算
+
+逻辑运算又称布尔运算。布尔用数学方法研究逻辑问题，成功地建立了逻辑演算。布尔逻辑运算符 and， or 和 not 都是 Python 关键字，这些运算符的优先级按从高到低的顺序。not 运算符拥有最高优先级，只比所有比较运算符低一级。 and 和 or 运算符则相应的再低一级。and 和 or是双目运算，由两个表达式进行运算。not是单目运算，作用于一个逻辑值的运算，而且not 要放在逻辑值的前面。
+
+{{%figure src=\"graph-python-python基础知识/逻辑运算.png\"%}}
+
+#### 与(and)运算
+
+and连接的值需要同时为真，计算结果才为真，否则得到的结果就为假。and具有惰性求值或逻辑短路的特点，当连接多个表达式时只需计算必须要计算的值。我们可以这样理解，就是expr1 and expr2，如果表达式expr1的值为假，那么后面的表达式expr2不会被计算到，这个表达式的内容直接为假。如果expr1为真，那么计算机会继续判断后面的expr2是否为真，如果为真，那么表达式为真。另外要注意：and并不一定会返回True或者False，而是得到最后一个计算的表达式的值
+
+{{%figure src=\"graph-python-python基础知识/与and.png\"%}}
+
+ 例如我们在Python自带的shell中计算一下不同表达式的值。我们这里直接将每个表达式的结果记为True或者False。
+
+    >>> True and True
+    True
+    >>> True and False
+    False
+    >>> False and True
+    False
+    >>> False and False
+    False
+    >>> 5 and 6
+    6
+    >>> True and 5
+    5
+    >>> False and 5
+    False
+    >>> 1 and False
+    False
+    >>> True and True and False
+    False
+    >>> False and True and True and False
+    False
+
+#### 或(or)运算
+
+or连接的值只要有一个为真，计算结果就为真，全部为假计算结果才为假。同样or也像and一样具有惰性求值或逻辑短路的特点。or也不一定会返回True或者False，而是得到最后一个计算的表达式的值
+
+{{%figure src=\"graph-python-python基础知识/或（or）.png\"%}}
+
+    >>> True or True
+    True
+    >>> True or False
+    True
+    >>> False or True
+    True
+    >>> False or False
+    False
+    >>> 5 or 6
+    5
+    >>> False or 6
+    6
+    >>> False or True or True
+    True
+    >>> True or True or False
+    True
+    >>> False or False or False
+    False
+
+#### 非(not)运算
+
+ not只连接一个值，非真为假，非假为真。意思是not连接一个真值，那么得到的结果就为假；连接一个假值，结果就为真。
+
+{{%figure src=\"graph-python-python基础知识/非not.png\" %}}
+
+    >>> not True
+    False
+    >>> not False
+    True
+    >>> not (True and False)
+    True
+    >>> not (True or False)
+    False
+    >>> not (False or False)
+    True
+
+#### 逻辑运算符的优先级
+
+ and or not 三个运算符的优先级上面提到过一点，具体的优先级为：
+
+not 最高，and 次之，or 最低
+
+在实际的编程中，我们建议使用括号来表示优先级，这样可以使我们的代码可读性更高，比如上面的not 的例子。
+
+各种类型对应的真值
+
+除了做条件判断得到的逻辑值，其他的数据类型也可以得到真值。
+
+整数、浮点数和复数类型
+
+0为“假”，所有的非0的数值都是“真”
+
+字符串类型
+
+空串("")为假，所有的非空串为真
+
+所有的序列类型(列表、元组以及上面所提到的字符串)
+空序列为假，所有的非空序列为真。
+
+空值None
+
+表示“无意义”、“没有值”,也是假。None的值是一个空对象，空值是Python里一个特殊的值，用None表示。None不能理解为0，因为0是有意义的，而None是一个特殊的空值。可以将None赋值给任何变量。如果我们将None赋值给一个对象，可以将其值置空。
+
+    >>> type(None)
+    <class 'NoneType'>
+    >>> type(0)
+    <class 'int'>
+
+原文链接：https://blog.csdn.net/qq_41575507/article/details/106173149
+
+### 缺失值
+
+有些统计资料是不完整的。当一个元素或值在统计的时候是"不可得到"或"缺失值"的时候,,相关位置可能会被保留并且赋予一个特定的 nan（not availablenumber,不是一个数）值。任何 nan的运算结果都是 nan。例如,float('nan'）就是一个实数缺失值。
+
+### 类型转换
+
+需要对数据内置的类型进行转换,只须将数据类型作为函数名即可。
+
+以下几个内置的函数可以实现数据类型之间的转换。
+
+这些函数返回一个新的对象,表示转换的值。下面列出几种常用的数据类型转换方式:
+
+    int（x,base）#将x转换为一个整数
+    float（×）#将x 转换为一个浮数点
+    str（x）#将对象 x 转换为字符串
+    chr（×）#将一个整数转换为一个字符
+
+这里将一个整形或float型转换成一个字符或是字符串，其实是转换成了ASCII码所对应字符。你不能将一个不是整数的浮点数转换为chr型，但可以转换为str型str就是加上单引号
+
+python的所有数据类型都是类,可以通过 type(）查看该变量的数据类型。
+

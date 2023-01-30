@@ -1,0 +1,2881 @@
+---
+title: 内置函数
+date: 2022-12-4
+lastmod: '2022-12-094T16:44:38+08:00'
+summary: python的内置函数总结
+weight: 15
+toc: true
+type: book
+---
+
+## 库，模块，包，py文件
+
+python有一个大型的标准库，库里面有众多的包。包是一种通过使用".模块名”来构造Python模块命名空间的方式。例如，模块名A.B表示A包中名称为B的子模块。模块实质上也是一个py文件,每个文件包含一些python定义和语句，它定义了模块的功能。
+
+其实，库与包与模块的界限没有那么清晰，包也可以看成库，也可以看成模块，有的模块也有很多的子模块，所以不必纠结。
+
+### 模块安装
+
+python中的模块分为三大类
+
+1. 安装时就已经存在与python中了，称为内置标准模块，又称标准库。不需要下载。查看所有python自带模块列表
+2. 第三方开源模块。 可在cmd中（快捷键ctrl+`在vscode中打开）通过pip install 模块名 联网安装 。
+3. 自定义模块。自己编写py文件，写其他py文件时可以导入这个py文件 import 文件名
+
+### 查看modules
+
+1.  查看内置函数(builtin模块中的函数):dir(\_\_builtin\_\_)
+2.  查看内置模块(written in C and built in to the Python interpreter):sys.builtin_module_names（推荐用这个查看内置模块）
+3.  查看标准模块
+
+    CMD 中 pip install stdlib-list
+    from stdlib_list import stdlib_list
+    libraries =_stdlib_list("2.7,,)~
+
+4.  查看所有安装的模块：help("modules") , CMD或程序中pip list(推荐用着个查看安装模块，只显示安装的模块，python自带模块不显示)
+5.  查看当前加载的模块：dir()（推荐）； sys.modules.keys()
+   
+    help("modules")#看起来怪异
+    dir(__builtin__)#查看内置函数
+    sys.builtin_module_names#查看内置模块
+    dir()#重命名的模块显示的重命名的名字
+    sys.modules.keys()#横着，看起来很不方便
+
+### 模块使用
+
+在使用模块前必须先加载模块，加载模块有几种方式
+
+1.  第一个导入模块的所有方法 import random 
+2.  第二个导入模块的所有方法，并且给模块重新命名 import xxx as yy    
+3.  第三种从模块中导入特定方法，小心名字冲突。（不推荐）from module import moduel1 as xx，moduel2 as yy
+4.  第四个导入模块的所有方法（不推荐），小心名字冲突。from module.xx import *
+    
+前两种方式导入的对象不一定是模块，还可能是类，包或者函数等，它会调用该对象的所有内容，如果是导入模块，那么调用模块内的函数或者变量时，要以module.xxx方式。
+
+后两种方法不需要在函数或变量前加模块名，所以可能会跟已有变量名冲突，导致内容被替换。
+
+## dir()一种内置函数
+
+利用dir（名字）可以查看模块或函数或变量或类的所有函数和属性
+
+## help（）另一种内置函数
+
+利用help函数可以查看所有函数的用法,当然help中也可以用模块名，但是显示出来的是对模块中所有函数和变量的简单介绍。
+
+## 类与实例化{#index}
+
+"面向对象编程"：使用程序员定义的类型来组织代码和数据。
+
+* Python内置类型
+1. list：列表，中括号
+2. tuple：元组，小括号
+3. dict：字典，大括号
+4. set: 集合
+* 自定义的类型 class xxx：可以在类中定义方法和属性
+* 类型的实例y=xxx（参数）不同的参数，不同的变量名称可以创造无数个类的实例。
+* 创建一个新对象称为实例化,这个对象是类的实例
+* 当你输出一个实例时,Python会告诉你它属于哪个类以及存储的位置
+* 前缀Ox表示数字为十六进制
+* 每个对象都是某个类的实例，因此"对象”和"实例”是可以互换的。
+
+## 函数，属性和方法 [类](#index)
+
+函数
+:   函数是自己定义的或者系统自带的；分为纯函数和修饰符
+
+* 纯函数的返回结果只依赖于它自己的参数，函数执行过程里面没有副作用，输入相同的参数，返回同样的结果
+* 修饰符 修改作为参数获取的对象的函数。
+* 函数使用为 function（参数）
+
+方法
+:   模块中的类里面自带的函数或模块里的函数或者自定义类中的函数被称为方法
+
+方法是与特定类关联的函数,方法使用为moduel.func(参数)（有参数就要给，没参数就是空的）,方法前面必有模块名
+
+属性
+:   类中的变量，某个类的实例加.(点号)对变量进行赋值，称为属性
+
+属性使用为module.x 后面没有括号
+
+交互模式下，利用‘_’可以获得最后的表达式，(注意是表达式哦)
+
+## 内置函数
+
+### 数学运算类
+
+|内置函数|用途与参数说明|
+|-|-|
+|[abs(x)](#a1)|求绝对值。参数可以是整型也可以是复数。若参数是复数，则返回复数的模|
+|[complex([real[, imag]])](#a13)|创建一个复数|
+|[divmod(a, b)](#a17)|分别取商和余数。注意：整型、浮点型都可以|
+|[float([x])](#a22)|将一个字符串或数转换为浮点数。如果无参数将返回0.0|
+|[int([x[, base]])](#a33)|将一个字符转换为int类型，base表示进制|
+|long([x[, base]])|	将一个字符转换为long类型|
+|[pow(x, y[, z])](#a49) |返回x的y次幂|
+|[range([start], stop[, step])](#a52)| 	产生一个序列，默认从0开始|
+|[round(x[, n])](#a55) |四舍五入|
+|[sum(iterable[, start])](#a64)|对集合求和|
+|[oct(x)](#a46)|	将一个数字转化为8进制|
+|[hex(x)](#a30)|	将整数x转换为16进制字符串|
+|[chr(i)](#a10)|	返回整数i对应的ASCII字符|
+|[bin(x)](#a5)|	将整数x转换为二进制字符串|
+|[bool([x])](#a6)|	将x转换为Boolean类型|
+
+### 集合操作类
+
+|函数|说明|
+|-|-|
+|basestring()|str和unicode的超类,不能直接调用，可以用作isinstance判断|
+|[format(value [, format_spec])](#a23)|	格式化输出字符串格式化的参数顺序从0开始，如“I am {0},I like {1}”|
+|unichr(i)|	返回给定int类型的unicode|
+|[enumerate(sequence [, start = 0])](#a18)|	返回一个可枚举的对象,该对象的next()方法将返回一个tuple|
+|[iter(o[, sentinel])](#a36)|	生成一个对象的迭代器，第二个参数表示分隔符|
+|[max(iterable[, args...][key])](#a41)| 	返回集合中的最大值|
+|[min(iterable[, args...][key])](#a43)|	返回集合中的最小值|
+|[dict([arg])](#a15)|	创建数据字典|
+|[list([iterable])](#a38)| 	将一个集合类转换为另外一个集合类|
+|[set()](#a56)|	set对象实例化|
+|[frozenset([iterable])](#a24)|	产生一个不可变的set|
+|[str([object])](#a63)| 	转换为string类型|
+|[sorted(iterable[, cmp[, key[, reverse]]])](#a59)|队集合排序|
+|[tuple([iterable])](#a66)|	生成一个tuple类型|
+|xrange([start], stop[, step])|     xrange()函数与range()类似，但xrnage()并不创建列表，而是返回一个xrange对象，它的行为与列表相似，但是只在需要时才计算列表值，当列表很大时，这个特性能为我们节省内存|
+
+### 逻辑判断
+
+|函数|说明|
+|-|-|
+|[all(iterable)](#a2)|	1、集合中的元素都为真的时候为真2、特别的，若为空串返回为True|
+|[any(iterable)](#a3)|	1、集合中的元素有一个为真的时候为真2、特别的，若为空串返回为False|
+|cmp(x, y)|	如果x < y ,返回负数；x == y, 返回0；x > y,返回正数|
+
+### IO操作
+
+|函数|说明|
+|-|-|
+|file(filename [, mode [, bufsize]])|	file类型的构造函数，作用为打开一个文件，如果文件不存在且mode为写或追加时，文件将被创建。添加‘b’到mode参数中，将对文件以二进制形式操作。添加‘+’到mode参数中，将允许对文件同时进行读写操作1、参数filename：文件名称。2、参数mode：'r'（读）、'w'（写）、'a'（追加）。3、参数bufsize：如果为0表示不进行缓冲，如果为1表示进行行缓冲，如果是一个大于1的数表示缓冲区的大小 。|
+|[input([prompt])](#a32) |	获取用户输入推荐使用raw_input，因为该函数将不会捕获用户的错误输入|
+|[open(name[, mode[, buffering]])](#a47) |	打开文件与file有什么不同？推荐使用ope|
+|[print](#a50)|	打印函数|
+|raw_input([prompt]) |	设置输入，输入都是作为字符串处理|
+
+### 反射
+
+|函数|说明|
+|-|-|
+|[callable(object)](#a9)|检查对象object是否可调用1、类是可以被调用的2、实例是不可以被调用的，除非类中声明了__call__方法|
+|[classmethod()](#a11)|	1、注解，用来说明这个方式是个类方法2、类方法即可被类调用，也可以被实例调用3、类方法类似于Java中的static方法4、类方法中不需要有self参数|
+|[compile(source, filename, mode[, flags[, dont_inherit]])](#a12)|将source编译为代码或者AST对象。代码对象能够通过exec语句来执行或者eval()进行求值。1、参数source：字符串或者AST（Abstract Syntax Trees）对象。2、参数 filename：代码文件名称，如果不是从文件读取代码则传递一些可辨认的值。3、参数model：指定编译代码的种类。可以指定为 ‘exec’,’eval’,’single’。4、参数flag和dont_inherit：这两个参数暂不介绍|
+|[dir([object])](#a16)|	1、不带参数时，返回当前范围内的变量、方法和定义的类型列表；2、带参数时，返回参数的属性、方法列表。3、如果参数包含方法__dir__()，该方法将被调用。当参数为实例时。4、如果参数不包含__dir__()，该方法将最大限度地收集参数信息|
+|[delattr(object, name)](#a14)|	删除object对象名为name的属性|
+|[eval(expression [, globals [, locals]])](#a19)|	计算表达式expression的值|
+|execfile(filename [, globals [, locals]])|	用法类似exec()，不同的是execfile的参数filename为文件名，而exec的参数为字符串。|
+|[filter(function, iterable)](#a21)|	构造一个序列，等价于[ item for item in iterable if function(item)]1、参数function：返回值为True或False的函数，可以为None2、参数iterable：序列或可迭代对象|
+|[getattr(object, name [, defalut])](#a25)|	获取一个类的属性|
+|[globals()](#a26)|	返回一个描述当前全局符号表的字典|
+|[hasattr(object, name)](#a27)|	判断对象object是否包含名为name的特性|
+|-|-|
+|[hash(object)](#a28)|	如果对象object为哈希表类型，返回对象object的哈希值|
+|[id(object)](#a31)|	返回对象的唯一标识|
+|[isinstance(object, classinfo)](#a34)|	判断object是否是class的实例|
+|[issubclass(class, classinfo)](#a35)|	判断是否是子类|
+|[len(s)](#a37)|	返回集合长度|
+|[locals()](#a39)| 	返回当前的变量列表|
+|[map(function, iterable, ...)](#a40)| 	遍历每个元素，执行function操作|
+|[memoryview(obj)](#a42)| 	返回一个内存镜像类型的对象|
+|[next(iterator[, default])](#a44) |	类似于iterator.next()|
+|[object()](#a45) |	基类|
+|[property([fget[, fset[, fdel[, doc]]]])](#a51) |	属性访问的包装类，设置后可以通过c.x=value等来访问setter和getter|
+|reduce(function, iterable[, initializer]) |	合并操作，从第一个开始是前两个参数，然后是前两个的结果与第三个合并进行处理，以此类推|
+|reload(module)| 	重新加载模块|
+|[setattr(object, name, value)](#a57)|	设置属性值|
+|[repr(object)](#a53)| 	将一个对象变幻为可打印的格式|
+|[slice（）](#a58)|	　|
+|[staticmethod](#a62)|	声明静态方法，是个注解|
+|[super(type[, object-or-type])](#a65) |	引用父类|
+|[type(object)](#a67)|	返回该object的类型|
+|[vars([object])](#a68)| 	返回对象的变量，若无参数与dict()方法类似|
+|[bytearray([source [, encoding [, errors]]])](#a7)|	返回一个byte数组1、如果source为整数，则返回一个长度为source的初始化数组；2、如果source为字符串，则按照指定的encoding将字符串转换为字节序列；3、如果source为可迭代类型，则元素必须为[0 ,255]中的整数；4、如果source为与buffer接口一致的对象，则此对象也可以被用于初始化bytearray.|
+|[zip([iterable, ...])](#a69) |	实在是没有看懂，只是看到了矩阵的变幻方面|
+
+* * *
+
+### abs(x){#a1}
+
+返回一个数的绝对值。参数可以是一个整数或一个浮点数。若参数是复数，返回复数的模
+
+
+```python
+abs(-1.5)#结果返回为1.5
+```
+
+```
+## 1.5
+```
+
+```python
+x=complex(3,4)#3+4j
+abs(x)#返回模长5
+```
+
+```
+## 5.0
+```
+
+```python
+abs(-3.678)
+```
+
+```
+## 3.678
+```
+
+### all(iterable){#a2}
+
+若可迭代对象中所有元素为真（或可迭代对象为空,这里的可迭代对象为空指的是没有可迭代的对象，而有可能有的对象里面存在空值，这时就是false），则返回True。返回False的情况有：0，存在空值，None，false。等价于
+
+
+```python
+all([])
+```
+
+```
+## True
+```
+
+```python
+all({})
+```
+
+```
+## True
+```
+
+```python
+all(())
+#以上皆为T,all意思是只要存在假即为假，空不存在假，所以为真
+```
+
+```
+## True
+```
+
+```python
+all(['a','b','c'])#T
+```
+
+```
+## True
+```
+
+```python
+all(['a','','d'])#F,可以用来查看有无空值
+```
+
+```
+## False
+```
+
+```python
+all([2,3,4])#T
+```
+
+```
+## True
+```
+
+```python
+all([0,1,2])#F
+```
+
+```
+## False
+```
+
+### any(iterable){#a3}
+
+若可迭代对象中任意元素为真，则返回True。如果可迭代对象为空，返回False.
+
+
+```python
+any([])#F
+```
+
+```
+## False
+```
+
+```python
+any({})#F
+```
+
+```
+## False
+```
+
+```python
+any(())#F
+#any意思是只要存在真即为真，空不存在真，所以为假
+```
+
+```
+## False
+```
+
+```python
+any([0,1,2])#T
+```
+
+```
+## True
+```
+
+```python
+any([0,0,0])#F
+```
+
+```
+## False
+```
+
+### ascii(object){#a4}
+
+如repr(),返回一个包含对象的可打印表示的字符串，但会用\x,\u,or \U转义pepr()返回的字符串中的非ascii字符。生成一个类似于Python2中repr()返回的字符串。
+
+
+```python
+ascii([1,2,3])#转为字符串形式
+```
+
+```
+## '[1, 2, 3]'
+```
+
+```python
+a=ascii([1,2,3])
+print(a)#返回的是一个字符串，还是【1,2,3】
+```
+
+```
+## [1, 2, 3]
+```
+
+```python
+print([1,2,3])#返回的是列表，【1,2,3】虽然形式一样，但是意义不同
+```
+
+```
+## [1, 2, 3]
+```
+
+```python
+ascii('*')#任何字符不加双引号就无法识别。加了双引号为字符串，但是对于数值来说和chr类型又不一样
+```
+
+```
+## "'*'"
+```
+
+```python
+print(ascii(945))#数值可以直接识别
+```
+
+```
+## 945
+```
+
+```python
+print(ascii('945'))#ascii中的对象很多，大部分转换就是加上引号，加上双引号，加上反斜杠
+```
+
+```
+## '945'
+```
+
+```python
+chr(945)#'α'，可以看到这是一个特殊字符，还有chr转换的是一个数字，而不是字符，不能写成chr('945')
+```
+
+```
+## 'α'
+```
+
+```python
+ascii(chr(945))#"'\\u03b1'" ‘α’被转换成了这个样子，而不是直接加双引号
+```
+
+```
+## "'\\u03b1'"
+```
+
+```python
+a=ascii(chr(945))
+print(chr(945))#α
+```
+
+```
+## α
+```
+
+```python
+print(a)#'\u03b1'
+```
+
+```
+## '\u03b1'
+```
+
+### bin(x){#a5}
+
+将整数转换为以“0b”为前缀的二进制字符串。结果是一个有效的Python表达式。若 x 不是一个int型对象，它必须定义了一个__index__()方法去返回整数。
+
+
+```python
+bin(34)
+```
+
+```
+## '0b100010'
+```
+
+```python
+bin(40000)#只能是整形，不能是浮点型30.0都不行
+```
+
+```
+## '0b1001110001000000'
+```
+
+### class bool([x]){#a6}
+
+返回一个布尔值，True或False。x用标准的真值测试程序来转换。如果x为false或空，它返回False，否则返回True。bool类是int的一个子类。它不能被子类化。它拥有唯一两个实例True和False
+
+
+```python
+#里面不放中括号，那么空值或存在0为false
+bool()#空数值,F
+```
+
+```
+## False
+```
+
+```python
+bool(0)
+##除了0，都为真
+```
+
+```
+## False
+```
+
+```python
+bool('a')
+```
+
+```
+## True
+```
+
+```python
+bool(-1)
+```
+
+```
+## True
+```
+
+```python
+bool([0])
+```
+
+```
+## True
+```
+
+```python
+bool([0,1])#非空列表
+```
+
+```
+## True
+```
+
+```python
+bool(['a','b'])
+```
+
+```
+## True
+```
+
+```python
+bool(())#放一个空元祖，空列表，空字符串等为false
+```
+
+```
+## False
+```
+
+```python
+bool('')
+```
+
+```
+## False
+```
+
+```python
+bool(True)
+```
+
+```
+## True
+```
+
+```python
+bool(False)
+##里面再放all，any就就已经先转换为了true or false
+```
+
+```
+## False
+```
+
+```python
+bool(any([0,1]))
+```
+
+```
+## True
+```
+
+```python
+bool(all([]))
+#有中括号
+```
+
+```
+## True
+```
+
+```python
+bool([])#假
+##只要中括号里面有任何其他东西，就为真
+```
+
+```
+## False
+```
+
+```python
+bool([False])
+```
+
+```
+## True
+```
+
+```python
+bool(['',''])
+```
+
+```
+## True
+```
+
+```python
+bool([0,'a'])
+#小括号,和不加一样
+```
+
+```
+## True
+```
+
+```python
+bool((0))
+```
+
+```
+## False
+```
+
+```python
+bool((''))
+#大括号，和中括号一样
+```
+
+```
+## False
+```
+
+```python
+bool({''})
+```
+
+```
+## True
+```
+
+### class bytearray([source[,encoding[,errors]]]){#a7}
+
+*  返回一个新的字节数组。bytearray类是一个范围在0 <= x < 256之间的可变整数序列。它有可变序列大多数常规方法。
+*  可选参数source可以用几种不同方式来初始化数组：
+1. 若它是一个字符串，必须给出编码（可选的，错误）参数；bytearray()用str.encode()把字符串转换成字节。
+2. 若它是一个整数，数组将具有该大小，并用空字节初始化。
+3. 若它是一个遵循buffer接口的对象，对象的只读buffer将被用来初始化字节数组
+4. 若它是一个可迭代对象，它必须是一个范围在0 <= x < 256中的整数可迭代对象，被用做数组的初始内容。
+5. 如果没有参数，它创建一个大小为0的数组
+
+
+```python
+#5
+bytearray()# bytearray(b'')
+#1
+```
+
+```
+## bytearray(b'')
+```
+
+```python
+bytearray('zifu','utf-8')#bytearray(b'zifu')
+#bytearray('zifu')会出现错误
+```
+
+```
+## bytearray(b'zifu')
+```
+
+```python
+bytearray(b'zifu')#bytearray(b'zifu')跟上面一样
+#2
+```
+
+```
+## bytearray(b'zifu')
+```
+
+```python
+bytearray(5)#bytearray(b'\x00\x00\x00\x00\x00')
+#3
+
+#4
+```
+
+```
+## bytearray(b'\x00\x00\x00\x00\x00')
+```
+
+```python
+bytearray([1,2,3])#bytearray(b'\x01\x02\x03')
+```
+
+```
+## bytearray(b'\x01\x02\x03')
+```
+
+### class bytes([source[,encoding[,errrors]]]){#a8}
+
+返回一个新的字节对象。一个数值在0 <= x < 256之间的不可变整数序列。bytes是bytearray的不可变版本。它有相同的非修改性方法和相同的索引与切片操作。
+
+因此，构造函数参数与bytearray()相同
+
+Bytes对象也可以用字面值创建，详情见String and Bytes literals
+
+### callable(object){#a9}
+
+若对象可调用，返回True，否则返回False。若，返回True，依然可能调用失败，若返回False，调用绝不会成功。注意类是可调用的（调用一个类返回一个实例），如果类有__call__()方法，实例可调用
+
+
+```python
+x=[1,3,2]
+y=[4,5,6]
+z=(7,8)
+l=5
+m=9.77
+n=complex(2,3)
+callable(x)
+```
+
+```
+## False
+```
+
+```python
+callable(list)
+```
+
+```
+## True
+```
+
+```python
+callable(z)
+```
+
+```
+## False
+```
+
+```python
+callable(int)
+```
+
+```
+## True
+```
+
+```python
+callable(float)
+```
+
+```
+## True
+```
+
+```python
+callable(m)
+```
+
+```
+## False
+```
+
+```python
+callable(n)
+```
+
+```
+## False
+```
+
+```python
+callable('abc')
+```
+
+```
+## False
+```
+
+```python
+callable(abs)
+```
+
+```
+## True
+```
+
+```python
+callable(abs(3))
+```
+
+```
+## False
+```
+
+```python
+callable(max)
+```
+
+```
+## True
+```
+
+```python
+callable(max(3,5))
+```
+
+```
+## False
+```
+
+```python
+callable(ascii(9))
+```
+
+```
+## False
+```
+
+### chr(i){#a10}
+
+返回整数i对应的Unicode字符字符串。比如chr(97)返回字符串‘a’，chr(8364)返回字符串'€'。它是ord()的逆操作。参数的有效范围在0到1114111（0x10FFFF 16进制）之间。若，超出异常，将抛出ValuaError异常
+
+
+```python
+chr(9322)
+```
+
+```
+## '⑪'
+```
+
+```python
+chr(1114111)
+```
+
+```
+## '\U0010ffff'
+```
+
+### classmethod{#a11}
+
+将一个方法转换为类方法,类方法接受类作为隐式的第一参数，就像实例方法接受实例作为隐式的第一个参数。声明一个类方法，用如下惯例
+
+        class C:
+            @classmethod
+            def f(cls, arg1, arg2, ...): ... 
+
+@classmethod形式是一个装饰器函数。它既可以在类上调用（如C.f()）也可以在实例上调用（如C().f()）。除了实例的类，实例本身被忽略。如果一个类方法在子类上调用，那么子类对象被传递为隐式的第一个参数。
+
+
+```python
+class A(object):
+    bar=1
+    def func1(self):
+        print('foo')
+    @classmethod
+    def func2(cls):
+        print('func2')
+        print(cls.bar)
+        cls().func1()#调用foo方法,一个类方法可以调用类里的其他方法，cls代表这个类
+A.func2()#不需要实例化,直接是类名加方法即可
+```
+
+```
+## func2
+## 1
+## foo
+```
+
+```python
+A().func2()
+#类方法以上两种形式都行
+# A.func1()错误，非类方法
+```
+
+```
+## func2
+## 1
+## foo
+```
+
+```python
+A().func1()#可以
+```
+
+```
+## foo
+```
+
+### compile(source,filename,mode,flags=0,dont_inherit=False,optimize=-1){#a12}
+
+* 将source编译成代码对象，或者AST（Abstract Syntax Tree，抽象语法树）对象。代码对象可以由exec()或eval()执行。源可以是普通字符串，字节字符串或AST对象。有关如何使用AST对象的信息，请参阅ast模块文档。
+* filename参数是要从中读取代码的文件名；如果它不是从文件中读取的话，需要传入一些可识别的内容（通常使用'string'）
+* mode 参数指定必须编译模式；如果source由语句序列组成，则它可以是'exec'；如果它是单个语句，则可以使用'eval'；如果它由单个交互式语句组成，则可以使用'single'。（在最后一种情况下，非None语句将会被打印出来）
+* 可选参数flags和dont_inherit控制哪些未来版本的语句会应用于源编译。如果两者都不存在（或两者都为零），则使用在调用compile()的代码中生效的未来语句来编译代码。如果给出了flags参数且没有给出dont_inherit参数（或者为0），除了本该使用的future语句之外，由flags参数指明的future语句也会影响编译。如果dont_inherit是非0整数，flags参数被忽略（调用compile周围的有效的future语句被忽略）。
+* future语句由bit位指明，这些bit可以做或运算，以指明多个语句。可以在__future__模块中，_Feature实例的compiler_flag属性找到指明功能的bit位。
+* 参数optimize指定编译器的优化级别；默认值-1选择由-O选项给出的解释器的优化级别。显式级别为0（无优化； __debug__为真），1（声明被删除，__debug__为假 ）或2（docstrings也被删除）。
+* 如果源包含空字节，则此函数引发SyntaxError（如果编译的源无效）和ValueError,如果要将Python代码解析为其AST表示形式，请参阅ast.parse()。注意,当以'single'或者'eval'模式编译多行代码字符串的时候，输入至少以一个新行结尾。这主要是便于code模块检测语句是否结束。
+
+
+```python
+str="for i in range(0,10):print(i)"
+c=compile(str,'','exec')#编译为字节代码对象
+c
+```
+
+```
+## <code object <module> at 0x00000200BC9C85D0, file "", line 1>
+```
+
+```python
+exec(c)
+```
+
+```
+## 0
+## 1
+## 2
+## 3
+## 4
+## 5
+## 6
+## 7
+## 8
+## 9
+```
+
+```python
+str="3*4+5"
+a=compile(str,'','eval')
+eval(a)
+```
+
+```
+## 17
+```
+
+### class complex([real[,imag]]){#a13}
+
+返回值形式为real + imag * 1j的复数，或将字符串或数字转换为复数。如果第一个参数是个字符串，它将被解释成复数，同时函数不能有第二个参数。第二个参数不能是字符串。每个参数必须是数值类型（包括复数）。如果省略imag，则默认为零，构造函数会像int和float一样进行转换。如果省略这两个参数，则返回0j。当从字符串转化成复数的时候，字符串中+或者-两边不能有空白。例如，complex('1+2j')是可行的，但complex('1 + 2j')会抛出ValueError异常。
+
+
+```python
+#以字符串形式做第一个参数，不能有第二个参数，通过这种方式你可以直接把你想表达的复数以字符形式写出来
+complex('1+2j')#字符如果含字母必须是j，换成其他字母不行
+```
+
+```
+## (1+2j)
+```
+
+```python
+complex('1')
+```
+
+```
+## (1+0j)
+```
+
+```python
+complex('2j')
+#下面不以字符形式，可以加第二个参数。如果要加第二个参数，则两个参数必都为数值型（包括复数）。如果都是数值，其实就是按照公式运算
+```
+
+```
+## 2j
+```
+
+```python
+complex()
+```
+
+```
+## 0j
+```
+
+```python
+complex(1)
+```
+
+```
+## (1+0j)
+```
+
+```python
+complex(1j)#单独一个j不是数值型，必须写成1j
+```
+
+```
+## 1j
+```
+
+```python
+complex(2j)#如果没有实数部分，就是直接写虚数部分（包括j），或者写成虚数的字符串形式
+```
+
+```
+## 2j
+```
+
+```python
+complex(1,2)
+```
+
+```
+## (1+2j)
+```
+
+```python
+complex(2j,1)
+```
+
+```
+## 3j
+```
+
+```python
+complex(2j,2j)
+```
+
+```
+## (-2+2j)
+```
+
+```python
+complex(2j,1j)#必须写成1j，不能写成j，默认j是字符未定义，1j*j=-1这里
+```
+
+```
+## (-1+2j)
+```
+
+```python
+a=3
+complex(a,2j)
+##四则运算
+```
+
+```
+## (1+0j)
+```
+
+```python
+complex((1+2j)/(3+5j)*2j,5j-3j+4j)
+```
+
+```
+## (-6.0588235294117645+0.7647058823529412j)
+```
+
+### delattr(object,name){#a14}
+
+这个函数和setattr()有关。参数是一个对象和一个字符串。字符串必须是对象的某个属性的名字。只要对象允许，这个函数删除该名字对应的属性。例如，delattr(x, 'foobar')等同于del x.foobar。
+
+
+```python
+class lei:
+    z=3
+    y=4
+dir(lei)
+```
+
+```
+## ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'y', 'z']
+```
+
+```python
+delattr(lei,'z')
+dir(lei)
+```
+
+```
+## ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'y']
+```
+
+### class dict{#a15}
+
+创建一个新字典。dict对象是字典类。
+
+* class dict(**kwarg) 
+* class dict(mapping,**kwarg)
+* class dict(iterable,**kwarg)
+
+参数说明：
+
+\**kwargs-关键字
+
+mapping-元素的容器
+
+iterable-可迭代的对象
+
+
+```python
+dict()#{}
+```
+
+```
+## {}
+```
+
+```python
+dict(a='a',b='b',c='c')#{'a': 'a', 'b': 'b', 'c': 'c'}
+```
+
+```
+## {'a': 'a', 'b': 'b', 'c': 'c'}
+```
+
+```python
+dict(张三='a',李四='b',王二='c')#{'张三': 'a', '李四': 'b', '王二': 'c'}
+```
+
+```
+## {'张三': 'a', '李四': 'b', '王二': 'c'}
+```
+
+```python
+{'x1':1,'y1':2,'z1':3}#{'x1': 1, 'y1': 2, 'z1': 3}这里就要加引号了
+```
+
+```
+## {'x1': 1, 'y1': 2, 'z1': 3}
+```
+
+```python
+dict(zip(['one','two','there'],[1,2,3]))#{'one': 1, 'two': 2, 'there': 3}
+#dict(['o','p','q'],[1,2,3])错误
+```
+
+```
+## {'one': 1, 'two': 2, 'there': 3}
+```
+
+```python
+dict([('o',1),('p',2),('q',3)])#{'o': 1, 'p': 2, 'q': 3}
+```
+
+```
+## {'o': 1, 'p': 2, 'q': 3}
+```
+
+### dir([object]){#a16}
+
+* 如果没有参数，返回当前本地作用域内的名字列表。如果有参数，尝试返回参数所指明对象的合法属性的列表。
+* 如果对象具有名为__dir__()的方法，那么将调用此方法，并且必须返回属性列表。这允许实现自定义__getattr__()或__getattribute__()函数的对象自定义dir()报告其属性的方式。
+* 如果对象不提供__dir__()，则函数会尽量从对象的__dict__属性（如果已定义）和其类型对象中收集信息。结果列表不一定是完整的，并且当对象具有自定义__getattr__()时，可能不准确。
+* 默认的dir()机制对于不同类型的对象具有不同的行为，因为它尝试生成最相关，而不是完整的信息：
+* 如果对象是模块对象，列表包含模块的属性名。
+* 如果对象是类型或者类对象，列表包含类的属性名，及它的基类的属性名。
+* 否则，列表包含对象的属性名，它的类的属性名和类的基类的属性名。
+
+返回的列表按字母顺序排序。例如
+
+
+```python
+dir([])#查看列表的方法
+```
+
+```
+## ['__add__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__iadd__', '__imul__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__rmul__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
+```
+
+```python
+dir('')#查看字符的方法
+```
+
+```
+## ['__add__', '__class__', '__contains__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getnewargs__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mod__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__rmod__', '__rmul__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'capitalize', 'casefold', 'center', 'count', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'format_map', 'index', 'isalnum', 'isalpha', 'isascii', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 'isnumeric', 'isprintable', 'isspace', 'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'maketrans', 'partition', 'replace', 'rfind', 'rindex', 'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title', 'translate', 'upper', 'zfill']
+```
+
+```python
+dir(complex)#查看复数的方法
+```
+
+```
+## ['__abs__', '__add__', '__bool__', '__class__', '__delattr__', '__dir__', '__divmod__', '__doc__', '__eq__', '__float__', '__floordiv__', '__format__', '__ge__', '__getattribute__', '__getnewargs__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__int__', '__le__', '__lt__', '__mod__', '__mul__', '__ne__', '__neg__', '__new__', '__pos__', '__pow__', '__radd__', '__rdivmod__', '__reduce__', '__reduce_ex__', '__repr__', '__rfloordiv__', '__rmod__', '__rmul__', '__rpow__', '__rsub__', '__rtruediv__', '__setattr__', '__sizeof__', '__str__', '__sub__', '__subclasshook__', '__truediv__', 'conjugate', 'imag', 'real']
+```
+
+```python
+class Shape:
+     def __dir__(self):
+        return ['area', 'perimeter', 'location']
+s = Shape()
+dir(s)
+```
+
+```
+## ['area', 'location', 'perimeter']
+```
+
+因为dir()主要是方便在交互式环境中使用，它尝试提供一组有用的名称，而不是试图提供完整或一致性的名称集合，具体的行为在不同的版本之间会有变化。例如，如果参数是一个类，那么元类属性就不会出现在结果中。
+
+### divmod(a,b){#a17}
+
+* 取两个（非复数）数字作为参数，并在使用整数除法时返回由商和余数组成的一对数字。
+* 对于混合的操作数类型，应用二元算术运算符的规则。对于整数，结果与（a // b， a ％b）相同。对于浮点数，结果为（q， a ％ b），其中q通常为math.floor(a / b)，也有可能比这个结果小1。不管怎样，q * b + a % b非常接近于a，如果a % b非0，它和b符号相同,且0 <= abs(a % b) < abs(b)。
+
+
+```python
+divmod(5,6)
+```
+
+```
+## (0, 5)
+```
+
+```python
+5/6 #0.8333333333333334
+```
+
+```
+## 0.8333333333333334
+```
+
+```python
+6/5 #1.2
+```
+
+```
+## 1.2
+```
+
+```python
+5//6 #0
+```
+
+```
+## 0
+```
+
+```python
+6//5 #1
+```
+
+```
+## 1
+```
+
+```python
+5%6 #5
+#divmod(1+2j,1+0.5j)错误，2.3版本之前不允许处理复数
+```
+
+```
+## 5
+```
+
+### enumerate(iteralble,start=0){#a18}
+
+返回一个枚举对象。iterable 必须是一个序列、一个迭代器，或者其它某种支持迭代的对象。enumerate()返回的迭代器的__next__()方法返回一个元组，该元组包含一个计数（从start开始，默认为0）和迭代iterable得到的值。
+
+
+```python
+x=[5,6,7,8]
+enumerate(x)  #<enumerate at 0x1ca04db5048>
+```
+
+```
+## <enumerate object at 0x00000200BCA2F9A8>
+```
+
+```python
+list(enumerate(x))  #[(0, 5), (1, 6), (2, 7), (3, 8)]
+#必须同时给定两个参数，因为每一个enumerate都是含有两个参数
+```
+
+```
+## [(0, 5), (1, 6), (2, 7), (3, 8)]
+```
+
+```python
+for i,element in enumerate(x):
+    print (i,element)#输出时要用括号，本来就是一体的
+#下面错误
+#for i,element in enumerate(x):
+#   print i
+#    print element
+#单个输出也必须要加括号
+```
+
+```
+## 0 5
+## 1 6
+## 2 7
+## 3 8
+```
+
+```python
+for i,element in enumerate(x):
+    print(i) 
+    print(element)
+```
+
+```
+## 0
+## 5
+## 1
+## 6
+## 2
+## 7
+## 3
+## 8
+```
+
+```python
+i,j=(3,4)
+print (i)
+```
+
+```
+## 3
+```
+
+```python
+i,j=[5,6]
+print(i)#注意不是print【i】
+```
+
+```
+## 5
+```
+
+### eval(expression,globals=None,locals=None){#a19}
+
+* eval()函数是用来执行一个字符串表达式，并返回表达式的值
+* expression是表达式，globals是变量作用域，全局命名空间，locals是变量作用域，局部命名空间。
+* 参数是字符串和可选的全局变量和局部变量。如果有全局变量，globals必须是个字典。如果有局部变量，locals可以是任何映射类型对象。
+* expression参数被当作Python表达式来解析并演算（技术上来说，是个条件列表），使用globals和locals字典作为全局和局部的命名空间。如果globals字典存在，且缺少‘__builtins__’，在expression被解析之前，当前的全局变量被拷贝进globals。这意味着expression通常具有对标准builtins的完全访问权限，并且传播受限环境。如果locals字典被忽略，默认是globals字典。如果两个字典都省略，则在调用eval()的环境中执行表达式。返回值是被演算的表达式的结果。语法错误报告成异常。例子：
+* 此函数也可用于执行任意代码对象（例如由compile()创建的代码对象）。在这种情况下，传递代码对象而不是字符串。如果代码对象已使用'exec'作为mode参数编译，则eval()的返回值将为None 。
+
+提示：exec()函数支持语句的动态执行。globals()和locals()函数分别返回当前的全局和局部字典，可以用于传递给eval或exec()。
+
+
+```python
+x=7
+eval('3*x')
+```
+
+```
+## 21
+```
+
+```python
+x=[1,2,3]
+eval('3*x')#x重复三次的列表
+#eval('3+x')错误，列表无此用法
+```
+
+```
+## [1, 2, 3, 1, 2, 3, 1, 2, 3]
+```
+
+```python
+eval('pow(2,2)')
+```
+
+```
+## 4
+```
+
+### exec(object[,globals[,locals]]){#a20}
+
+* 这个函数支持动态执行Python代码。object必须是一个字符串或代码对象。如果它是一个字符串，该字符串被解析为一套Python语句，然后执行（除非语法错误发生）。[1]如果它是一个代码对象，只是简单地执行它。在所有情况下，执行的代码应该可以作为有效的文件输入（参见“参考手册”中的“文件输入”部分）。请注意，即使在传递给exec()函数的代码上下文中，函数定义外面的return和yield 语句可能不被执行。返回值为None。
+* 在所有情况下，如果省略可选部分，则代码在当前作用域中执行。如果只提供globals，它必须是一个字典，它将用于全局变量和局部变量。如果提供globals和locals，它们分别用于全局变量和局部变量。如果存在，locals可以是任意的映射类型对象。记住在模块级别，全局和局部字典是同一个字典。如果exec的globals和locals是独立的两个对象，代码的执行就像它嵌入在类定义中一样。
+* 如果globals字典的__builtins__键没有值，则会给这个赋予一个内置模块builtins字典的引用。这样，你可以在将globals传递给exec()之前插入自己的__builtins__字典，来控制执行的代码可访问的builtins。
+* 内置函数globals()和locals()分别返回当前全局和局部字典，它们可以用做传递给exec()的第二和第三个参数。
+* 默认的locals的行为和下述的locals()函数一样：不应该尝试修改默认的locals字典。如果在函数exec()返回后，需要在locals上查看代码的效果，请传递一个明确的locals字典。
+
+### filter(function,iterable){#a21}
+
+用iterable中传入function后返回True的元素构造一个迭代器。* iterable可以是个序列，支持迭代的容器，或者一个迭代器。如果function是None，使用特性函数，即为False的iterable中的元素被移除。
+
+注意filter(function, iterable) 如果函数不是 None等效于生成器表达式 (item for item in iterable if function(item)) 。如果函数是 None ，(item for item initerable if item)See itertools.filterfalse() for the complementary function that returns elements of iterable for which function returns false
+
+
+```python
+#filter()函数用于过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。该接受两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判别，然后返回True或False，最后将True的元素放回到新的列表或迭代器（依据python版本）中
+def is_odd(n):
+    return n%2==1
+newlist=filter(is_odd,[1,2,3,4,5,6,7,8,9,10])
+for i in newlist:
+    print (i)
+```
+
+```
+## 1
+## 3
+## 5
+## 7
+## 9
+```
+
+```python
+x=3
+print(x)
+```
+
+```
+## 3
+```
+
+### class float([x]){#a22}
+
+* 返回从数字或字符串x构造的浮点数。
+* 如果参数是一个字符串，它应该包含一个十进制数，可选地前面有一个符号，并且可选地嵌入在空格中。可选的sign可以是'+'或'–'； '+'符号对生成的值没有影响。参数还可以是表示NaN（非数字）或正或负无穷大的字符串。更确切地说，输入必须符合以下语法，前导和尾随空白字符被删除。
+
+|符号|可选值|
+|-|-|
+|sign |          ::=  "+" | "-"|
+|infinity  |     ::=  "Infinity" | "inf"|
+|nan |           ::=  "nan"|
+|numeric_value|  ::=  floatnumber | infinity | nan|
+|numeric_string| ::=  [sign] numeric_value|
+
+* 这里floatnumber是在浮点字面值中描述的Python浮点字面值的形式。情况不重要，因此，例如，“inf”，“Inf”，“INFINITY”和“iNfINity”都是正无穷大的可接受拼写。
+* 否则，如果参数是整数或浮点数，则返回具有相同值（在Python的浮点精度内）的浮点数。如果参数在Python浮点数的范围之外，则引发一个OverflowError。
+* 对于一般的Python对象x，float(x)委托给x .__float__()。如果没有给出参数，则返回0.0。
+
+
+```python
+float(1.23)#1.23
+```
+
+```
+## 1.23
+```
+
+```python
+float(1)#1.0
+#float(-12345\n)
+```
+
+```
+## 1.0
+```
+
+```python
+float('   -12345\n')
+```
+
+```
+## -12345.0
+```
+
+```python
+float("nan")
+```
+
+```
+## nan
+```
+
+```python
+float("-nan")
+#float('x11')
+#float("xyz") 可以看到不是随便什么字符串都行的
+```
+
+```
+## nan
+```
+
+```python
+float('-inf')
+```
+
+```
+## -inf
+```
+
+### format(value[,format_spec]){#a23}
+
+* 将value转化成“格式化”的表现形式，格式由format_spec控制。对format_spec的解释依赖于value参数的类型，大多数内置类型有标准的格式化语法：Format Specification Mini-Language。
+
+* 默认的format_spec是一个空字符串，通常给出与调用str（value）相同的效果。
+
+* 对格式（值， format_spec）的调用将被转换为type（value）.__ format __（value，t4> format_spec）其在搜索值__format__()方法时绕过实例字典。如果方法搜索到达object并且format_spec不为空，或者如果format_spec，则会引发TypeError t7>或返回值不是字符串。
+
+
+```python
+#format() error缺少参数
+#format('hello','world')错误
+format(19,'b')
+```
+
+```
+## '10011'
+```
+
+```python
+format(20,'#x')
+#format('b',19)第二个参数必须是字符型
+```
+
+```
+## '0x14'
+```
+
+```python
+format('#b','19') #  '#b  
+```
+
+```
+## '#b                 '
+```
+
+```python
+"{}{}".format("hello","world")# 'helloworld'
+```
+
+```
+## 'helloworld'
+```
+
+```python
+"{} {}".format("hello","world")#注意空格 'hello world'
+```
+
+```
+## 'hello world'
+```
+
+```python
+"{1} {0}".format("hello","world") # 'world hello'前面的大括号可以调整字符位置
+```
+
+```
+## 'world hello'
+```
+
+### class frozenset([iterable]){#a24}
+
+* 返回一个新的frozenset对象，如果可选参数iterable存在，frozenset的元素来自于iterable。frozenset是个内置类
+* frozenset()返回一个冻结的集合，冻结后集合不能再添加或删除任何元素。如果不提供任何参数，默认生成空集合。
+
+
+```python
+a=frozenset(range(10))
+a# frozenset({0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+```
+
+```
+## frozenset({0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+```
+
+```python
+b=frozenset('runoob')
+b # frozenset({'b', 'n', 'o', 'r', 'u'})
+```
+
+```
+## frozenset({'u', 'b', 'n', 'o', 'r'})
+```
+
+### getattr(object,name[,default]){#a25}
+
+* 返回object的属性值。name必须是个字符串。如果字符串是对象某个属性的名字，则返回该属性的值。例如，getattr(x, 'foobar')等同于x.foobar。如果这个名字的属性不存在，如果提供default则返回它，否则引发AttributeError。
+
+
+```python
+class A(object):
+    bar=1
+a=A()
+getattr(a,'bar')
+
+#getattr(a,'bar2')
+```
+
+```
+## 1
+```
+
+```python
+getattr(a,'bar2',3)#属性bar2不存在，但设置了默认值，只对当前而说，并未改变类里面的结构。
+#getattr(a,'bar2')再次执行不设置默认值依然出错
+```
+
+```
+## 3
+```
+
+### globals(){#a26}
+
+* 返回表示当前全局符号表的字典。它总是当前模块的字典（在函数或者方法中，它指定义的模块而不是调用的模块）
+* 以字典类型返回当前位置的全部全局变量。
+
+
+```python
+a='quanju'
+print(globals())#太多了，不展示globals返回一个全局变量的字典，包括所有导入的变量。
+```
+
+```
+## {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, 'sys': <module 'sys' (built-in)>, 'os': <module 'os' from 'D:\\Anaconda\\lib\\os.py'>, 'r': <__main__.R object at 0x00000200BC9C0EC8>, 'x': 3, 'a': 'quanju', 'y': [4, 5, 6], 'z': (7, 8), 'l': 5, 'm': 9.77, 'n': (2+3j), 'A': <class '__main__.A'>, 'str': '3*4+5', 'c': <code object <module> at 0x00000200BC9C85D0, file "", line 1>, 'i': 9, 'lei': <class '__main__.lei'>, 'Shape': <class '__main__.Shape'>, 's': <__main__.Shape object at 0x00000200BCA21B48>, 'element': 8, 'j': 6, 'is_odd': <function is_odd at 0x00000200BC9CDE58>, 'newlist': <filter object at 0x00000200BCA30888>, 'b': frozenset({'u', 'b', 'n', 'o', 'r'})}
+```
+
+### hasattr(object,name){#a27}
+
+* 参数是一个对象和一个字符串。如果字符串是对象的一个属性，则返回True，否则返回False。（它的实现是通过调用getattr(object, name)并查看它是否引发一个AttributeError）。
+
+
+```python
+hasattr(A,'bar')
+```
+
+```
+## True
+```
+
+### hash(object){#a28}
+
+* 返回该对象的哈希值（如果有的话）. 哈希值应该是一个整数。哈希值用于在查找字典时快速地比较字典的键。相等数值的哈希值相同（即使它们的类型不同，比如1和1.0）.
+
+
+```python
+hash('test')#3993964080559893420
+```
+
+```
+## 3327204650534609370
+```
+
+```python
+hash('t')#-1596071158894470278
+```
+
+```
+## -4174125903384499735
+```
+
+```python
+hash(1)#1
+```
+
+```
+## 1
+```
+
+```python
+hash(100)#100
+```
+
+```
+## 100
+```
+
+```python
+hash(1e008)
+# hash(str([1,2,3]))  'str' object is not callable
+```
+
+```
+## 100000000
+```
+
+### help([object]){#a29}
+
+* 调用内置的帮助系统。（这个函数主要用于交互式使用。）如果没有参数，在解释器的控制台启动交互式帮助系统。如果参数是个字符串，该字符串被当作模块名，函数名，类名，方法名，关键字或者文档主题而被查询，在控制台上打印帮助页面。如果参数是其它某种对象，生成关于对象的帮助页面。
+
+* 该函数加入内置函数的名字空间，函数收录在site 模块里.
+
+### hex(x){#a30}
+
+* 将整数转换为以“0x”为前缀的小写十六进制字符串
+* 如果x不是Python int对象，它必须定义一个__index__()方法，返回一个整数。
+* 另请参见int()用于将十六进制字符串转换为使用16为基数的整数。
+
+注意：要获取浮点型的十六进制字符串表示形式，请使用float.hex()方法。
+
+
+```python
+float.hex(16.16) #'0x1.028f5c28f5c29p+4'
+# hex(1L)错误
+```
+
+```
+## '0x1.028f5c28f5c29p+4'
+```
+
+### id(object){#a31}
+
+* 返回对象的“标识”。这是一个整数，它保证在该对象的生命周期内是唯一的和恒定的。具有不重叠寿命的两个对象可以具有相同的id()值。
+* CPython实现细节：这是内存中对象的地址。
+
+
+```python
+a="runoob"
+id(a) #1967199359408
+```
+
+```
+## 2202188096496
+```
+
+### input([prompt]){#a32}
+
+* 如果有prompt参数，则将它输出到标准输出且不带换行。该函数然后从标准输入读取一行，将它转换成一个字符串（去掉一个末尾的换行符），然后返回它。当读取到EOF时，会产生EOFError。
+* 如果readline模块已加载，则input()将使用它提供精细的行编辑和历史记录功能
+
+    s = input('--> ')  
+    # Monty Python's Flying Circus 他会弹出一个界面让你们输入
+    s
+    #z=input()不能不加参数，会陷入死循环。
+    s=input(':')
+    s
+
+
+### class int(x=0)
+
+### class int(x,base=10){#a33}
+
+* 从数字或字符串（x）构造并返回一个整数对象，如果没有给出参数，则返回0。如果 x 是一个数字，返回 x.__int__()。对于浮点数，这将截断到零。
+
+* 如果x不是数字，或者如果给定base，则x必须是字符串bytes  bytearray实例代表基数base中的integer literal。字面量的前面可以有+或者-（中间不能有空格），周围可以有空白。以n为基数的字面量包含数字0到n-1，用a到z（或者A到Z）来表示10到35。默认的base是10。允许的值为0和2-36。Base-2, -8, and -16 literals can be optionally prefixed with 0b/0B, 0o/0O, or 0x/0X, as with integer literals in code. base为0意味着完全解释为代码字面值，使得实际基数为2,8,10或16，并且使得int（'010'， 0 ）是不合法的，而int('010')是以及int（'010'，8）。
+
+
+```python
+#base为进制数，默认十进制
+int()#0
+```
+
+```
+## 0
+```
+
+```python
+int(0.1)#0
+```
+
+```
+## 0
+```
+
+```python
+int(5.9)#5
+#如果带参数base的话，前面要以字符串的方式输入
+#前面的字符串可以从a到z来表示10到35，base的允许值为0,2-36.
+```
+
+```
+## 5
+```
+
+```python
+int('12',16)
+#int('a',10)错误
+```
+
+```
+## 18
+```
+
+```python
+int('a',15)
+```
+
+```
+## 10
+```
+
+```python
+int('0xa',16)
+```
+
+```
+## 10
+```
+
+```python
+int('0ba',16)
+```
+
+```
+## 186
+```
+
+```python
+int('3',0)
+```
+
+```
+## 3
+```
+
+### isinstance(object,classinfo){#a34}
+
+* 如果object是clsaainfo的一个实例（或者是classinfo的直接、间接或虚拟子类的实例），那么则返回true。如果对象不是给定类型的对象，则函数始终返回false。如果classinfo是对象类型的元组（或递归地，其他这样的元组），如果对象是任何类型的实例，则返回true。如果classinfo不是类型或类型组成的元祖和此类元组，则会引发TypeError异常。
+
+    #判断一个对象是不是某一类
+    #type（）不会认为子类是一种父类类型，不考虑继承关系
+    #isinstance（）会认为子类是一种父类类型，考虑继承关系
+    #如果要判断两个类型是否相同推荐使用isintance（）
+
+    a=2
+    isinstance(a,int)
+    #isinstance(a,(str,list))Falsea不属于所给类型元组中的任一个
+    isinstance(a,(str,int))#True a属于其中的int
+    isinstance(True,int)#bool型是int的子类
+
+    #type与isinstance（）区别
+    class A:
+        pass
+    #B是A的子类，B有A而产生
+    class B(A):
+        pass
+    isinstance(A(),A)#True
+    type(A())==A  #True
+    isinstance(B(),A)#True
+    isinstance(A(),B)#False,父类的实例被认为属于子类
+    type(B())==A #False
+
+### issubclass(class,classinfo){#a35}
+
+如果 class 是classinfo的子类(直接、 间接或 虚拟) 则返回 true 。一个类被认为是它自己的子类。classinfo可以是类对象的元组，这时classinfo中的每个类对象都会被检查。在任何其他情况下，会引发TypeError异常。
+
+### iter(object[,sentinel]){#a36}
+
+返回一个迭代器对象。根据有无第二个参数，对第一个参数的解释相差很大。没有第二个参数，object必须是一个支持迭代协议（__iter__()方法）的容器对象，或者它必须支持序列协议（从 0开始的整数参数的__getitem__() 方法）。如果它不支持这些协议任何一个，将引发TypeError。如果给出第二个参数sentinel，那么object必须是一个可调用的对象。这种情况下创建的迭代器将在每次调用时不带参数调用object的__next__()方法；如果返回的值等于sentinel，将引发StopIteration，否则返回这个值。
+另见迭代器类型。
+
+iter()第二个参数的有用的一个场景是读取文件的行直至到达某个特定的行。下面的示例读取一个文件，直至readline()方法返回一个空字符串：
+
+### len(s){#a37}
+
+返回对象的长度（元素的个数）。参数可以是序列（如字符串，字节，元组，列表或者范围）或者集合（如字典，集合或者固定集合）。
+
+
+```python
+len(bytearray([1,2,3]))
+```
+
+```
+## 3
+```
+
+```python
+len(bytearray(b'zifu'))
+```
+
+```
+## 4
+```
+
+```python
+len('zifu')
+#len([1,2,3]>[2,3,2]) bool has no len()
+```
+
+```
+## 4
+```
+
+```python
+len(dict(a=1,b=2))
+```
+
+```
+## 2
+```
+
+### class list([iterable]){#a38}
+
+list不是一个函数，它实际上是一个可变的序列类型，其文档在Lists和序列类型 — list, tuple, range中。
+
+
+```python
+x=list()
+x=[]
+```
+
+### locals(){#a39}
+
+更新和返回表示当前局部符号表的字典。当locals()在函数代码块中调用时会返回自由变量，但是在类代码块中不会。不应该修改这个字典的内容；因为这些变化可能不会影响解释器使用的局部变量和自由变量。
+
+
+```python
+locals()
+```
+
+```
+## {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, 'sys': <module 'sys' (built-in)>, 'os': <module 'os' from 'D:\\Anaconda\\lib\\os.py'>, 'r': <__main__.R object at 0x00000200BC9C0EC8>, 'x': [], 'a': 'runoob', 'y': [4, 5, 6], 'z': (7, 8), 'l': 5, 'm': 9.77, 'n': (2+3j), 'A': <class '__main__.A'>, 'str': '3*4+5', 'c': <code object <module> at 0x00000200BC9C85D0, file "", line 1>, 'i': 9, 'lei': <class '__main__.lei'>, 'Shape': <class '__main__.Shape'>, 's': <__main__.Shape object at 0x00000200BCA21B48>, 'element': 8, 'j': 6, 'is_odd': <function is_odd at 0x00000200BC9CDE58>, 'newlist': <filter object at 0x00000200BCA30888>, 'b': frozenset({'u', 'b', 'n', 'o', 'r'})}
+```
+
+```python
+def runoob(arg):
+    z=1
+    print(locals())
+runoob(4)#{'arg': 4, 'z': 1},arg和z是局部变量
+```
+
+```
+## {'arg': 4, 'z': 1}
+```
+
+### map(function,iterable,···){#a40}
+
+* 返回一个迭代器，对iterable的每个项应用function，并yield结果。如果传递多个iterable参数，function必须接受这么多参数，并应用到从iterables并行提取的项中。如果有多个iterable，迭代器在最短的iterable耗尽时停止。对于函数的输入已经排列成参数元组的情况，参见itertools.starmap()。
+* map函数会根据提供的函数对指定序列做映射。第一个参数function以参数序列中的每一个元素调用function函数，返回包含每次function函数返回值的新列表。
+
+        def square(x):
+            return x\*\*2
+        z=map(square,[1,2,3,4,5])
+        z#迭代器
+        for i in z:
+            print(i)
+        map(lambda x: x**2, [1,2,3,4,5])
+        y=[3,3,3,3,3,3,3,3,33,3,3,3,3,3,3,3,3,3,3]
+        r=map(lambda x,y:x+y,[1,3,5,7,9],[2,4,6,8,10])
+        for i in r:
+            print(i)
+
+### max(iterable,*[,key,default])
+
+### max(arg1,arg2,*args[,key]){#a41}
+
+* 返回可迭代的对象中的最大的元素，或者返回2个或多个参数中的最大的参数。
+* 填入的位置参数应该是可迭代的（ iterable）对象.返回可迭代对象中最大的元素。如果有2个或更多的位置参数，返回最大位置参数。
+* 有两个可选的仅关键字参数。key参数指定类似于用于list.sort()的单参数排序函数。default参数指定如果提供的iterable为空则要返回的对象。如果迭代器为空并且未提供default，则会引发ValueError。
+* 如果多个项目是最大的，则函数返回遇到的第一个项目。这与其他排序稳定性保留工具（例如sorted（iterable， key = keyfunc， reverse = True）[0] t3 >和heapq.nlargest（1， iterable， key = keyfunc）。
+
+
+```python
+max(1,23,5)#这个是多参数
+```
+
+```
+## 23
+```
+
+```python
+max([1,23,5])#这个是可迭代对象
+# max([])错误
+```
+
+```
+## 23
+```
+
+```python
+max([],default=0)
+#虽然用的是lst，但不是代表列表的意思
+```
+
+```
+## 0
+```
+
+```python
+def minus(lst):
+        return lst*lst
+max(1,2,-3,key=minus)#这里看的就是谁的平方最大，所以会是-3
+```
+
+```
+## -3
+```
+
+```python
+max([1,2,-3],key=minus)#和上面一样，函数应该是对int操作的函数，而不是列表等
+```
+
+```
+## -3
+```
+
+### memoryview(obj){#a42}
+
+返回给定参数的“内存视图”。
+
+
+```python
+#python3.0,对象需要是字节形式
+v=memoryview(bytes(b'abcdefg'))
+v[1]#98
+```
+
+```
+## 98
+```
+
+```python
+v[-1]
+```
+
+```
+## 103
+```
+
+```python
+v[0]
+```
+
+```
+## 97
+```
+
+```python
+s=memoryview(bytearray('abcdefg','utf-8'))
+s[1]#98
+```
+
+```
+## 98
+```
+
+```python
+s[1:4]#<memory at 0x00000177F9773408>
+```
+
+```
+## <memory at 0x00000200BC9DA588>
+```
+
+```python
+print(s[1:4].tobytes())#b'bcd'
+```
+
+```
+## b'bcd'
+```
+
+### min(iterable,*[,key,default])
+
+### min(arg1,arg2,*args[,key]){#a43}
+
+返回可迭代的对象中的最小的元素，或者返回2个或多个参数中的最小的参数。
+
+如果提供了一个位置参数，它应该是一个可迭代对象。返回可迭代对象中最小的元素。如果有2个或更多的位置参数，返回最小的位置参数。
+
+有两个可选的仅关键字参数。键参数指定类似于用于list.sort()的单参数排序函数。默认参数指定如果提供的iterable为空则要返回的对象。如果迭代器为空并且未提供default，则会引发ValueError。
+
+如果多个项目是最小的，函数返回遇到的第一个。这与其他排序稳定性保留工具（例如sorted（iterable， key = keyfunc）[0]和heapq.nsmallest（1， iterable， key = keyfunc）。
+
+### next(iterator[,default]){#a44}
+
+通过调用__next__()方法从迭代器中检索下一个项目。如果有default参数，在迭代器迭代完所有元素之后返回该参数；否则抛出StopIteration。
+
+    #原理
+    # 首先获得iterator对象：
+    # it=iter([1,2,3,4,5])
+    #循环:
+    #while true:
+    #    try:
+    #        #获得下一个值
+    #       x=next(it)
+    #       print(x)
+    #    except StopIteration:
+    #       break
+
+### class object{#a45}
+
+返回一个新的无特征的对象。object是所有类的基础类.它包含所有Python类实例里都会有的通用方法.该函数不接受任何的参数。object不不具有__dict__，因此您不能将任意属性分配给object类的实例。
+
+### oct(x){#a46}
+
+将整数转换为八进制字符串。结果是一个合法的Python表达式。如果x不是Python int对象，则必须定义一个返回整数的__index__()方法。
+
+
+```python
+oct(20) #'0o24'
+```
+
+```
+## '0o24'
+```
+
+```python
+oct(30) # '0o36'
+# oct(33.33) # typeerror 'float' object cannot be interpreted as an integer
+```
+
+```
+## '0o36'
+```
+
+### 函数open{#a47}
+
+`(file,mode='r,buffering=-1,encoding=None,errors=None,newline=None,closefd=True,opener=None)`
+
+* 打开 file 并返回一个相应的 文件对象.如果文件不能被打开, 抛出 OSError 异常.
+
+* 参数 file 是一个字符串表示的文件名称，或者一个数组表示的文件名称。文件名称可以是相对当前目录的路径，也可以是绝对路径表示。（如果给出了一个文件描述器，则当关闭返回的I / O对象时除外，除非closefd设置为False。
+
+* 参数 mode 是指明打开文件的模式。默认值是'r'，表示使用文本的方式打开文件来读取。其他常见值为'w'用于写入（如果文件已经存在则截断文件），'x'用于排他性创建，'a' （在某些 Unix系统上，意味着全部写入追加到文件的末尾，而不管当前的查找位置）。在文本模式下，如果未指定encoding，则使用的编码取决于平台：locale.getpreferredencoding（False）以获取当前语言环境编码。（对于读取和写入原始字节，使用二进制模式，不指定编码。可用的模式有
+
+|字符|	含义|
+|-|-|
+|'r'|	打开阅读（默认）|
+|'w'|	打开写入，首先截断文件|
+|'x'|	打开以供独占创建，如果文件已存在则失败|
+|'a'|打开以供写入，如果存在，则附加到文件的末尾|
+|'b'|	二进制模式|
+|'t'	|文本模式（默认）|
+|'+'	|打开磁盘文件进行更新（读写）|
+|'U'	|通用换行符模式（已弃用）|
+
+* 默认模式为'r'（打开阅读文本，'rt'的同义词）。对于二进制读写访问，模式'w b'打开并将文件截断为0字节。'r b'打开文件而不截断。
+
+* 如概述中所述，Python区分二进制和文本I / O。以二进制模式打开的文件（包括模式参数中的'b'）将内容作为字节对象，而不进行任何解码。在文本模式（默认情况下，或当't'包括在模式参数中）时，文件的内容将作为str ，这些字节已经使用平台相关编码首先解码，或者如果给出则使用指定的编码。
+
+{{%spoiler text=\"注意\"%}}
+* Python不依赖于底层操作系统的文本文件的概念；所有的处理都是由Python本身完成的，因此是平台无关的。
+* 参数 buffering是用于设置缓冲策略的可选整数。通过0以关闭缓冲（仅在二进制模式下允许），1选择行缓冲（仅在文本模式下可用）和整数当未给出buffers参数时，默认缓冲策略工作如下：
+* 二进制文件以固定大小的块缓冲；使用启发式尝试确定底层器件的“块大小”并回退到io.DEFAULT_BUFFER_SIZE来选择缓冲区的大小。在许多系统上，缓冲区通常为4096或8192字节长。
+* “交互式”文本文件（isatty()返回True的文件）使用行缓冲。其他文本文件使用上述策略用于二进制文件。
+* 参数 encoding是用于解码或编码文件的编码的名称。这应该只在文本模式下使用。默认编码是平台相关的（无论locale.getpreferredencoding()返回），但是可以使用Python支持的任何文本编码。有关支持的编码列表，请参阅编解码器模块。
+* 参数 errors是一个可选字符串，指定如何处理编码和解码错误 - 这不能在二进制模式下使用。虽然使用codecs.register_error()注册的任何错误处理名称也有效，但仍提供了多种标准错误处理程序（在错误处理程序下列出）。标准名称包括：
+* 'strict'引发ValueError例外，如果存在编码错误。默认值None具有相同的效果。'ignore'忽略错误。请注意，忽略编码错误可能会导致数据丢失。'replace'会导致替换标记（例如'？'）插入到存在格式错误的数据的位置。
+* 'surrogateescape'将表示任何不正确的字节，作为从U DC80到U DCFF范围内的Unicode私人使用区域中的代码点。当写入数据时使用surrogateescape错误处理程序时，这些专用代码点将被转回相同的字节。这对于处理未知编码中的文件很有用。仅当写入文件时，才支持'xmlcharrefreplace'。编码不支持的字符将替换为相应的XML字符引用
+* 'backslashreplace'通过Python的反斜杠转义序列替换格式错误的数据。
+* 'namereplace'（也仅在编写时支持）用\ N {...}转义序列替换不支持的字符。
+* 参数 newline控制通用换行符模式的工作原理（仅适用于文本模式）。它可以是None、''、'\n'、'\r'、'\r\n'。它的工作原理如下
+* 从流读取输入时，如果newline为None，则启用通用换行符模式。输入中的行可以以'\n'，'\r'或'\r\n'结尾，它们在返回给调用者之前被转换成'\n'。如果它是''，则启用通用换行符模式，但行结尾将返回给调用者而不会转换。如果它具有任何其它合法值，则输入行仅由给定字符串终止，并且行结尾被返回给调用者而不会转换。将输出写入流时，如果newline为None，则写入的任何'\n'字符都将转换为系统默认行分隔符os.linesep。如果newline是''或'\n'，则不会进行转换。如果newline是任何其他合法值，写入的任何'\n'字符都将转换为给定字符串。
+* 如果closefd是False并且给出了文件描述器而不是文件名，则当文件关闭时，基本文件描述器将保持打开。如果给定文件名，则closefd必须为True（默认值），否则将产生错误。
+* 通过传递可调用对象opener可以使用自定义开启器。然后通过调用opener（文件，标志）获取文件对象的基础文件描述器。opener必须返回一个打开的文件描述器（传递os.open为opener 结果类似的功能 None）。
+* 新创建的文件为non-inheritable。
+* 以下示例使用os.open()函数的dir_fd参数打开相对于给定目录的文件：
+
+        >>>
+
+        >>> import os
+        >>> dir_fd = os.open('somedir', os.O_RDONLY)
+        >>> def opener(path, flags):
+        ...     return os.open(path, flags, dir_fd=dir_fd)
+        ...
+        >>> with open('spamspam.txt', 'w', opener=opener) as f:
+        ...     print('This will be written to somedir/spamspam.txt', file=f)
+        ...
+        >>> os.close(dir_fd)  # don't leak a file descriptor
+
+* 由open()函数返回的file object的类型取决于模式。当open()用于以文本模式打开文件（'w'，'r'，'wt'，'rt'等。），它返回io.TextIOBase（具体为io.TextIOWrapper）的子类。当用于通过缓冲以二进制模式打开文件时，返回的类是io.BufferedIOBase的子类。确切的类别不同：在读取二进制模式下，它返回io.BufferedReader；在写二进制和追加二进制模式中，它返回io.BufferedWriter，并且在读/写模式下，它返回io.BufferedRandom。当禁用缓冲时，返回原始流，即io.RawIOBase，io.FileIO的子类。
+{{%/spoiler%}}
+
+### ord(c){#a48}
+
+给定一个表示一个Unicode字符的字符串，返回一个表示该字符的Unicode代码点的整数。例如，ord('a')返回整数97和ord('€')（欧元符号）返回8364。这是chr()的逆操作。
+
+
+```python
+ord('$')#36
+```
+
+```
+## 36
+```
+
+### pow(x,y[,z]){#a49}
+
+返回x的y次方; 如果提供z参数， 返回x 的y次方再除以z的余数 (计算效率比pow(x, y) % z更高)。双参数形式pow(x, y)等效于使用幂操作符号：x\*\*y 。
+
+参数必须是数字类型的。由于操作数是混合类型的，二进制计算的原因需要一些强制的规定。对于int操作数，结果具有与操作数相同的类型（强制后），除非第二个参数为负；在这种情况下，所有参数都转换为float，并传递float结果。例如, 10\*\*2 返回 100, 但 10**-2 返回0.01. 如果第二个参数为负数，那么第三个参数必须省略。如果存在z，则x和y必须是整数类型，且y是非负数
+
+
+```python
+pow(2,3)#8
+#pow(2,3,5)#余数为3 终端无法加载，说只有两个变量
+```
+
+```
+## 8
+```
+
+```python
+pow(2,-3)#0.125
+```
+
+```
+## 0.125
+```
+
+```python
+pow(2.0,3)#8.0
+```
+
+```
+## 8.0
+```
+
+```python
+pow(2.5,3)#15.625
+# pow(2,-3,3)ValueError: pow() 2nd argument cannot be negative when 3rd argument specified
+# pow(2.5,3,2)TypeError: pow() 3rd argument not allowed unless all arguments are integers
+```
+
+```
+## 15.625
+```
+
+### 函数print{#a50}
+
+* 将object打印到文本流file，由sep分隔，尾部接end。sep, end 和 file，如果提供这三个参数的话，必须以关键参数的形式。
+
+* All non-keyword arguments are converted to strings like str() does and written to the stream, separated by sep and followed by end.sep和结束必须是字符串；它们也可以是None，这意味着使用默认值。如果没有打印 对象, print() 只打印一个 结束符号 end.
+
+* 文件参数必须是具有write(string)方法的对象；如果不存在或None，将使用sys.stdout。由于打印的参数被转换为文本字符串，因此print()不能与二进制模式文件对象一起使用。对于这些，请改用file.write(...)。
+
+* 尽管通常是由file 参数来决定输出流是否缓存，但是如果 flush 参数为ture，那么输出流将会被强制刷新。
+
+
+```python
+#print()方法用于打印输出，最常见的一个函数，但是实在3.0版本中。
+# 语法 print(*objects,sep='',end='\n',file=sys.stdout)
+# objects为复数，可以有多个对象，sep用来设置多个对象的分隔符号，默认是空格，end用来设定用什么结尾，默认值是换行符，可以换成其他字符，file要写入的文件对象。
+print('i','love','python',sep='.')#i.love.python
+```
+
+```
+## i.love.python
+```
+
+```python
+print('i','love','python')#i love python
+```
+
+```
+## i love python
+```
+
+```python
+print('i''love''python')#ilovepython
+```
+
+```
+## ilovepython
+```
+
+### class property(fget=None,fset=None,fdel=None,doc=None{#a51}
+
+* 返回一个property 属性。
+
+* fget是获取属性值的函数。fset是用于设置属性值的功能。fdel是用于删除属性值的功能。并且doc为属性创建一个docstring。
+
+{{%spoiler text=\"省略\"%}}
+
+* 典型的用法是定义一个托管属性x：
+
+        class C:
+            def __init__(self):
+                self._x = None
+        
+            def getx(self):
+                return self._x
+        
+            def setx(self, value):
+                self._x = value
+        
+            def delx(self):
+                del self._x
+        
+            x = property(getx, setx, delx, "I'm the 'x' property.")
+
+* 如果c是C的实例，则c.x将调用getter，c.x = value将调用setter，del c.x将调用deleter。
+
+* 如果给出doc，它将是该属性的文档字符串。否则，该属性将拷贝fget的文档字符串（如果存在）。这使得可以使用property()作为装饰器轻松创建只读属性：
+
+        class Parrot:
+            def __init__(self):
+                self._voltage = 100000
+            @property
+            def voltage(self):
+                """Get the current voltage."""
+                return self._voltage
+
+* @property装饰器将voltage()方法转换为具有相同名称的只读属性的“getter”，并设置为voltage的文档字符串为“Get the current voltage.”。
+
+* Property对象具有可用作装饰器的getter、setter和deleter方法(即他们也可以用做装饰器)，用于创建property的副本，并将相应的访问器函数设置为装饰的功能。最好的解释就是使用一个例子：
+
+    class C:
+        def __init__(self):
+            self._x = None
+    
+        @property
+        def x(self):
+            """I'm the 'x' property."""
+            return self._x
+    
+        @x.setter
+        def x(self, value):
+            self._x = value
+    
+        @x.deleter
+        def x(self):
+            del self._x
+
+* 这段代码与第一个例子完全相等。请务必给予附加函数与原始属性相同的名称（在本例中为x即函数名全为x）。
+
+* 返回的property对象还具有对应于构造函数参数的属性fget、fset和fdel。
+{{%/spoiler%}}
+
+### range(stop)
+
+### range(start,stop[,step])#a{52}
+
+range实际上是Ranges和Sequence Types — list, tuple, range中描述的不可变序列类型，而不是函数。
+
+
+```python
+#计数从start开始，默认是从0开始
+#stop，停止点，不包括stop
+#step，步长，默认1
+range(10) #range(0, 10
+```
+
+```
+## range(0, 10)
+```
+
+```python
+range(0,10) #range(0, 10)
+```
+
+```
+## range(0, 10)
+```
+
+```python
+range(0,10,3) #range(0,10,3)
+#所以返回的都是迭代器
+```
+
+```
+## range(0, 10, 3)
+```
+
+```python
+x=range(0,10,3) #range(0,10,3)
+for i in x:
+    print (i)
+```
+
+```
+## 0
+## 3
+## 6
+## 9
+```
+
+### repr(object){#a53}
+
+返回某个对象可打印形式的字符串。For many types, this function makes an attempt to return a string that would yield an object with the same value when passed to eval(), otherwise the representation is a string enclosed in angle brackets that contains the name of the type of the object together with additional information often including the name and address of the object. 类可以通过定义\_\_repr\_\_()方法控制该函数对其实例的返回。
+
+
+```python
+d=repr(".")
+ascii(d)
+```
+
+```
+## '"\'.\'"'
+```
+
+```python
+print(d)
+```
+
+```
+## '.'
+```
+
+```python
+ascii(945)
+```
+
+```
+## '945'
+```
+
+```python
+repr(945)
+```
+
+```
+## '945'
+```
+
+```python
+chr(500)
+#可以看到差别在于对于某些字符来说，ascii返回的特殊形式，而repr依然是加上引号。
+```
+
+```
+## 'Ǵ'
+```
+
+```python
+ascii(chr(945))#"'\\u03b1'"
+```
+
+```
+## "'\\u03b1'"
+```
+
+```python
+repr(chr(945))#"'α'"
+```
+
+```
+## "'α'"
+```
+
+```python
+print('.')
+```
+
+```
+## .
+```
+
+### reversed(seq){#a54}
+
+返回一个反向iterator。seq必须是一个具有\_\_reversed\_\_() 方法或支持序列协议的对象（整数参数从0开始的\_\_len\_\_()方法和\_\_getitem\_\_()方法）。
+
+
+```python
+x=[1,2,3]
+y=reversed(x)
+y#<list_reverseiterator at 0x177f979bac8>
+#不管是y还是print （y）都是显示这种说明信息
+```
+
+```
+## <list_reverseiterator object at 0x00000200BCA1CE08>
+```
+
+```python
+z=x.reverse();print(z) #none
+```
+
+```
+## None
+```
+
+### round(number[,ndigits]){#a55}
+
+round(number[, ndigits])
+
+* 返回一个浮点型 近似值，保留小数点后 ndigits 位。如果省略 ndigits,将返回最接近输入的整数.代表number.\_\_round\_\_(ndigits)。
+
+* 对于支持round()的内建类型，值被四舍五入为功率减去ndigits的最接近的倍数10；如果两个倍数相等地接近，则对偶数选择进行舍入（因此，例如，round(0.5)和round(-0.5)都是0和round(1.5)是2）。如果使用一个参数调用，返回值是一个整数，否则类型与number相同。
+
+* 浮点数round()的行为可能让人惊讶，例如round(2.675, 2)给出的是2.68 而不是期望的2.67。这不是一个错误：大部分十进制小数不能用浮点数精确表示，它是因为这样的一个事实的结果。更多信息，请参阅Floating Point Arithmetic: Issues and Limitations。
+
+
+```python
+#返回浮点数的四舍五入值
+round(3.97) #4,保留位数默认为0
+```
+
+```
+## 4
+```
+
+```python
+round(3.97,1) #4.0
+```
+
+```
+## 4.0
+```
+
+```python
+round(9.7543,2) #9.75
+```
+
+```
+## 9.75
+```
+
+### class set([iterable]){#a56}
+
+返回一个新的set 对象，其元素可以从可选的iterable获得。set是一个内建的类。
+
+
+```python
+#创建一个无序不重复元素集，可进行关系测试，删除重复数据，还可以计算交集差集并集等
+x=set('runoob')
+y=set('google')
+x,y #({'b', 'n', 'o', 'r', 'u'}, {'e', 'g', 'l', 'o'})
+```
+
+```
+## ({'u', 'b', 'n', 'o', 'r'}, {'l', 'o', 'g', 'e'})
+```
+
+```python
+x&y #交集 {'o'}
+```
+
+```
+## {'o'}
+```
+
+```python
+x|y #{'b', 'e', 'g', 'l', 'n', 'o', 'r', 'u'}
+```
+
+```
+## {'u', 'b', 'n', 'l', 'e', 'g', 'o', 'r'}
+```
+
+```python
+x-y#差集 {'b', 'n', 'r', 'u'}
+```
+
+```
+## {'u', 'b', 'n', 'r'}
+```
+
+### setattr(object,name,value){#a57}
+
+它与getattr()相对应。参数是一个对象、一个字符串和一个任意值。字符串可以是一个已存在属性的名字也可以是一个新属性的名字。该函数将值赋值给属性，只要对象允许。例如，setattr(x, 'foobar', 123)等同于x.foobar = 123。
+
+
+```python
+class a:
+    x=5
+a.x
+```
+
+```
+## 5
+```
+
+```python
+setattr(a,'x',3)#虽然x是个变量，但他是个名称，要加引号
+a.x
+```
+
+```
+## 3
+```
+
+### class slice(stop)
+
+### class slice(start,stop[,step]){#a58}
+
+返回一个slice对象，表示由索引range(start, stop, step)指出的集合。start和step参数默认为None。切片对象具有只读属性start、stop和step，它们仅仅返回参数的值（或者它们的默认值）。他们没有其他明确的功能；但是它们被数字Python和其他第三方扩展使用。在使用扩展的索引语法时同样会生成切片对象。例如：a[start:stop:step]或者a[start:stop, i]。请参见itertools.islice()中另外一个返回迭代器的版本。
+
+
+```python
+#返回一个切片对象，这个切片对象可以作为对其他对象做切片的参数
+s=slice(5)
+s #slice(None, 5, None)
+```
+
+```
+## slice(None, 5, None)
+```
+
+```python
+ar=[1,2,3,4,5,6,7,8,9]
+ar[s]#是一种索引
+```
+
+```
+## [1, 2, 3, 4, 5]
+```
+
+### sorted(iterable[,key][,reverse]){#a59}
+
+* 依据iterable中的元素返回一个新的排好序的列表。
+
+* 具有两个可选参数，它们必须指明为关键字参数。
+
+* key指示一个带有一个参数的函数，它用于从列表的每个元素中提取比较的关键字：key=str.lower。默认值是None（直接比较元素）。
+
+* reverse是一个布尔值。如果设置为True，那么列表中元素反过来比较来排序。
+
+* functools.cmp_to_key()用于将老式的cmp函数转换为key函数。
+
+* 内建的sorted()函数保证是稳定的。如果保证不更改比较相等的元素的相对顺序，则排序是稳定的 - 这有助于在多个通过中排序（例如，按部门排序，然后按工资级别排序）
+
+
+```python
+# sort 是应用在list的方法，sorted可以对所有可迭代的对象进行排序操作。list的sort方法返回的是对已经存在的列表进行操作，无返回值，而内建函数sorted方法返回的是一个新的list，而不是在原来的基础上进行的操作。
+a=[5,7,6,3]
+b=sorted(a)
+b #[3, 5, 6, 7]
+```
+
+```
+## [3, 5, 6, 7]
+```
+
+```python
+students=[('john','A',15),('jane','B',12),('dave','B',10)]
+sorted(students,key=lambda s: s[2],reverse=True) #[('john', 'A', 15), ('jane', 'B', 12), ('dave', 'B', 10)]
+```
+
+```
+## [('john', 'A', 15), ('jane', 'B', 12), ('dave', 'B', 10)]
+```
+
+### 本python没有functions.cmp_to_key(){#a60}
+
+### staticmethod(function){#a61}
+
+* 返回function的一个静态方法。
+
+* 静态方法不接受隐式的第一个参数（也就是实例名称self）。要声明静态方法，请使用下面的习惯方式：
+
+        class C:
+            @staticmethod
+            def f(arg1, arg2, ...): ...
+    
+* @staticmethod形式是一个函数装饰器 - 有关详细信息，请参阅函数定义中的函数定义的描述。
+
+* 它可以在类上（如C.f()）或实例上（如C().f()）调用。除了它的类型，实例其他的内容都被忽略。
+
+* Python中的静态方法类似于Java或C++。另请参见classmethod()了解用于创建备用类构造函数的变体。
+
+* 有关静态方法的详细信息，请参阅标准类型层次结构中标准类型层次结构的文档。
+
+
+```python
+class C(object):
+    @staticmethod
+    def f():
+        print("python")
+C.f() #python
+```
+
+```
+## python
+```
+
+```python
+C().f() #python
+```
+
+```
+## python
+```
+
+### class str(object='')
+
+### class str(object='b',encoding='utf-8',errors='strict'){#a62}
+
+* 返回object的str版本。有关详细信息，请参见str()。
+
+* str是内置字符串类。有关字符串的一般信息，请参阅文本序列类型 - str。
+
+
+```python
+#str函数将对象转化为适于人阅读的形式
+#s='runoob'
+#str(s) 'runoob'
+#dic={'runoob':'runoob.com','google':'google.com'}
+#str(dic) "{'runoob': 'runoob.com', 'google': 'google.com'}"
+```
+
+### sum(iterable[,start]){#a63}
+
+* 将start以及iterable的元素从左向右相加并返回总和。start默认为0。iterable的元素通常是数字，start值不允许是一个字符串。
+* 对于某些使用情况，有很好的替代sum()的方法。连接字符串序列的首选快速方法是调用''.join(sequence)。要以扩展精度添加浮点值，请参见math.fsum()。要连接一系列可迭代对象，请考虑使用itertools.chain()。
+
+
+```python
+x=[0,1,2,3,4]
+#sum(0,1,2)错误
+sum(x)#10
+```
+
+```
+## 10
+```
+
+```python
+sum(x,2) #12 start是相加的对象
+```
+
+```
+## 12
+```
+
+### super([type[,object-or-type]]){#a64}
+
+* 返回一个代理对象，它委托方法给父类或者type的同级类。这对于访问类中被覆盖的继承方法很有用。除了跳过type本身之外，搜索顺序与getattr()所使用的顺序相同。
+
+* type的__mro__属性列出getattr()和super()使用的方法解析顺序。该属性是动态的，并且可以在继承层次结构更新时更改。
+
+* 如果省略第二个参数，则返回的super对象是未绑定的。如果第二个参数是一个对象，则isinstance(obj, type)必须为真。如果第二个参数是类型，则issubclass(type2, type)必须为真（这对类方法很有用）。
+
+* super有两种典型的使用情况。在具有单继承的类层次结构中，可以使用super来引用父类，而不必明确命名它们，从而使代码更易于维护。这种使用非常类似于在其他编程语言中super的使用。
+
+* 第二种使用情况是在动态执行环境中支持协同多继承。这种使用情况是Python独有的，在静态编译语言或仅支持单继承的语言中找不到。这使得可以实现“菱形图”，其中多个基类实现相同的方法。良好的设计指出此方法在每种情况下具有相同的调用顺序（因为调用的顺序在运行时确定，因为该顺序适应类层次结构中的更改，并且因为该顺序可以包括在运行时之前未知的兄弟类）。
+
+* 对于这两种使用情况，典型的超类调用看起来像这样：
+
+        class C(B):
+            def method(self, arg):
+                super().method(arg)    # This does the same thing as:
+                                    # super(C, self).method(arg)
+
+* 注意，super()只实现显式点分属性查找的绑定过程，例如super().\_\_getitem\_\_(name)。它通过实现自己的\_\_getattribute\_\_()方法来实现这一点，以便以支持协同多继承需要的以可预测的顺序搜索类。因此，super()没有定义隐式的查找语句或操作，例如super()\[name]。
+
+* 还要注意，如果不是零个参数的形式，没有限制super()在方法内部使用。如果两个参数的形式指定准确的参数，就能进行正确的引用。零个参数的形式只在类定义中工作，因为编译器填充必要的细节以正确检索正在定义的类，原理类似访问当前实例的普通方法。
+
+* 有关如何使用super()设计协同类的实用建议，请参阅使用super()的指南。
+
+
+```python
+class A:
+    def add(self,x):
+        y=x+1
+        print(y)
+class B(A):
+    def add(self,x):
+        super().add(x)
+b=B()
+b.add(2)
+```
+
+```
+## 3
+```
+
+### tuple([iterable]){#a65}
+
+而不是一个函数，tuple实际上是一个不变序列类型，如Tuples和Sequence Types — list, tuple, range中所述。
+
+
+```python
+tuple([1,2,3,4])#(1,2,3,4)
+```
+
+```
+## (1, 2, 3, 4)
+```
+
+### class type(object)
+
+### class type(name,bases,dict){#a66}
+
+* 只有一个参数时，返回object的类型。返回值是一个类型对象，通常与object.__class__返回的对象相同。
+
+* 建议使用isinstance()内建函数来测试对象的类型，因为它考虑了子类。
+
+* 带有三个参数时，返回一个新的类型对象。它本质上是class语句的动态形式。name string是类名，并成为__name__属性； bases元组列出基类，并成为__bases__属性；并且dict字典是包含类主体的定义的命名空间，并且复制到标准字典以成为__dict__属性。例如，下面的两条语句创建完全相同的type对象：
+
+        >>>
+
+        >>> class X:
+        ...     a = 1
+        ...
+        >>> X = type('X', (object,), dict(a=1))
+
+
+```python
+type([2])#list
+```
+
+```
+## <class 'list'>
+```
+
+```python
+type('A',(list,),dict(x=[3,5]))
+#A.x 错误
+```
+
+```
+## <class '__main__.A'>
+```
+
+```python
+A=type('A',(list,),dict(x=[3,5]))
+A.x #[3,5]
+```
+
+```
+## [3, 5]
+```
+
+### vars([object]){#a67}
+
+* 返回一个模块、字典、类、实例或者其它任何一个具有__dict__属性的对象的__dict__属性。
+
+* 模块和实例这样的对象的__dict__属性可以更新；但是其它对象可能对它们的__dict__属性的写操作具有限制（例如，类使用types.MappingProxyType来阻止对字典直接更新）。
+
+* 如果不带参数，vars()的行为就像locals()。注意，locals字典只用于读取，因为对locals字典的更新会被忽略。
+
+
+```python
+#vars返回对象object的属性和属性值的字典对象
+vars()
+```
+
+```
+## {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, 'sys': <module 'sys' (built-in)>, 'os': <module 'os' from 'D:\\Anaconda\\lib\\os.py'>, 'r': <__main__.R object at 0x00000200BC9C0EC8>, 'x': [0, 1, 2, 3, 4], 'a': [5, 7, 6, 3], 'y': {'l', 'o', 'g', 'e'}, 'z': None, 'l': 5, 'm': 9.77, 'n': (2+3j), 'A': <class '__main__.A'>, 'str': '3*4+5', 'c': <code object <module> at 0x00000200BC9C85D0, file "", line 1>, 'i': 9, 'lei': <class '__main__.lei'>, 'Shape': <class '__main__.Shape'>, 's': slice(None, 5, None), 'element': 8, 'j': 6, 'is_odd': <function is_odd at 0x00000200BC9CDE58>, 'newlist': <filter object at 0x00000200BCA30888>, 'b': <__main__.B object at 0x00000200BCA11BC8>, 'runoob': <function runoob at 0x00000200BC9C8558>, 'minus': <function minus at 0x00000200BC9E5558>, 'v': <memory at 0x00000200BC97AF48>, 'd': "'.'", 'ar': [1, 2, 3, 4, 5, 6, 7, 8, 9], 'students': [('john', 'A', 15), ('jane', 'B', 12), ('dave', 'B', 10)], 'C': <class '__main__.C'>, 'B': <class '__main__.B'>}
+```
+
+```python
+class B:
+    z=1
+print(vars(B))
+#{'__module__': '__main__', 'z': 1, '__dict__': <attribute '__dict__' of 'B' objects>, '__weakref__': <attribute '__weakref__' of 'B' objects>, '__doc__': None}
+```
+
+```
+## {'__module__': '__main__', 'z': 1, '__dict__': <attribute '__dict__' of 'B' objects>, '__weakref__': <attribute '__weakref__' of 'B' objects>, '__doc__': None}
+```
+
+### zip(*iterables){#a68}
+
+* 创建一个迭代器，聚合来自每个迭代器的元素。
+
+* 返回一个由元组构成的迭代器，其中第i个元组包含来自每一组参数序列或可迭代量的第i元素。当最短输入可迭代被耗尽时，迭代器停止。使用单个可迭代参数，它返回1元组的迭代器。没有参数，它返回一个空迭代器。等同于：
+
+        def zip(*iterables):
+            # zip('ABCD', 'xy') --> Ax By
+            sentinel = object()
+            iterators = [iter(it) for it in iterables]
+            while iterators:
+                result = []
+                for it in iterators:
+                    elem = next(it, sentinel)
+                    if elem is sentinel:
+                        return
+                    result.append(elem)
+                yield tuple(result)
+
+* 可以保证迭代按从左向右的计算顺序。这使得使用zip(*[iter(s)]*n)将数据序列聚类为n长度组的习语成为可能。这重复了相同的迭代器n次，以使每个输出元组具有对迭代器的n调用的结果。这具有将输入划分为n个长块的效果。
+
+* zip()当迭代器元素不一致时，循环停止在较短的迭代器元素，较长的迭代器元素会被舍弃。如果这些值很重要，请改用itertools.zip_longest()。
+
+* zip() 与 * 操作符一起可以用来 unzip 一个列表
+
+        >>>
+
+        >>> x = [1, 2, 3]
+        >>> y = [4, 5, 6]
+        >>> zipped = zip(x, y)
+        >>> list(zipped)
+        [(1, 4), (2, 5), (3, 6)]
+        >>> x2, y2 = zip(*zip(x, y))
+        >>> x == list(x2) and y == list(y2)
+        True
+
+
+```python
+#zip函数用于将可迭代的对象作为参数，将对象中的元素打包成一个一个元组，然后返回有这些元组组成的对象，节约了很多内存。我们可以使用list（）转换来输出列表。
+#如果各个迭代器的元素不一致，则返回列表长度与最短的对象相同，利用*号符操作，可以将元组解压为列表。
+a=[1,2,3]
+b=[4,5,6]
+c=[1,2,3,4,5]
+z1=zip(a,b)
+z1#<zip at 0x177fbaf8cc8>返回的是一个对象
+```
+
+```
+## <zip object at 0x00000200BCA6B388>
+```
+
+```python
+list(z1)#[(1, 4), (2, 5), (3, 6)]
+```
+
+```
+## [(1, 4), (2, 5), (3, 6)]
+```
+
+```python
+list(zip(a,c))#[(1, 1), (2, 2), (3, 3)]
+```
+
+```
+## [(1, 1), (2, 2), (3, 3)]
+```
+
+```python
+a1,a2=zip(*zip(a,b))
+list(a1)#[1, 2, 3]
+```
+
+```
+## [1, 2, 3]
+```
+
+```python
+list(a2)#[4, 5, 6]
+```
+
+```
+## [4, 5, 6]
+```
+
+### 函数\_\_import\_\_{#a69}
+
+`(name,globals=None,locals=None,fromlist=(),level=0)`
+
+与 importlib.import_module() 不同，这是一个高级的函数，不会在日常的 Python 编程中用到。
+
+通过 import 语句调用此函数。他能够被替代(通过导入builtins 模块，赋值给 builtins.\_\_import\_\_)去改变 import 语句的语义, 但是强烈 不鼓励，因为通常使用import钩子  更容易达到相同的目标，而且不会对使用了默认import实现的代码造成任何问题。也不建议直接使用\_\_import\_\_()以支持importlib.import\_module()。
+
+该函数导入模块名称，可能使用给定的globals和locals来确定如何解释包上下文中的名称。fromlist给出了应从name给出的模块导入的对象或子模块的名称。标准实现不使用其 locals 参数，仅仅使用 globals 确定 导入 语句的包的上下文。
+
+

@@ -1,0 +1,232 @@
+---
+# Page title
+title: 抽样分布与参数估计和假设检验
+# summary
+summary: 包括抽样分布，参数估计和假设检验三个部分的内容
+# Date page published
+date: 2022-8-5
+lastmod: '2022-08-09T16:44:38+08:00'
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 6
+
+toc: true
+---
+
+# 抽样分布
+
+## 常见抽样分布的总结
+
+分布函数|数学形式|均值|方差|性质|图像
+-|-|-|-|-|:-
+正态分布|$$X\backsim N(\mu,\sigma^2)$$|$\mu$|$\sigma^2$||{{% figure src=\"data/正态分布.png\"%}}|
+卡方分布|设随机变量$X_1,X_2,\dots,X_n$相互独立，且$X_i(i=1,2,\dots,n)$服从**标准**正态分布$N(0,1)$，则他们的平方和$\sum_{i=1}^nX_i^2$服从[自由度](#a4)为n的$\chi^2$分布,记为$\chi^2(n)$|n|2n|(1)可加性<br/>(2)当$n\to\infty$时，极限分布为正态分布<br/>(3)当自由度n>45时，$\sqrt{2\chi^2(n)}$近似服从$N(\sqrt{2n-1},1)$$$\chi^2_p(n)\approx\frac{1}{2}(\mu_p+\sqrt{2n-1})^2$$|{{% figure src=\"data/卡方分布.png\"%}}
+t分布|设随机变量$$X\backsim N(0,1),Y\backsim\chi^2(n)$$,且X与Y相互独立，则$$t=\frac{X}{\sqrt{Y/n}}$$,记为$t(n)$|当$n\geq2$时，$E(t)=0$|当$n\geq3$时,$\frac{n}{n-2}$|(1)t(n)的方差比N(0,1)要大一些<br/>(2)自由度为1的t分布称为柯西分布，期望不存在<br/>(3)当$n\geq30$,认为近似**标准**正态分布|{{% figure src=\"data/t分布.png\"%}}
+F分布|设随机变量Y与Z相互独立，且Y和Z分别服从自由度为m和n的$\chi^2$分布，则$$X=\frac{Y/m}{Z/n}=\frac{nY}{mZ}$$,服从第一自由度为m，第二自由度为n的F分布|$$\frac{n}{n-2},n>2$$|$$\frac{2n^2(m+n-2)}{m(n-2)(n-4)},n>4$$|(1)$F_p(v_1,v_2)=\frac{1}{F_{1-p}(v_2,v_1)}$<br/>(2)如果随机变量X服从t(n)分布，则$X^2$服从F(1,n)分布|{{% figure src=\"data/F分布.png\"%}}
+中心极限定理|不管总体的分布是什么，样本均值X的分布总是近似正态分布，只要总体的方差$\sigma^2$有限，$$\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)$$|0|1|(1)通常认为$n\geq30$时为大样本(2)大样本，小样本实际并不是以样本量大小来区分的，在样本固定的条件下所进行的推断统计，问题分析不管样本量有多大，都成为小样本问题；在样本量$n\to\infty$的条件下进行的统计推断，问题分析则成为大样本问题。|{{% figure src=\"data/中心极限定理.png\"%}}
+
+## 服从各种分布的统计量的构建
+
+统计量|分布|推导|条件
+-|-|-|:-
+$$\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}$$|$$N(0,1)$$|$$E(\bar{x})=E(\frac{1}{n}\sum_{i=1}^nX_i)=\frac{1}{n}\sum_{i=1}^nE(X_i)=\frac{1}{n}\cdot n\mu=\mu$$ $$D(\bar{x})=D(\frac{1}{n}\sum_{i=1}^nX_i)=\frac{1}{n^2}\sum_{i=1}^nD(X_i)=\frac{1}{n^2}\cdot n\sigma^2=\frac{\sigma^2}{n}$$ $$\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)$$|(1)大样本(近似正态分布)<br/>(2)$\mu,\sigma$已知
+$$\frac{(n-1)s^2}{\sigma^2}$$|$$\chi^2(n-1)$$|$$\because \frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)$$ $$\therefore \frac{(\bar{x}-\mu)^2}{\sigma^2/n}\backsim \chi^2(n-1)$$ $$s^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{x})^2$$ $$\begin{aligned} &D\left(\frac{(n-1)s^2}{\sigma^2}\right) = 2(n - 1) \\ &D(s^2) = \frac{2\sigma^4}{n - 1} \end{aligned}$$ $$(n-1)s^2=\sum_{i=1}^nX_i^2-2\sum_{i=1}^nX_i\bar{x}+\sum_{i=1}^n\bar{x}^2=\sum_{i=1}^nX_i^2-n\bar{x}^2$$ $$\frac{\sum_{i=1}^n(X_i-\bar{x})^2}{\sigma^2}\backsim N(0,1)$$ $$可以认为将\bar{x}视作\mu,则可想明白$$,[$$独立性与分布的证明$$](#a3)|(1)正态分布总体或者大样本<br/>(2)$\sigma$已知
+$$\frac{\bar{x}-\mu}{s/\sqrt{n}}$$|$$t(n-1)$$|$$\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}\backsim N(0,1)$$ $$\frac{(n-1)s^2}{\sigma^2}\backsim\chi^2(n-1)$$ $$\frac{\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}}{\sqrt{\frac{(n-1)s^2}{\sigma^2(n-1)}}}=\frac{\bar{x}-\mu}{s/\sqrt{n}}\backsim t(n-1)$$|(1)正态总体或大样本<br/>(2)$\mu$已知
+$$\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2}$$|$$F(n_1-1,n_2-1)$$|$$\because \frac{(n-1)s^2}{\sigma^2}\backsim\chi^2(n-1)$$ $$\therefore\frac{(n_1-1)s_1^2}{\sigma_1^2(n_1-1)}/\frac{(n_2-1)s_2^2}{\sigma_2^2(n_2-1)}=\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2}$$|(1)正态总体或大样本<br/>(2)$\sigma_1,\sigma_2$已知
+
+# 参数估计
+
+## 各种情况下的参数估计总结
+
+参数|统计量|分布|点估计值|标准误差|$(1-\alpha)\%$的置信区间|假定条件
+:-:|:-:|:-:|:-:|:-:|:-|:-
+$\mu$总体均值|$$\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}$$|N(0,1)|$\bar{x}$|$$\frac{\sigma}{\sqrt{n}}$$|$$\bar{x}\pm z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}$$|(1)$\sigma$已知<br/>(2)大样本(n>=30)
+||$$\frac{\bar{x}-\mu}{\sigma/\sqrt{n}}$$|N(0,1)|$\bar{x}$|$$\frac{\sigma}{\sqrt{n}}$$|$$\bar{x}\pm z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}$$|(1)$\sigma$未知<br/>(2)大样本(n>=30)
+||$$\frac{\bar{x}-\mu}{s/\sqrt{n}}$$|t(n-1)|$\bar{x}$|$$\frac{\sigma}{\sqrt{n}}$$|$$\bar{x}\pm t_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}$$|(1)正态总体<br/>(2)$\sigma$未知<br/>(3)小样本(n<30)
+$\pi$总体比例|$$z=\frac{p-\pi}{\sqrt{\pi(1-\pi)/n}}$$|N(0,1)|$p$|$$\sqrt{\frac{\pi(1-\pi)}{n}}$$|$$p\pm z_{\frac{\alpha}{2}}\sqrt{\frac{p(1-p)}{n}}$$|(1)二项总体<br/>(2)大样本<br/>$(np\geq5,n(1-p)\geq5)$
+$$\sigma^2总体方差$$|$$\frac{(n-1)s^2}{\sigma^2}$$|$$\chi^2(n-1)$$|$s^2$|不要求|$$\frac{(n-1)s^2}{\chi^2_{\alpha/2}}\leq\sigma^2\leq\frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}$$|正态总体
+$$\mu_1-\mu_2$$两个总体均值之差|$$z=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}}$$|N(0,1)|$\bar{x}_1-\bar{x}_2$|$$\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}$$|$$(\bar{x}_1-\bar{x}_2)\pm z_{\alpha/2}\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}$$|(1)独立大样本<br/>$(n_1\geq30,n_2\geq30)$<br/>(2)$\sigma_1,\sigma_2$已知
+||$$z=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}}$$|N(0,1)|$\bar{x}_1-\bar{x}_2$|$$\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}$$|$$(\bar{x}_1-\bar{x}_2)\pm z_{\alpha/2}\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}$$|(1)独立大样本<br/>$(n_1\geq30,n_2\geq30)$<br/>(2)$\sigma_1,\sigma_2$已知
+||[$$t=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}}$$](#a1)|$t(n_1+n_2-2)$|$\bar{x}_1-\bar{x}_2$|$$\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}$$|$$(\bar{x}_1-\bar{x}_2)\pm t_{\alpha/2}(n_1+n_2-2)\sqrt{s_p^2(\frac{1}{n_1}+\frac{1}{n_2})}$$|(1)两个正态总体<br/>(2)独立小样本<br/>$(n_1\leq30,n_2\leq30)$<br/>(3)$\sigma_1,\sigma_2$未知但相等
+||$$t=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}{\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}}$$|[$t(v)$](#a2)|$\bar{x}_1-\bar{x}_2$|$$\sqrt{\frac{\sigma^2_1}{n_1}+\frac{\sigma^2_2}{n_2}}$$|$$(\bar{x}_1-\bar{x}_2)\pm t_{\alpha/2}(v)\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}$$|(1)两个正态总体<br/>(2)独立小样本<br/>$(n_1\leq30,n_2\leq30)$<br/>(3)$\sigma_1,\sigma_2$未知且不相等
+$$\mu_d=\mu_1-\mu_2$$两个总体均值之差|$$z=\frac{\bar{d}-\mu_d}{\sigma_d/\sqrt{n}}$$|N(0,1)|$\bar{d}$|$$\frac{\sigma_d}{\sqrt{n}}$$|$$\bar{d}\pm z_{\alpha/2}\frac{\sigma_d}{\sqrt{n}}$$|(1)匹配大样本<br/>$(n_1\geq30,n_2\geq30)$
+||$$z=\frac{\bar{d}-\mu_d}{s_d/\sqrt{n}}$$|t(n-1)|$\bar{d}$|$$\frac{\sigma_d}{\sqrt{n}}$$|$$\bar{d}\pm t_{\alpha/2}(n-1)\frac{s_d}{\sqrt{n}}$$|(1)两个正态总体<br/>(2)匹配小样本<br/>$(n_1\leq30,n_2\leq30)$
+$$\pi_1-\pi_2$$两个总体比例之差|$$Z=\frac{(p_1-p_2)-(\pi_1-\pi_2)}{\sqrt{\frac{\pi_1(1-\pi_1)}{n_1}+\frac{\pi_2(1-\pi_2)}{n_2}}}$$|N(0,1)|$$p_1-p_2$$|$$\sqrt{\frac{\pi_1(1-\pi_1)}{n_1}+\frac{\pi_2(1-\pi_2)}{n_2}}$$|$$(p_1-p_2)\pm z_{\alpha/2}\sqrt{\frac{p_1(1-p_1)}{n_1}+\frac{p_2(1-p_2)}{n_2}}$$|(1)两个二项总体<br/>(2)大样本<br/>$(n_1p_1\geq5,n_1(1-p_1)\geq5$<br/>$n_2p_2\geq5,n_2(1-p_2)\geq5)$
+$$\frac{\sigma_1^2}{\sigma_2^2}$$两个总体方差之比|$$F=\frac{s_1^2}{s_2^2}\cdot\frac{\sigma_2^2}{\sigma_1^2}$$|$$F(n_1-1,n_2-1)$$|$\frac{s_1^2}{s_2^2}$|不要求|$$\frac{s_1^2/s_2^2}{F_{\alpha/2}}\leq\frac{\sigma_1^2}{\sigma_2^2}\leq\frac{s_1^2/s_2^2}{F_{1-\alpha/2}}$$|两个正态总体
+
+## 参数估计的基本原理
+
+参数估计是为了估计一个总体的参数
+
+通过构造统计量（估计量），从而利用样本来预测总体的参数，利用具体的样本算出来的统计量称为估计值。
+
+点估计就是用估计值来估计总体参数
+
+区间估计是构造服从一定分布的含未知参数的（**但是注意这个参数被视作一个常数**）统计量来估计总体参数的范围，当我们得知一个统计量的分布时，我们就可以得到它任一分位点的值，就可以得到该统计量一定范围区间的值（被称作置信水平），从而反推出此时参数的取值范围（被称作置信区间，最小值被称为置信下限，最大值被称为置信上限）。
+
+* 置信水平$\alpha$（置信度，置信系数）：
+  
+  主观设定的值，取决于我们希望这个置信区间应该多宽，**当样本量给定时，置信区间的宽度随着置信系数的增大而增大**，置信区间越大，肯定越可靠。但是太宽的置信区间没有意义
+  
+  **这个水平是针对某个随机区间而言**，我们永远不能说参数在某个具体区间内的概率为$\alpha$
+* 置信区间
+  
+  置信区间的解释是**在n次抽样中，包含参数的区间的概率为$\alpha$,包含参数的区间个数为$n\alpha$**
+  
+  参数在一个区间的概率非1即0，在或者不在。$\alpha$是统计量的分布概率，参数本身不存在概率分布，也就无法说参数在该置信区间的概率是$\alpha$
+
+## 估计量的评价标准
+
+指标|解释|图像
+-|-|-
+无偏性|估计量的期望等于参数|{{% figure src=\"data/无偏性.jpg\"%}}
+有效性|估计量的方差大小，越小越有效|{{% figure src=\"data/有效性.jpg\"%}}
+一致性|随着样本量的增大，估计量的值越来越接近被估计总体的参数。比如样本均值抽样分布的标准差为$\frac{\sigma}{\sqrt{n}}$,当$n\to\infty$时，方差为0，无限接近均值|{{% figure src=\"data/一致性.jpg\"%}}
+
+## 样本量的确定
+
+在样本量确定的情况下，我们不可能同时提高预测精度和可靠度，但是样本量也不可能无限增大，我们要找到最优的样本量。
+
+思路是参数估计的估计误差的表达式已经知道，则确定某个误差，我们可以反推样本量，样本量取较大的整数（样本量的元整法则）
+
+参数|样本量表达式|关系
+-|-|-
+总体均值|$$n=\frac{(z_{\alpha/2})^2\sigma^2}{E^2}$$|(1)与置信水平成正比，置信水平越大，所需样本量越大<br/>(2)与总体方差成正比<br/>(3)与估计误差的**平方**成反比，可接受的估计误差的平方越大，所需样本量越小。(4)方差未知可以用样本方差代替
+总体比例|$$E=z_{\alpha/2}\sqrt{\frac{\pi(1-\pi)}{n}}$$ $$n=\frac{(z_{\alpha/2})^2\pi(1-\pi)}{E^2}$$|可以用样本比例代替，<br/>当$\pi$无法知道时，取使$\pi(1-\pi)$最大的0.5
+
+# 假设检验
+
+## 假设检验分情况讨论
+
+原假设$H_0$|检验统计量|拒绝域
+:-:|:-:|:-:
+$\mu\leq\mu$<br/>$\mu\geq\mu$<br/>$\mu=\mu$<br/>$(\sigma^2已知)$|$Z=\frac{\overline{X}-\mu_0}{\sigma/\sqrt{n}}$|$z\geq z_\alpha$<br/>$z\leq-z_\alpha$<br/>$\mid z\mid\geq z_{\alpha/2}$
+$\mu\leq\mu$<br/>$\mu\geq\mu$<br/>$\mu=\mu$<br/>$(\sigma^2未知)$|$t=\frac{\overline{X}-\mu_0}{S/\sqrt{n}}$|$t\geq t_{\alpha}(n-1)$<br/>$t\leq -t_{\alpha}(n-1)$<br/>$\mid t\mid\leq t_{\alpha/2}(n-1)$
+$\mu_1-\mu_2\leq\delta$<br/>$\mu_1-\mu_2\geq\delta$<br/>$\mu_1-\mu_2=\delta$<br/>($\sigma_1^2,\sigma_2^2已知$)|$Z=\frac{\overline{X}-\overline{Y}-\delta}{\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}}$|$z\geq z_\alpha$<br/>$z\leq-z_\alpha$<br/>$\mid z\mid\geq z_{\alpha/2}$
+$\mu_1-\mu_2\leq\delta$<br/>$\mu_1-\mu_2\geq\delta$<br/>$\mu_1-\mu_2=\delta$<br/>($\sigma_1^2=\sigma_2^2=\sigma^2未知$)|$t=\frac{\overline{X}-\overline{Y}-\delta}{S_\omega\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}}$<br/>$S_\omega^2=\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$|$t\geq t_\alpha(n_1+n_2-2)$<br/>$t\leq -t_\alpha(n_1+n_2-2)$<br/>$\mid t \mid\geq t_{\alpha/2}(n_1+n_2-2)$
+$\sigma^2\leq \sigma_0^2$<br/>$\sigma^2\geq \sigma_0^2$<br/>$\sigma^2=\sigma_0^2$<br/>$(\mu 未知)$|$\chi^2=\frac{(n-1)S^2}{\sigma_0^2}$|$\chi^2\geq \chi^2_\alpha(n-1)$<br/>$\chi^2\leq \chi^2_{1-\alpha}(n-1)$<br/>$\chi^2\geq \chi^2_{\alpha/2}(n-1)$或$\chi^2\leq \chi^2_{1-\alpha/2}(n-1)$
+$\sigma_1^2\leq\sigma_2^2$<br/>$\sigma_1^2\geq\sigma_2^2$<br/>$\sigma_1^2=\sigma_2^2$<br/>$(\mu_1,\mu_2未知)$|$F=\frac{S_1^2}{S_2^2}$|$F\geq F_\alpha(n_1-1,n_2-1)$<br/>$F\leq F_{1-\alpha}(n_1-1,n_2-1)$<br/>$$F\geq F_{\alpha/2}(n_1-1,n_2-1)或F\leq F_{1-\alpha/2}(n_1-1,n_2-1)$$
+$\mu_D\leq0$<br/>$\mu_D\geq0$<br/>$\mu_D=0$<br/>(成对数据)|$t=\frac{\overline{D}-0}{S_D/\sqrt{n}}$|$t\geq t_{\alpha}(n-1)$<br/>$t\leq -t_{\alpha}(n-1)$<br/>$\mid t\mid\leq t_{\alpha/2}(n-1)$
+
+## 假设检验的理解
+
+参数估计是为了估计参数的范围，而假设检验是为了检验我们关于参数的假设值或者范围是否正确。这在实际生活中有很大的意义，我们希望来检测总体的参数有没有发生某些变化，假设检验给了我们科学的指导。
+
+假设分为原假设，和备则假设。假设的检验有可能犯两类错误，一类是弃真($\alpha$错误),一类是取伪错误($\beta$错误)，而在实际应用中我们大多数选择让检验的弃真错误概率不超过$\alpha$，所以实际上的犯错概率是要大于$\alpha$的
+
+弃真错误和取伪错误此消彼长，
+
+### 为什么选择弃真错误
+
+* 人为规定的统一标准
+* 原假设常常是明确的。我们更关心原假设为真，但是被我们拒绝了的可能性有多大
+
+### 假设检验的根本原则
+
+假设检验依据的是小概率原则，也就是我们认为小概率的事件在一次试验中是几乎不可能发生的。如果发生了，就认为原假设有问题，我们就可以拒绝原假设。
+
+假设检验也是通过构造服从一定分布含假设参数的统计量，通过分布我们可以选定小概率区间，如果估计值落在了小概率区间内，则拒绝原假设。
+
+### 单边检验和双边检验中拒绝域的选择
+
+    **其实就是找确定为小概率区间的值**，对于双边检验来说，要检验的参数值确定，不需要考虑小概率区间的变化，而对于单边检验来说，我们要找确定为小概率区间的区间。我们先假定
+    
+    以上看法不对
+
+单边检验就是找小概率区间来拒绝，但是双边检验是对问题的理解，比如关于$\mu$,当原假设是大于问题时，此时我们将更关心下限问题，即当产品低于什么水平时拒绝，即$\bar{x}$,\bar{x}越低，统计量越小，所以选择下限检验。当原假设是小于问题时，此时我们更关心上限问题，即$\bar{x}$越大，此时统计量越大。我们要选择上限检验
+
+要理解，参数永远改变不了统计量的分布，统计量的分布是固定的，参数只是个常数，真正决定统计量分布的是样本。所以我们不管怎么假设参数实际上影响的使我们对于小概率区间的选择，而不是统计量的分布。统计量的小概率区间可以从两边或单边去选择。我们用样本去衡量${\bar{x}}$以及$s^2$去衡量$\mu,\sigma^2$时，我们希望推翻原假设时，总体参数怎么变，然后就是样本的估计量应该相同趋势变化，然后作用到统计量上会怎么变化，此时我们就可以确定去上限还是上限了。统计量变大取上限，统计量变小取下限。
+
+### 原假设和备则假设的关系
+
+对于显著性水平为$\alpha$的检验准则来说，保证了错误的拒绝原假设的概率不超过$alpha$，但是不知道错误的接受原假设的概率。原假设被拒绝代表“结论H1为真出错的概率不超过$alpha$”,实际可能更低及更有可能结论H1为真，因为H1可能被错误的当真。
+
+在一次实验中，原假设是有优势的。所以有可能备则假设和原假设互换位置后，新的原假设同样被接受。
+
+原假设和备则假设并不是非此即彼的关系，拒绝原假设可以认为原假设就是错误的，但是接受原假设不代表备则假设是错误的。只能说还没有充分的证据证明原假设是错误的。
+
+### 原假设和备则假设的选择
+
+双边检验一般选择清晰的假设作为原假设
+
+单边检验中：我们往往把原有的、传统的观点或结论放在原假设，而把希望验证的，希望证明的去放在备则假设，这样就可以通过推翻原有的假设，而得出结论。
+
+同时单边检验也受到背景的影响，我们可能根据过往的经验来判断原假设。
+
+# 附录
+
+## $s_p$的公式 {#a1}
+
+当两个总体的方差$\sigma_1^2$和$\sigma_2^2$未知但相等时，需要用两个样本的方差$s_1^2$,$s_2^2$来估计，这时，需要将两个样本的数据组合在一起，以给出总体方差的合并估计量$s_p^2$.
+
+$$s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}$$
+
+## $v$的公式 {#a2}
+
+当两个总体的方差$\sigma_1^2$和$\sigma_2^2$未知但不相等时，两个样本均值只差经标准化后近似服从自由度为v的t分布，自由度v的计算公式如下：
+$$v=\frac{(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2})^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}}$$
+
+## 样本均值和样本方差分布以及独立性的证明 {#a3}
+
+定理：设随机样本$X_1,\cdots,X_n$服从正态分布$N(\mu,\sigma^2)$,样本均值$\overline{X}=\sum_{i=1}^nX_i/n$,且样本方差$S^2=\sum_{i=1}^n(X_i-\overline{X})^2/(n-1)$,则:
+
+1. $\overline{X}$和$S^2$相互独立；
+2. $\overline{x}$服从$N(\mu,\sigma^2/2)$
+3. $(n-1)S^2/\sigma^2$服从卡方分布$\chi^2_{n-1}$
+
+结论2易得，以下仅证明结论1和3。
+
+证明：为证明结论1，首先给出三个引理如下：
+
+**引理1:** 对任一$Cov(X_i-\overline{X},\overline{X})=0$
+
+证明：注意到:
+
+$$\overline{X}=\sum_{l=1}^n\frac{1}{n}X_l;X_i-\overline{X}=\sum_{l=1}^n(\delta_{il}-\frac{1}{n})X_l$$
+
+这里$\delta_{il}=1,i=l;\delta_{il}=0,i\neq l$,从而
+
+$$Cov(X_i-\overline{X},\overline{X})=\sigma^2\sum_{i=1}^n(\delta_{il}-\frac{1}{n})\frac{1}{n}=\sigma^2(\frac{1}{n}-n\frac{1}{n^2})=0$$
+
+**引理2：** 对任一$(X_i-\overline{X},\overline{X})服从二元正态分布.
+
+证明：由引理1的证明可知：
+
+$$\overline{X}=(1/n,\cdots,1/n)^T(X_1,\cdots,X_n);X_i-\overline{X}=(\delta_{il}-1/n,\cdots,\delta_{in}-1)$$
+又$(X_1,\cdots,X_n)$服从多元正态分布，而多元正态分布的线性变换仍然是正态分布，故此引理得证。
+
+**引理3：** 对于二元正态分布，协方差为0等价于独立。
+
+证明：协方差为0等价于联合密度等于边际密度乘积等价于独立，得证。
+
+由上述引理1—3，易知对任一$i,X_i-\overline{X}$与$\overline{X}$是相互独立的。而$S^2=\sum_{i=1}^n(X_i-\overline{X})^2/(n-1)$是$X_i-\overline{X},i=1,\cdots,n$的函数，故仍与$\overline{X}$独立。结论1得证。
+
+接下来考虑结论3。注意到
+
+$$\sum_{i=1}^n\frac{(X_i-\mu)^2}{\sigma^2}=\sum_{i=1}^n\frac{[(X_i-\overline{X})+(\overline{X}-\mu)]^2}{\sigma^2}=\frac{\sum_{i=1}{n}(X_i-\overline{X})^2}{\sigma^2}+\frac{n(\overline{X}-\mu)^2}{\sigma^2}$$
+
+也就是
+
+$$\sum_{i=1}^n\frac{(X_i-\mu)^2}{\sigma^2}=\frac{(n-1)S^2}{\sigma^2}+\frac{n(\overline{X}-\mu)^2}{\sigma^2}$$
+
+等式左边是n项独立标准正态分布的平方和，故服从$\chi^2_n$，而等式右边第二项是1项标准正态分布的平方和，故服从$\chi^2_1$。又由于等式右边的两项是相互独立的，故结论3得证。
+
+上述证明的核心是基于多元正态分布的典型性质，即不相关和独立等价，从而我们仅需证明变量不相关即可，使得独立性的证明变得简单易懂。
+
+## 样本方差与总体方差无偏性的证明
+
+$$\begin{array}{lcl} \displaystyle E(\bar{x}) = E\left(\frac{1}{n}\sum\limits_{i=1}^{n}x_i\right) = \frac{1}{n}\sum\limits_{i=1}^{n}E(x_i) = \frac{1}{n}\sum\limits_{i=1}^{n}\mu = \mu \\\\ \begin{aligned} E(s^2) &= E\left(\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}\right) \\ &= \frac{1}{n-1}\sum\limits_{i=1}^{n}E(x_i^2 + \bar{x}^2 - 2x_i\bar{x}) \\ &= \frac{1}{n-1}\sum\limits_{i=1}^{n}\left[D(x) + E(x)^2 + D(\bar{x}) + E(\bar{x})^2 - 2E\left(\frac{x_i^2+x_i\sum_{j=1,j\ne i}^n x_j}{n} \right)\right]\\ &= \frac{1}{n-1}\sum\limits_{i=1}^{n}\left[\sigma^2 + \mu^2 + \frac{\sigma^2}{n} + \mu^2 - 2\frac{\sigma^2 + \mu^2 + (n-1)\mu^2}{n}\right]\\ &=  \frac{1}{n-1}\sum\limits_{i=1}^{n}\left(\frac{n - 1}{n}\sigma^2\right)\\ &= \sigma^2 \end{aligned} \end{array}$$
+
+## 自由度的介绍 {#a4}
+
+自由度是指附加给独立的观测值的约束或限制的个数。从字面含义来看，自由度是指一组数据中可以自由取值的个数。当样本数据的个数是n时，若样本平均数$\bar{x}$确定下来，则附加给n个观测值的限制个数是一个，因此只有n-1个数据可以自由取值，n-1就是他的自由度。
+
+## 参考资料
+
+<a href="https://blog.csdn.net/TSzero/article/details/112073454?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4.no_search_link" target=_blank>统计中常用的抽样分布</a>
+
+<a href="https://blog.csdn.net/weixin_41503009/article/details/105012965?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2.no_search_link" target=_blank>常见统计分布的概率分布图</a>
+
+<a href="https://zhuanlan.zhihu.com/p/166463011" target=_blank>独立性的证明</a>

@@ -1,0 +1,515 @@
+---
+title: python风格指导和编程技巧
+author: admin
+date: '2022-07-27'
+slug: python-style-strategy
+categories:
+  - python
+tags:
+  - style
+  - strategy
+subtitle: ''
+summary: A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is the most important.
+authors: []
+lastmod: '2022-07-27T15:13:18+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+toc: true
+---
+
+A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is the most important.
+
+# 代码布局
+
+## 缩进
+
+一般默认使用4个空格，不是tab键
+
+在一个语句需要放在多行来写时，需要缩进
+
+### 垂直对齐
+
+直接换行，对开分隔符对齐
+
+    # Aligned with opening delimiter.
+    foo = long_function_name(var_one, var_two,
+                             var_three, var_four)
+
+### 悬挂缩进
+
+* 第一行不允许有参数
+* 函数需要额外缩进4个空格
+* 并不一定要缩进四个空格
+
+        # Add 4 spaces (an extra level of indentation) to distinguish arguments from the rest.
+        def long_function_name(
+                var_one, var_two, var_three,
+                var_four):
+            print(var_one)
+        # Hanging indents should add a level.
+        foo = long_function_name(
+            var_one, var_two,
+            var_three, var_four)
+
+### if缩进
+
+if语句之内的语句也会缩进四个空格，会与多行缩进造成误解，但是也可以，或者参数额外缩进四个语句。
+
+    # No extra indentation.
+    if (this_is_one_thing and
+        that_is_another_thing):
+        do_something()
+    
+    # Add a comment, which will provide some distinction in editors
+    # supporting syntax highlighting.
+    if (this_is_one_thing and
+        that_is_another_thing):
+        # Since both conditions are true, we can frobnicate.
+        do_something()
+    
+    # Add some extra indentation on the conditional continuation line.
+    if (this_is_one_thing
+            and that_is_another_thing):
+        do_something()
+
+### 右括号对齐
+
+多行结构中的右大括号/方括号/圆括号可以在列表最后一行的第一个非空白字符下对齐。
+
+    # 在列表最后一行的第一个非空白字符下对齐，如:
+    my_list = [
+        1, 2, 3,
+        4, 5, 6,
+        ]
+    result = some_function_that_takes_arguments(
+        'a', 'b', 'c',
+        'd', 'e', 'f',
+        )
+    # 和多行结构开始的字符对齐
+    my_list = [
+        1, 2, 3,
+        4, 5, 6,
+    ]
+    result = some_function_that_takes_arguments(
+        'a', 'b', 'c',
+        'd', 'e', 'f',
+    )
+
+## tab和space
+
+空格优先，tab只在已经使用了tab缩进时才使用，不要混合tab和空格
+
+## 单行的最大长度
+
+单行的合适长度是79
+
+文档注释docstring和评论comment最长是72
+
+单行的最大长度是99
+
+换行的最优方式是在括号中的隐式连续行，当然对于with结构（assert）结构可以使用反斜杠来换行。
+
+    with open('/path/to/some/file/you/want/to/read') as file_1, \
+         open('/path/to/some/file/being/written', 'w') as file_2:
+        file_2.write(file_1.read())
+
+## 二元操作符前后的换行
+
+    # Wrong:
+    # operators sit far away from their operands
+    income = (gross_wages +
+              taxable_interest +
+              (dividends - qualified_dividends) -
+              ira_deduction -
+              student_loan_interest)
+    
+    
+    # Correct:
+    # easy to match operators with operands
+    income = (gross_wages
+              + taxable_interest
+              + (dividends - qualified_dividends)
+              - ira_deduction
+              - student_loan_interest)
+
+前后两种方式都允许，但是第二种会更可读一点
+
+## blank lines
+
+类，函数前后两个空行
+
+类中方法前后一个空行
+
+Extra blank lines may be used (sparingly) to separate groups of related functions. Blank lines may be omitted between a bunch of related one-liners (e.g. a set of dummy implementations).
+
+Use blank lines in functions, sparingly, to indicate logical sections.
+
+Python accepts the control-L (i.e. ^L) form feed character as whitespace; many tools treat these characters as page separators, so you may use them to separate pages of related sections of your file. Note, some editors and web-based code viewers may not recognize control-L as a form feed and will show another glyph in its place.
+
+## Source File 编码
+
+核心Python发行版中的代码应该始终使用UTF-8，并且不应该有编码声明。
+
+在标准库中，非utf-8编码应该仅用于测试目的。限制使用非ascii字符，最好只用于表示地名和人名。如果使用非ascii字符作为数据，则避免嘈杂的Unicode字符。
+
+Python标准库中的所有标识符都必须使用仅限ascii的标识符，并且应该尽可能使用英语单词(在许多情况下，使用的缩写和技术术语不是英语)。
+
+鼓励面向全球的开源项目采用类似的政策。
+
+## imports
+
+* 书写规范
+
+导入不同模块，需要分行
+
+    # Correct:
+    import os
+    import sys
+
+导入同一模块下的不同内容，可以from
+
+    # Correct:
+    from subprocess import Popen, PIPE
+
+* 导入顺序
+
+在模块的说明之后，模块的全局变量和常量之前书写import语句，导入顺序为：
+
+1. Standard library imports.
+2. Related third party imports.
+3. Local application/library specific imports.
+
+* 导入方法
+
+  * 绝对方法：需要知道模块名，标准库应该避免复杂的包layout，只能用绝对导入方法。
+  
+            import mypkg.sibling
+            from mypkg import sibling
+            from mypkg.sibling import example
+
+  * 相对方法：explicit relative imports are an acceptable alternative to absolute imports, especially when dealing with complex package layouts where using absolute imports would be unnecessarily verbose
+  
+            from . import sibling
+            from .sibling import example
+
+  * 冲突：导入模块中的类与已有类冲突，则可以只导入模块，使用`模块名.类名`的方式调用类。
+
+            import myclass
+            import foo.bar.yourclass        
+            
+## Module Level Dunder Names
+
+Module level “dunders” (i.e. names with two leading and two trailing underscores) such as __all__, __author__, __version__, etc. should be placed after the module docstring but before any import statements except from __future__ imports. 
+
+python要求future-import之类的语句必须在除docstring之外的语句之前，如`import __future__`,
+
+# string quotes
+
+    `"a'b'c"`,`'a"b"c'`,两种形式都可
+    
+# 表达式和语句中的空格 
+           
+## pet peeves（a frequent subject of complaint）
+
+以下情形需要避免多余的空格
+
+括号，中括号，大括号中的元素应该立即书写。
+
+    # Correct:
+    spam(ham[1], {eggs: 2})
+    # Wrong:
+    spam( ham[ 1 ], { eggs: 2 } )
+
+在trailing comma和closing paranthesis之间
+
+    # Correct:
+    foo = (0,)
+    # Wrong:
+    bar = (0, )
+
+紧靠在逗号，分号，冒号之前
+
+    # Correct:
+    if x == 4: print(x, y); x, y = y, x
+    # Wrong:
+    if x == 4 : print(x , y) ; x , y = y , x
+        
+紧靠在函数调用参数列表开始的左括号之前:
+
+    # Correct:
+    spam(1)
+    # Wrong:
+    spam (1)
+
+紧靠在进行切片或index时的左括号之前：
+
+    # Correct:
+    dct['key'] = lst[index]
+    # Wrong:
+    dct ['key'] = lst [index]
+    
+不要为了对齐操作符而让赋值操作符两侧出现超过一个的空格
+
+    # Correct:
+    x = 1
+    y = 2
+    long_variable = 3
+    # Wrong:
+    x             = 1
+    y             = 2
+    long_variable = 3
+
+**exception**
+
+但是在切片中，冒号其实相当于二元操作符，需要在左右两边保持相同的空格数，但是一个slice后面的参数消失时，就不应该有空格，
+
+**也就是要不然没有空格，要不然参数和冒号之间都要有空格**
+
+    # Correct:
+    ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+    ham[lower:upper], ham[lower:upper:], ham[lower::step]
+    ham[lower+offset : upper+offset]
+    ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
+    ham[lower + offset : upper + offset]
+
+### 其他建议
+
+不要到处有尾随的空格，比如你在换号的反斜杠后加上空格，那么就没有换行的效果了。
+
+在赋值操作符（=，+=，-=），比较操作符（>,<,>=,<=,==,!=,<>,in,not in,is,is not），逻辑运算符（and or not）左右应该有空格。
+
+如果有不同优先级的运算符被使用，在最后被运算的操作符之间加空格。
+
+函数后的冒号遵从一般的冒号规则，对于->符号左右应该有空格
+
+    # Correct:
+    def munge(input: AnyStr): ...
+    def munge() -> PosInt: ...
+
+当用于指示关键字参数时，或用于指示未注释的函数形参的默认值时，不要在=号周围使用空格，然而，当将参数注释与默认值组合时，请在=号周围使用空格:
+
+    # Correct:
+    def complex(real, imag=0.0):
+        return magic(r=real, i=imag)
+    # Correct:
+    def munge(sep: AnyStr = None): ...
+    def munge(input: AnyStr, sep: AnyStr = None, limit=1000): 
+
+最好不要使用复合语句，最好分多行写
+
+# 什么时候使用trailing comma
+
+一般是为了之后还要添加元素时方便添加，将每个元素或value单独一行写，最后跟一个trailing comma。比如函数的参数，列表的元素等。
+
+在同一行时不要加trailing comma，除非单一值的元组`a=(3,)`
+
+    # Correct:
+    FILES = [
+        'setup.cfg',
+        'tox.ini',
+        ]
+    initialize(FILES,
+               error=True,
+               )
+
+# 注释(用于解释代码)
+
+注释应该是完整的句子。第一个单词应该大写，除非它是以小写字母开头的标识符(永远不要改变标识符的大小写!)
+
+最好用英文书写（这条其实对于我们来说还是用中文书写）
+
+## block comments
+
+用于之后的一些或所有代码，并且和之后的代码保持统一层级。
+
+块注释通常由一个或多个由完整句子构成的段落组成，每个句子都以句号结尾。在多句注释中，除了最后一句之外，句尾的句号后面应该有两个空格。
+
+以\#号加空格开头，用单独的一行写一个\#号来区分两个段落。
+
+## inline comments
+
+不必要，注意不要分散了代码的注意力，但是有时候也能起到解释的作用。
+
+## Document strings
+
+Write docstrings for all **public modules, functions, classes, and methods**. Docstrings are not necessary for non-public methods, but you should have a comment that describes what the method does. This comment should appear after the def line.
+
+PEP 257 describes good docstring conventions. Note that most importantly, the """ that ends a multiline docstring should be on a line by itself:
+
+    """Return a foobang
+    
+    Optional plotz says to frobnicate the bizbaz first.
+    """
+
+For one liner docstrings, please keep the closing """ on the same line:
+
+    """Return an ex-parrot."""
+
+一个docstring是一个stringliteral，作为模块、函数、类或者方法定义的第一个陈述。这样一个docstring就成为了一个对象的特殊属性`__doc__`。
+
+所有的模块应该有docstrings，所有由模块输出的函数和类都应该有docstrings。公共方法（包括`__init__`构造器）也应该有docstrings。一个包可能由包目录下面的`__init__.py`文件里面模块docstring归档。
+
+为了一致性，一直使用\"\"\"三双引号\"\"\"来写docstrings。如果在docstrings里面使用任意的反斜杠，用`r"""raw triple double quotes"""`。如果用Unicode docstrings，用`u"""Unicode triple-quoted strings"""`。
+
+有两种形式的docstrings，一种是单行docstrings，另一种是多行docstrings。
+
+### 单行docstrings
+
+单行适用于非常明显的可以用单行的场景。比如：
+
+    def kos_root():
+        """Return the pathname of the KOS root directory."""
+        global _kos_root
+        if _kos_root: return _kos_root
+        ...
+        
+注意点：
+
+使用三双引号，即使只是单行。这使得将来的扩展变得很容易。
+
+开闭三双引号都在同一行。
+
+docstrings前后没有空行
+        
+### 多行docstrings
+
+
+多行docstrings由像单行docstrings的一组概要行，一个空行和一个更加详细的描述组成。概要行可能会被自动索引工具使用。它单独成行，然后由一个空行和剩下的内容分割，这样的形式安排很重要。概要行可以是在开三双引号这一行，也可以在它的下一行。整个docstrings都像第一个开三双引号这样的缩进（详见下文例子）。
+
+如果是document一个类，在单行docstrings或者多行docstrings后面添加一个空行。也就是类的方法需要由一个空行分割，docstrings需要和第一个类的方法通过一个空行分隔。
+
+一个脚本的docstrings应该可以被当作“usage”消息使用。“usage”消息是在脚本使用的时候没有用正确的或缺失的参数的时候打印出来的（或者可能是通过一个“-h”选项）。这样一个docstring应该归档脚本的函数、命令行语法、环境变量和文件。usage可以是相当详细的并且足够一个新用户来合适的使用命令，并且对于有经验的用户可以作为一个快速的所有选项和参数的快速reference。
+
+一个模块的docstrings通常应该列出模块输出的类、异常和函数（以及任何其它对象），每一个一个单行概要。通常这些概要不需要像对象本身的docstring那么详细。一个包的docstrings（也就是__init__.py模块的docstrings）应该列出这个包输出的模块和子包。
+
+函数或者方法的docstrings应该总结总结它的行为，归档它的参数、返回值，副作用，异常，以及使用的约束。可选参数应该表明。无论关键词参数是不是接口的一部分，都应该归档。
+
+类的docstrings应该总结它的行为，列出公共方法和实例变量。如果这个类可能要被作为子类，并且由额外的子类的接口，这个接口也应该独立的列出来（在docstrings里面）。类构造器应该在__init__方法的docstrings里面进行归档。其它独立的方法应该在各自的docstrings里面进行归档。
+
+如果一个类是另一个类的子类，并且它的行为和另一个子类很像。那么这个类的docstrings应该总结这一点，并且总结它们的差异。用“override”这个词来表示一个子类方法替换父类方法，并且不调用父类方法。除了自身行为之外，使用“extend”这个词来表示子类方法调用父类方法。
+
+不要在运行文本中用大写来表示函数或者方法的参数（Emacs中的准则）。Python是大小写敏感的，参数名可以被用来作为关键词参数。所以docstrings可以用来归档正确的参数名。最好在独立的行里面列出每个参数，比如：
+
+    def complex(real=0.0, imag=0.0):
+        """Form a complex number
+        
+        Keyword arguments:
+        real -- the real part (default 0.0)
+        imag -- the imaginary part (default 0.0)
+        """
+     
+        if imag == 0.0 and real == 0.0:
+            return complex_zero
+        
+        ...
+
+除非整个docstrings就是一行，否则的话，将闭三双引号单独成行。这样的话，Emacs的fill-paragraph命令就可以用了。
+
+# 命名规范
+
+>
+遵循PEP 8原则给变量起名主要有两种流派：一是通过大小写界定单词的驼峰命名派CamelCase，二是通过下划线连接的蛇形命名派snake_case。这两种流派没有明显的优劣之分，似乎与个人喜好有关。
+为了让不同开发者写出的代码风格尽量保持统一，Python制定了官方的编码风格指南：PEP8。这份风格指南里有许多详细的风格建议，比如应该用4个空格缩进，每行不超过79个字符，等等。其中，当然也包含变量的命名规范：·对于普通变量，使用蛇形命名法，比如max_value；· 对于常量，采用全大写字母，使用下划线连接，比如MAX_VALUE；· 如果变量标记为“仅内部使用”，为其增加下划线前缀，比如_local_var；· 当名字与Python关键字冲突时，在变量末尾追加下划线，比如class_。
+除变量名以外，PEP8中还有许多其他命名规范，比如类名应该使用驼峰风格（FooClass）、函数应该使用蛇形风格（bar_function），等等。给变量起名的第一条原则，就是一定要在格式上遵循以上规范。
+
+不要使用小写的l,大写的O，大写的I来作为单字符变量
+
+`_single_leading_underscore`：（单下划线开头）弱“内部使用”指示器。比如 `from M import *` 是不会导入以下划线开始的对象的。
+`single_trailing_underscore_`：（单下划线结尾）这是避免和Python内部关键词冲突的一种约定，比如：`Tkinter.Toplevel(master, class_=’ClassName’)`
+`__double_leading_underscore`：（双下划线开头）当这样命名一个类的属性时，调用它的时候名字会做矫正（在类FooBar中，`__boo`变成了`_FooBar__boo`；见下文）。
+`__double_leading_and_trailing_underscore__`：（双下划线开头，双下划线结尾）“magic”对象或者存在于用户控制的命名空间内的属性，例如：`__init__`,`__import__`或者`__file__`。除了作为文档之外，永远不要命这样的名。
+
+## Package and Module Names 包名和模块名
+
+模块应该用简短全小写的名字，如果为了提升可读性，下划线也是可以用的。Python包名也应该使用简短全小写的名字，但不建议用下划线。
+当使用C或者C++编写了一个依赖于提供高级（更面向对象）接口的Python模块的扩展模块，这个C/C++模块需要一个下划线前缀（例如：`_socket`）
+
+## Class Names 类名
+
+类名一般使用首字母大写的约定。
+在接口被文档化并且主要被用于调用的情况下，可以使用函数的命名风格代替。
+注意，对于内置的变量命名有一个单独的约定：大部分内置变量是单个单词（或者两个单词连接在一起），首字母大写的命名法只用于异常名或者内部的常量。
+
+## Exception Names 异常名
+
+因为异常一般都是类，所有类的命名方法在这里也适用。然而，你需要在异常名后面加上“Error”后缀（如果异常确实是一个错误）。
+
+## Global Variable Names 全局变量名
+
+（我们希望这一类变量只在模块内部使用。）约定和函数命名规则一样。
+通过 from M import * 导入的模块应该使用all机制去防止内部的接口对外暴露，或者使用在全局变量前加下划线的方式（表明这些全局变量是模块内非公有）。
+
+## Function Names 函数名
+
+函数名应该小写，如果想提高可读性可以用下划线分隔。
+大小写混合仅在为了兼容原来主要以大小写混合风格的情况下使用（比如 threading.py），保持向后兼容性。
+
+## Function and method arguments 函数和方法参数
+
+始终要将 self 作为实例方法的的第一个参数。
+始终要将 cls 作为类静态方法的第一个参数。 如果函数的参数名和已有的关键词冲突，在最后加单一下划线比缩写或随意拼写更好。因此 `class_` 比 clss 更好。（也许最好用同义词来避免这种冲突）
+
+## Method Names and Instance Variables 方法名和实例变量
+
+遵循这样的函数命名规则：使用下划线分隔小写单词以提高可读性。
+在非共有方法和实例变量前使用单下划线。
+通过双下划线前缀触发Python的命名转换规则来避免和子类的命名冲突。
+Python通过类名对这些命名进行转换：如果类 Foo 有一个叫 `__a` 的成员变量， 它无法通过 `Foo.__a` 访问。（执着的用户可以通过 `Foo._Foo__a` 访问。）一般来说，前缀双下划线用来避免类中的属性命名与子类冲突的情况。
+注意：关于__names的用法存在争论（见下文）。
+
+## Constants 常量
+
+常量通常定义在模块级，通过下划线分隔的全大写字母命名。例如： MAX_OVERFLOW 和 TOTAL。
+
+## Designing for inheritance 继承的设计
+
+始终要考虑到一个类的方法和实例变量（统称：属性）应该是共有还是非共有。如果存在疑问，那就选非共有；因为将一个非共有变量转为共有比反过来更容易。
+
+公共属性是那些与类无关的客户使用的属性，并承诺避免向后不兼容的更改。非共有属性是那些不打算让第三方使用的属性；你不需要承诺非共有属性不会被修改或被删除。
+
+我们不使用“私有（private）”这个说法，是因为在Python中目前还没有真正的私有属性（为了避免大量不必要的常规工作）。
+
+另一种属性作为子类API的一部分（在其他语言中通常被称为“protected”）。有些类是专为继承设计的，用来扩展或者修改类的一部分行为。当设计这样的类时，要谨慎决定哪些属性时公开的，哪些是作为子类的API，哪些只能在基类中使用。
+
+贯彻这样的思想，一下是一些让代码Pythonic的准则：
+
+公共属性不应该有前缀下划线。
+
+如果公共属性名和关键字冲突，在属性名之后增加一个下划线。这比缩写和随意拼写好很多。（然而，尽管有这样的规则，在作为参数或者变量时，‘cls’是表示‘类’最好的选择，特别是作为类方法的第一个参数。）
+　　　
+**注意1：参考之前的类方法参数命名建议**
+
+如果你的类打算用来继承的话，并且这个类里有不希望子类使用的属性，就要考虑使用双下划线前缀并且没有后缀下划线的命名方式。这会调用Python的命名转换算法，将类的名字加入到属性名里。这样做可以帮助避免在子类中不小心包含了相同的属性名而产生的冲突。
+
+    　　　注意1：只有类名才会整合进属性名，如果子类的属性名和类名和父类都相同，那么你还是会有命名冲突的问题。
+    　　　注意2：命名转换会在某些场景使用起来不太方便，例如调试，__getattr__()。然而命名转换的算法有很好的文档说明并且很好操作。
+    　　　注意3：不是所有人都喜欢命名转换。尽量避免意外的名字冲突和潜在的高级调用。
+
+## Public and internal interfaces 公共和内部的接口
+
+任何向后兼容保证只适用于公共接口，因此，用户清晰地区分公共接口和内部接口非常重要。
+
+文档化的接口被认为是公开的，除非文档明确声明它们是临时或内部接口，不受通常的向后兼容性保证。所有未记录的接口都应该是内部的。
+
+为了更好地支持内省（introspection），模块应该使用`__all__`属性显式地在它们的公共API中声明名称。将`__all__`设置为空列表表示模块没有公共API。
+
+即使通过`__all__`设置过，内部接口（包，模块，类，方法，属性或其他名字）依然需要单个下划线前缀。
+
+如果一个命名空间（包，模块，类）被认为是内部的，那么包含它的接口也应该被认为是内部的。
+
+导入的名称应该始终被视作是一个实现的细节。其他模块必须不能间接访问这样的名称，除非它是包含它的模块中有明确的文档说明的API，例如 os.path 或者是一个包里从子模块公开函数接口的 `__init__ `模块。
+ 
+参考文献：
+
+[pep8官方文档](https://peps.python.org/pep-0008/#naming-conventions)
+
+[pep8中文翻译](https://www.cnblogs.com/bymo/p/9567140.html#_label6)
+
+[docstring中文翻译](https://blog.csdn.net/xtydtc/article/details/104063144)
+
+
+  

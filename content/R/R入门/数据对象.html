@@ -1,0 +1,399 @@
+---
+title: "R数据对象"
+date: 2022-8-10
+lastmod: 2022-8-10
+summary: 向量，因子，时间序列，数组，矩阵，数据框
+weight: 2
+toc: true
+type: book
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="向量" class="section level1">
+<h1>向量</h1>
+<div id="创建向量" class="section level2">
+<h2>创建向量</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>形式</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n1:n2</td>
+<td>n1,n2大小不规定，生成从n1到n2的差为1或-1的等差序列</td>
+</tr>
+<tr class="even">
+<td>seq(n1,n2,by=n3,length=n4)</td>
+<td>生成从n1到n2的步长为n3或者长度为n4的向量</td>
+</tr>
+<tr class="odd">
+<td>rep(n1,n2)</td>
+<td>n1重复n2次的向量</td>
+</tr>
+<tr class="even">
+<td>rep(c(),n2)</td>
+<td>向量c重复n2次</td>
+</tr>
+<tr class="odd">
+<td>rep(c(),each=n2)</td>
+<td>向量c中的每个元素重复n2次</td>
+</tr>
+<tr class="even">
+<td>rep(c(),c())</td>
+<td>前后两个长度必须相等,对应重复n次</td>
+</tr>
+<tr class="odd">
+<td>c()</td>
+<td>直接利用c函数生成无规律的向量</td>
+</tr>
+<tr class="even">
+<td>scan()</td>
+<td>直接在键盘输入</td>
+</tr>
+<tr class="odd">
+<td>sequence(n1)</td>
+<td>生成从1到n1的向量</td>
+</tr>
+<tr class="even">
+<td>sequence(c())</td>
+<td>c中每一个元素是一个n，依次生成从1到每一个n的向量,比如sequence(c(2,3))为12123</td>
+</tr>
+<tr class="odd">
+<td>numeric(n)</td>
+<td>生成一个长度为n的零向量</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>数值型向量以上方法都可用</p></li>
+<li><p>字符型向量 可以用rep，c(),scan()</p>
+<p>paste将字符串连接起来，并且设置连接的符号，默认是空格，也可以是空字符串或其他
+符号</p>
+<p><code>paste(c1,c2,c3,...sep="?")</code></p>
+<pre><code>paste(&quot;a&quot;,&quot;b&quot;)#&quot;a b&quot;
+paste(&quot;a&quot;,&quot;b&quot;,sep=&quot;&quot;)#&quot;ab&quot;
+paste(&quot;a&quot;,&quot;b&quot;,sep=&quot;.&quot;)#&quot;a.b&quot;
+paste(c(&quot;a&quot;,&quot;b&quot;),c(1,2))#&quot;a 1&quot; &quot;b 2&quot;
+paste(c(&quot;a&quot;,&quot;b&quot;),1)#&quot;a 1&quot; &quot;b 1&quot;</code></pre></li>
+<li><p>逻辑型向量 可以用rep, c(),scan()</p>
+<p>也可以通过比较运算符得出逻辑运算符</p></li>
+<li><p>复数型向量 可以用rep, c()</p>
+<p>{{%figure src="data/复数.png"%}}</p>
+<p>{{%figure src="data/复数实例.png"%}}</p></li>
+</ul>
+</div>
+<div id="向量的索引" class="section level2">
+<h2>向量的索引</h2>
+<p>R中向量的索引从1开始，既可以取某一个值，也可以取几个连续的或不连续的值。当索引值为负数时，还可以删掉某些值。也可以用比较语句作为索引值.</p>
+<p>r$&gt; x=c(1,2,3,4)</p>
+<p>r$&gt; x[c(T,T,F,F)]
+[1] 1 2</p>
+<p>r$&gt; x[c(T,F)]#逻辑值长度不够会循环
+[1] 1 3</p>
+<p>如果向量还有names属性的话，那么可以利用names属性取。</p>
+</div>
+<div id="向量的运算" class="section level2">
+<h2>向量的运算</h2>
+<ul>
+<li><p>向量与常数的运算</p>
+<p>+，-，*，/，sqrt（开方），^(幂)，log，exp，sin，比较运算符等都是向量中每个元素与这个常数进行运算。</p></li>
+<li><p>同等长度的向量运算</p>
+<p>相应元素运算</p></li>
+<li><p>不同长度的向量运算</p>
+<p>长度小的向量循环运算</p></li>
+</ul>
+</div>
+</div>
+<div id="因子" class="section level1">
+<h1>因子</h1>
+<p>因子是一组具有标签的序列。它用于存储分类类别。因子水平用于限制因子的取值范围。因子中的元素要么是因子水平中的值，要么是缺失值。</p>
+<p>可以用factor函数和gl函数生成因子</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>参数</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>factor(x,levels,lables,<br/>exclude,ordered,nmax)</td>
+<td>{{%figure src="data/factor.png"%}}</td>
+<td>factor(1:3,levels=1:3)<br/>[1] 1 2 3<br/>Levels: 1 2 3<br/>factor(1:3,levels=2:4)<br/>[1] <NA> 2 3<br/>Levels: 2 3 4<br/> factor(1:3,levels=2:4,labels=c(“a”,“b”,“c”))<br/>[1] <NA> a b<br/>Levels: a b c<br/>c中元素如果不属于levels,则显示为NA,labels可以改变水平名称。相应的c中元素的显示也会改变。<br/>可以用levels函数查看因子水平或者更改因子水平</td>
+</tr>
+<tr class="even">
+<td>gl(k,n,length,labels,ordered=FALSE)</td>
+<td>{{%figure src="data/gl.png"%}}<br/>length是总长度,n是<strong>水平总个数</strong>，默认1到n，k是每个水平重复数</td>
+<td>gl(3,2,12)<br/> [1] 1 1 2 2 3 3 1 1 2 2 3 3<br/>Levels: 1 2 3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="时间序列" class="section level1">
+<h1>时间序列</h1>
+<p>{{%figure src="data/时间序列.png"%}}</p>
+<p>start=c(年份，第几个季度/第几个月)</p>
+<p>start=c(月份，第几天)</p>
+<pre><code>ts(2:10,frequency=4,start=c(2020,2))
+      Qtr1 Qtr2 Qtr3 Qtr4
+2020         2    3    4
+2021    5    6    7    8
+2022    9   10</code></pre>
+</div>
+<div id="数组" class="section level1">
+<h1>数组</h1>
+<p>{{%figure src="data/数组.png"%}}</p>
+<div id="创建数组" class="section level2">
+<h2>创建数组</h2>
+<p>array(data,dim=c(),dimnames=list(c(),c(),…)"%}}，生成数组时默认是按照列排列</p>
+<p>可以利用dim，dimnames取出或更改一个数组的维度或维度的名称，更改名称时按照行列第三维的顺序，例如<code>dimnames=list(c(a,b),c(c,d),c(e,f))</code>还可以用colnames和rownames查看行名和列名.</p>
+</div>
+<div id="数组的索引" class="section level2">
+<h2>数组的索引</h2>
+<p>维度之间用逗号隔开，给与具体的索引值，维度顺序为行列第三维。索引值可以是数字，可以是向量，也可以是二维数组。也可以正负都包括。</p>
+<pre><code>x=array(1:24,c(3,4,2))
+x[1,2,2]
+x[1,c(1,3),c(1,2)]#先看第三个维度，取1时，取了（1,1），（1,3）两个点，然后按列排。取2时，依次顺推。
+x[,2,1]#某一维空着表示该维全取。
+#x[,,]或x[]表示整个数组
+y=array(c(1:3,3:1,c(1,2,2)),c(3,3))#可以用一个二维数组来进行数组的索引。
+y
+x[y]</code></pre>
+</div>
+</div>
+<div id="矩阵" class="section level1">
+<h1>矩阵</h1>
+<div id="创建矩阵" class="section level2">
+<h2>创建矩阵</h2>
+<ul>
+<li><p>使用matrix函数创建矩阵
+matrix(data,nrow,ncol,byrow=F,dimnames)</p>
+<p>可以设置行数和列数，以及是否按行排，默认按行排；以及设置行列名(<strong>必须是列表</strong>）。</p></li>
+<li><p>使用rbind(按行合并)和cbind（按列合并）
+可以合并向量，数组，矩阵生成新的矩阵</p>
+<p>rbind(x[,,1],x[,,2])</p></li>
+<li><p>使用数组来生成</p></li>
+</ul>
+</div>
+<div id="矩阵的索引" class="section level2">
+<h2>矩阵的索引</h2>
+<p>跟数组基本类似，可以使用正负值，逻辑值等实现子集的提取和修改。</p>
+</div>
+<div id="矩阵的运算" class="section level2">
+<h2>矩阵的运算</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>t()</td>
+<td>矩阵转置,或者将一个向量变成矩阵</td>
+</tr>
+<tr class="even">
+<td>diag()</td>
+<td>对矩阵使用提取对角元素，对向量使用生成对角阵，diag(diag(matrix(1:4,2,2)))可以提取一个矩阵的对角元素生成对角阵。</td>
+</tr>
+<tr class="odd">
+<td>dim()</td>
+<td>矩阵维度</td>
+</tr>
+<tr class="even">
+<td>nrow()</td>
+<td>矩阵行数</td>
+</tr>
+<tr class="odd">
+<td>ncol()</td>
+<td>矩阵列数</td>
+</tr>
+<tr class="even">
+<td>as.vector()</td>
+<td>矩阵拉直，转换成向量</td>
+</tr>
+<tr class="odd">
+<td>rbind()</td>
+<td>按行合并矩阵</td>
+</tr>
+<tr class="even">
+<td>cbind()</td>
+<td>按列和并矩阵</td>
+</tr>
+<tr class="odd">
+<td>A*B</td>
+<td>矩阵的逐元乘积，对应位置元素相乘</td>
+</tr>
+<tr class="even">
+<td>A%*%B</td>
+<td>矩阵的代数乘积</td>
+</tr>
+<tr class="odd">
+<td>det()</td>
+<td>方阵的行列式</td>
+</tr>
+<tr class="even">
+<td>solve(A)</td>
+<td>矩阵的逆</td>
+</tr>
+<tr class="odd">
+<td>solve(A,b)</td>
+<td>求AX=b的解，b不给时，默认为单位矩阵，所以可以求逆</td>
+</tr>
+<tr class="even">
+<td>eigen(A)</td>
+<td>求矩阵的特征值和特征向量<br/>{{%figure src="data/特征值.png"%}}<br/>可以看到结果会有$values为特征值,$vectors中每一列为对应的特征向量。</td>
+</tr>
+<tr class="odd">
+<td>svd(A)</td>
+<td>对矩阵做奇异值分解<br/>{{%figure src="data/奇异值.png"%}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="列表" class="section level1">
+<h1>列表</h1>
+<p>{{%figure src="data/列表.png"%}}</p>
+<p>列表可以在赋值时人为的给每个参数添加一个name,可以只添加一部分，可以不添加。</p>
+<p>列表索引时有三种格式，且每次只能索引一个值</p>
+<ul>
+<li>如果有name
+<ul>
+<li>list$name</li>
+<li>list[[name]]</li>
+</ul></li>
+<li>如果无name
+<ul>
+<li>lsit[[n]](n为下标)</li>
+</ul></li>
+</ul>
+<p>可以通过索引来进行列表的增删改，删除就是令该值为NULL。</p>
+<p>子列表索引</p>
+<p>{{%figure src="data/子列表.png"%}}</p>
+<pre><code>result=list(name=&quot;Tom&quot;,wife=&quot;Lucy&quot;,csex=c(&#39;m&#39;,&#39;m&#39;,&#39;f&#39;),cages=c(4,7,9))
+result[1]#会返回名字加值这个列表结构
+result[[1]]#只会返回值</code></pre>
+<p>列表的name属性可以通过names函数查看，无name的元素返回null。也可以通过names函数为list的元素命名。可以只命名前面的一部分。</p>
+</div>
+<div id="数据框" class="section level1">
+<h1>数据框</h1>
+<p>{{%figure src="data/数据框.png"%}}</p>
+<div id="创建数据框" class="section level2">
+<h2>创建数据框</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>利用data.frame函数</td>
+<td>和列表类似，不过每一个元素的长度必须相同.每一个元素是一列。<code>data.frame(name1=c(),name2=c(),name3=c()...)</code>,最好给每一个元素赋予一个名称。</td>
+</tr>
+<tr class="even">
+<td>利用向量</td>
+<td>先创建相同长度的向量c1,c2,c3…，然后在用data.frame(c1,c2,c3,…)转化成数据框</td>
+</tr>
+<tr class="odd">
+<td>利用列表</td>
+<td>如果一个列表各元素长度相同，可以用as.data.frame()强制转化为数据框。</td>
+</tr>
+<tr class="even">
+<td>利用数组</td>
+<td>as.data.frame()转化,没有列名就为v1,v2,v3…</td>
+</tr>
+<tr class="odd">
+<td>利用矩阵</td>
+<td>as.data.frame(),列名和数组一样</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="数据框的索引" class="section level2">
+<h2>数据框的索引</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>索引</th>
+<th>方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>取某一行</td>
+<td>df[行标,] list</td>
+</tr>
+<tr class="even">
+<td>取某一列</td>
+<td>df[列标] list<br/>df[[列标]] numeric<br/>df[,1] numeric<br/>df[[“列名”]]或df$列名 numeric</td>
+</tr>
+<tr class="odd">
+<td>取具体的值</td>
+<td>先取某一行或某一列，在从行或列里面取<br/>df[r,c]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="数据框的修改" class="section level2">
+<h2>数据框的修改</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>目标</th>
+<th>方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>增加</td>
+<td>使用rbind或者cbind在增加行或列，注意长度相同。增加行时注意name相同。没有名字时，按顺序添加，有名字时按名字对应，但不能有名字但不同。增加列时，最好给列表的元素命名，或向量给与标识符或数组和矩阵给列名。</td>
+</tr>
+<tr class="even">
+<td>修改</td>
+<td>根据索引修改</td>
+</tr>
+<tr class="odd">
+<td>删除</td>
+<td>使用负值索引</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

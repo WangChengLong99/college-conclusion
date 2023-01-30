@@ -1,0 +1,347 @@
+---
+# Page title
+title: 分类数据分析
+# summary
+summary: 对分类数据的分析的统计方法主要利用$\chi^2$分布。利用$\chi^2$分布来进行假设检验
+# Date page published
+date: 2022-8-5
+lastmod: '2022-08-09T16:44:38+08:00'
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 7
+
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="分类数据分析" class="section level1">
+<h1>分类数据分析</h1>
+<p>对分类数据的分析的统计方法主要利用<span class="math inline">\(\chi^2\)</span>分布。利用<span class="math inline">\(\chi^2\)</span>分布来进行假设检验，<span class="math inline">\(\chi^2\)</span>检验的应用包括两个方面:</p>
+<ul>
+<li>拟合优度检验：检验一个总体的各个类别之间是否有明显差异，比如性别。</li>
+<li>独立性检验：检验两个或以上的变量各自类别之间的关系，比如一个产品有生产地（甲乙丙）和产品质量（一二三），我们可以研究产品质量是否跟生产地有关。</li>
+</ul>
+<p><strong><span class="math inline">\(\chi^2\)</span>统计量的构建</strong></p>
+<p><span class="math display">\[\chi^2=\sum\frac{(f_0-f_e)^2}{f_e}\]</span></p>
+<ul>
+<li><span class="math inline">\(f_0\)</span>:观察值频率，每个类别组合下的频数,如性别为男的死亡人数。甲等质量一级的产品个数等</li>
+<li><span class="math inline">\(f_e\)</span>:期望值频数，<strong>先不对总体分类</strong>，先计算样本的总比例。比如总死亡比例，然后分别乘上类别数，则是各个类别的期望值频数。</li>
+</ul>
+<p><strong>假设检验的选择与理解</strong></p>
+<p>原假设为无影响或者变量之间相互独立，然后我们就可以根据样本比例与估计各个类别的比例，然后算得期望频数值，这个原假设是我们计算的基础，否则我们算不出期望频数值。</p>
+<ul>
+<li><p><span class="math inline">\(|f_0-f_e|\)</span>越大，则类别越会对总体产生影响，卡方值越大，越会拒绝原假设（类别对总体无明显影响，观察值频数与期望值频数一致等）</p></li>
+<li><p>所以选择上限检验，当<span class="math inline">\(\chi^2&gt;\chi^2_{\alpha}(R-1)\)</span>时，选择拒绝原假设</p></li>
+</ul>
+<div id="拟合优度检验" class="section level2">
+<h2>拟合优度检验</h2>
+<p>单分类变量，df=R-1,自由度为分类数减一，本题自由度为1.</p>
+<table>
+<thead>
+<tr class="header">
+<th>性别</th>
+<th>存活</th>
+<th>死亡</th>
+<th>合计</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>男</td>
+<td>374</td>
+<td>1364</td>
+<td>1738</td>
+</tr>
+<tr class="even">
+<td>女</td>
+<td>344</td>
+<td>126</td>
+<td>470</td>
+</tr>
+<tr class="odd">
+<td>合计</td>
+<td>718</td>
+<td>1490</td>
+<td>2208</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(f_0\)</span></th>
+<th><span class="math inline">\(f_e\)</span></th>
+<th><span class="math inline">\(f_0-f_e\)</span></th>
+<th><span class="math inline">\((f_0-f_e)^2\)</span></th>
+<th><span class="math inline">\((f_0-f_e)^2/f_e\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>374</td>
+<td><span class="math display">\[1738\times\frac{718}{2208}=565\]</span></td>
+<td>-191</td>
+<td>36481</td>
+<td>64.6</td>
+</tr>
+<tr class="even">
+<td>344</td>
+<td><span class="math display">\[470\times\frac{718}{2208}=153\]</span></td>
+<td>191</td>
+<td>36481</td>
+<td>238.4</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\chi^2=303&gt;\chi^2_{0.1}(1)=2.706\)</span>，拒绝原假设。</p>
+<p>所以先计算总体比例，然后利用总体比例，<strong>乘上各个类别的样本数</strong>(n*p),在计算<span class="math inline">\(\chi^2\)</span>值。</p>
+</div>
+<div id="列联分析独立性检验" class="section level2">
+<h2>列联分析：独立性检验</h2>
+<p>拟合优度检验只能检验单个分类变量，而列联分析解决两个分类变量的问题。<strong>为了检验两个变量之间是否有相关性，即是否独立</strong></p>
+<p>原假设:独立<br/>
+备则假设:不独立</p>
+<p>df=（R-1)（C-1）</p>
+<p><span class="math inline">\(f_e=\frac{所在行的合计\times所在列的合计}{n}\)</span></p>
+<p>把两个变量当成独立的，然后先考虑每个变量各自的各个类别的比例，然后同时发生的比例就等于各自相乘P(AB)=P(A)P(B).在乘上<strong>总样本数</strong>，则为期望频数值。上面的为简便公式.</p>
+<div id="列联表" class="section level3">
+<h3>列联表</h3>
+<p>列联表是由两个及两个以上的变量进行交叉分类的频数表。</p>
+<table>
+<thead>
+<tr class="header">
+<th>地区</th>
+<th>一级</th>
+<th>二级</th>
+<th>三级</th>
+<th>合计</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>甲</td>
+<td>52</td>
+<td>64</td>
+<td>24</td>
+<td>140</td>
+</tr>
+<tr class="even">
+<td>乙</td>
+<td>60</td>
+<td>59</td>
+<td>52</td>
+<td>171</td>
+</tr>
+<tr class="odd">
+<td>丙</td>
+<td>50</td>
+<td>65</td>
+<td>74</td>
+<td>189</td>
+</tr>
+<tr class="even">
+<td>合计</td>
+<td>162</td>
+<td>188</td>
+<td>150</td>
+<td>500</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="独立性检验" class="section level3">
+<h3>独立性检验</h3>
+<p>判断列表中列出的变量是否相互独立，称为列联表的独立性检验。在二维列联表中独立性检验就是分析列联表中行变量和列变量是否相互独立。</p>
+<table>
+<thead>
+<tr class="header">
+<th>地区</th>
+<th>一级</th>
+<th>二级</th>
+<th>三级</th>
+<th>合计</th>
+<th>比例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>甲</td>
+<td>52</td>
+<td>64</td>
+<td>24</td>
+<td>140</td>
+<td>140/500</td>
+</tr>
+<tr class="even">
+<td>乙</td>
+<td>60</td>
+<td>59</td>
+<td>52</td>
+<td>171</td>
+<td>171/500</td>
+</tr>
+<tr class="odd">
+<td>丙</td>
+<td>50</td>
+<td>65</td>
+<td>74</td>
+<td>189</td>
+<td>189/500</td>
+</tr>
+<tr class="even">
+<td>合计</td>
+<td>162</td>
+<td>188</td>
+<td>150</td>
+<td>500</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>比例</td>
+<td>162/500</td>
+<td>188/50</td>
+<td>150/500</td>
+<td></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[\Downarrow\]</span></p>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>地区</th>
+<th>一级</th>
+<th>二级</th>
+<th>三级</th>
+<th>比例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>甲</td>
+<td><span class="math display">\[500\times\frac{162}{500}\times\frac{140}{500}\]</span></td>
+<td><span class="math display">\[500\times\frac{188}{500}\times\frac{140}{500}\]</span></td>
+<td><span class="math display">\[500\times\frac{150}{500}\times\frac{140}{500}\]</span></td>
+<td>140/500</td>
+</tr>
+<tr class="even">
+<td>乙</td>
+<td><span class="math display">\[500\times\frac{162}{500}\times\frac{171}{500}\]</span></td>
+<td><span class="math display">\[500\times\frac{188}{500}\times\frac{171}{500}\]</span></td>
+<td><span class="math display">\[500\times\frac{150}{500}\times\frac{171}{500}\]</span></td>
+<td>171/500</td>
+</tr>
+<tr class="odd">
+<td>丙</td>
+<td><span class="math display">\[500\times\frac{162}{500}\times\frac{189}{500}\]</span></td>
+<td><span class="math display">\[500\times\frac{188}{500}\times\frac{189}{500}\]</span></td>
+<td><span class="math display">\[500\times\frac{150}{500}\times\frac{189}{500}\]</span></td>
+<td>189/500</td>
+</tr>
+<tr class="even">
+<td>比例</td>
+<td>162/500</td>
+<td>188/50</td>
+<td>150/500</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>当我们确定了有相关性之后，就应该判断相关性的大小。我们把分类数据之间的相关性称为<strong>品质相关</strong>。</p>
+</div>
+<div id="相关性的衡量多类别" class="section level3">
+<h3>相关性的衡量(多类别)</h3>
+<p><strong>品质相关系数</strong>有以下几种。</p>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>相关系数</th>
+<th>公式</th>
+<th>描述</th>
+<th>适用情况</th>
+<th>特点</th>
+<th align="left">局限性</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math display">\[\psi相关系数\]</span></td>
+<td><span class="math display">\[\psi=\sqrt{\frac{\chi^2}{n}}\]</span></td>
+<td><span class="math inline">\(\chi^2\)</span>是按照统计量算出的卡方值<br/>n为列表的总频数，即样本量</td>
+<td>2 <span class="math inline">\(\times\)</span> 2列联表</td>
+<td>(1)<span class="math inline">\(\psi\in[0,1]\)</span> <br/> (2)完全独立应该有ad=bc <br/>(3)ad-bc的大小衡量了相关性大小 <br/>(4)当b=c=0或a=d=0时，即<span class="math inline">\(\psi=1或-1\)</span>时，完全相关 <br/> (5)<span class="math inline">\(\psi\)</span>的符号没有实际意义 <br/> (6)<span class="math display">\[\chi^2=\frac{ad-bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}}\]</span></td>
+<td align="left">当列联表的行数或者列数大于2时，<span class="math inline">\(\psi\)</span>系数将随着行数或者列数的变大而变大，且无上限。这时相关程度不够清晰.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(列联相关系数\)</span><br/><span class="math inline">\(列联系数\)</span><br/><span class="math inline">\(c系数\)</span></td>
+<td><span class="math display">\[c=\sqrt{\frac{\chi^2}{\chi^2+n}}\]</span></td>
+<td><span class="math inline">\(\chi^2\)</span>为计算的统计量的值<br/>n为样本量</td>
+<td>主要用于列联表大于2 <span class="math inline">\(\times\)</span> 2的情况</td>
+<td>(1)其可能的最大值依赖于列联表的函数和列数,并且随着R和C的增大而增大<br/>(2)<span class="math inline">\(2\times2:c_{max}=0.7071\)</span><br/><span class="math inline">\(3\times3:c_{max}=0.8165\)</span><br/><span class="math inline">\(4\times4:c_{max}=0.87\)</span><br/>(3)所以算出来的相关系数相对于[0,1]下的同数值应该是偏大的</td>
+<td align="left">对于不同的行和列计算的列联系数不便比较，除非两个列联表行数和列数一致。</td>
+</tr>
+<tr class="odd">
+<td><span class="math display">\[V相关系数\]</span></td>
+<td><span class="math display">\[V=\sqrt{\frac{\chi^2}{n\times min[(R-1),(C-1)]}}\]</span></td>
+<td><span class="math inline">\(R:行数\)</span>,<span class="math inline">\(C:列数\)</span></td>
+<td>所有列联表皆适用</td>
+<td>(1)<span class="math inline">\(\psi\)</span>系数无上限，c系数取不到1,但是V系数对于任意R，C的列联表，都有<span class="math inline">\(V\in[0,1]\)</span><br/>(2)当R或C等于2时，V=<span class="math inline">\(\psi\)</span></td>
+<td align="left">没有什么局限</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="实例分析" class="section level3">
+<h3>实例分析</h3>
+<p>当<span class="math inline">\(\chi^2\)</span>=19.82,n=500,<span class="math inline">\(3\times3\)</span>,列联表
+则<span class="math inline">\(\psi=\sqrt{\frac{\chi^2}{n}}=\sqrt{\frac{19.82}{500}}=0.199,c=\sqrt{\frac{\chi^2}{\chi^2+n}}=\sqrt{\frac{19.82}{19.82+500}}=0.195,V=\sqrt{\frac{\chi^2}{n\times min[(R-1),(C-1)]}}=\sqrt{\frac{19.82}{500\times2}}=0.141\)</span></p>
+<p>对于<span class="math inline">\(\psi\)</span>而言，3*3时，最大值大于1，此时0.192明显比较小
+对于c而言，虽然此时的最大值不到1，为0.81，但是的相对来说0.195也还是一个较小的相关值,对于V而言，0.141是一个确定的较小的值。所以综上所述，两个变量之间的关联不大。</p>
+<p>{{% staticref "uploads/brython/tod.html" "newtab" %}}尝试一下{{% /staticref %}}</p>
+</div>
+<div id="列联表的比较" class="section level3">
+<h3>列联表的比较</h3>
+<p>不管是采取不同的系数，还是列联表的行列数不同，都会导致系数值的不同，所以如果要对不同的列联表的变量的相关程度进行比较时，行数，列数以及采用的系数都要相同，这样才具有可比性。</p>
+</div>
+<div id="列联分析中应该注意的问题" class="section level3">
+<h3>列联分析中应该注意的问题</h3>
+<ol style="list-style-type: decimal">
+<li>一般默认，如果变量X和Y存在因果关系，则把自变量X放在列的位置，条件百分表的方向按自变量的方向计算（一列一列的计算，计算每一个自变量取值下另一变量的分布）</li>
+<li>样本能否代表总体，即我们实际使用了样本比例去代替总体比例，如果我们的样本不是按照实际总体比例来按比例抽取，那么计算出的相关系数很可能是错误的。</li>
+<li>当我们在抽取样本时，没有按照相应比例抽取，比如（因变量某个类别的样本量过少时，人为的增加该变量的样本量，打破了原有的分布）此时，如果我们仍然按照自变量的方向进行计算，百分表就会歪曲实际情况。<strong>此时我们应该按照应变量方向去计算</strong>，即调换行列。</li>
+</ol>
+</div>
+</div>
+<div id="卡方分布的期望准则" class="section level2">
+<h2>卡方分布的期望准则</h2>
+<p>也就是应用卡方分布进行独立性检验时，应该满足一定要求，否则卡方检验可能得出错误的结论。</p>
+<p>如果期望频数值过小，则卡方估计值将会不适当的增大，造成对<span class="math inline">\(\chi^2\)</span>的高估，从而不适当的拒绝原假设.</p>
+<ol style="list-style-type: decimal">
+<li>每个单元中的期望频数不能过小。</li>
+<li>当只有两个单元时，每个单元中的期望频数值不能小于5</li>
+<li>当有超过两个单元时，应该有&gt;20%的单元的期望频数值大于5时，才能应用<span class="math inline">\(\chi^2\)</span>检验。</li>
+</ol>
+</div>
+</div>

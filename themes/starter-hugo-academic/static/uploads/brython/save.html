@@ -1,0 +1,896 @@
+<!-- 独立性检验和相关系数 -->
+<!-- <!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.0/brython.min.js"></script>
+<style type="text/css">
+    .mytable{
+    
+        border:1px solid #A6C1E4;
+    
+        font-family:Arial;
+    
+        border-collapse: collapse;
+    
+    }
+    
+    table th{
+    
+        border:1px solid black;
+    
+        background-color:#71c1fb;
+    
+        width:100px;
+    
+        height:20px;
+    
+        font-size:15px;
+    
+    }
+    
+    table td{
+    
+        border:1px solid #A6C1E4;
+    
+        text-align:center;
+    
+        height:15px;
+    
+        padding-top:5px;
+    
+        font-size:12px;
+    
+    }
+    
+    td input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 5em;
+         text-align: center;
+      } 
+
+      th input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 100%;
+         background-color:#71c1fb;
+         text-align: center;
+         font-size:15px;
+         margin-left: 0%;
+         margin-right: 0%;
+         margin-top: 0%;
+         margin-bottom: 0%;
+      } 
+    .double{
+    
+        background-color:#c7dff6;
+    
+    }
+    
+</style>
+</head>
+<body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+# 创建表格
+def create_table(ev):
+    row=eval(document["table-row-num"].value)+2
+    col=eval(document["table-col-num"].value)+2
+    table=TABLE()
+    table <= TR(TH(INPUT(value="",id="td1"+str(i+1))) for i in range(col))
+    for i in range(1,row):
+        table <= TR(TD(INPUT(value="",id="td"+str(i+1)+str(j+1))) for j in range(col))
+    document["table-container"].clear()
+    document["table-container"] <= table
+document["table-dim"].bind("click",create_table) 
+# 表格输入内容后开始计算
+def step(ev):
+    row=eval(document["table-row-num"].value)
+    col=eval(document["table-col-num"].value)
+    for i in range(2,row+2):
+        document["td"+str(i)+str(col+2)].value=str(sum(eval(document["td"+str(i)+str(j)].value) for j in range(2,col+2)))
+    for i in range(2,col+2):
+        document["td"+str(row+2)+str(i)].value=str(sum(eval(document["td"+str(j)+str(i)].value) for j in range(2,col+2)))
+    document["td"+str(row+2)+str(col+2)].value=str(sum(eval(document["td"+str(j)+str(row+2)].value) for j in range(2,col+2)))
+    row_sum=[eval(document["td"+str(i)+str(col+2)].value) for i in range(2,row+2)]  
+    col_sum=[eval(document["td"+str(row+2)+str(i)].value)  for i in range(2,col+2)] 
+    total_sum=eval(document["td"+str(row+2)+str(col+2)].value)
+    sum_ka=0
+    table=TABLE()
+    table <= TR(TH(i) for i in ['观察值频数','期望值频数','二者差的平方','二者差的平方比上期望值频数'])
+    for i in range(2,row+2):
+        for j in range(2,col+2):
+            v_list=[
+            eval(document["td"+str(i)+str(j)].value),
+            round((row_sum[i-2]*col_sum[j-2])/total_sum,2),
+            round((eval(document["td"+str(i)+str(j)].value)-round((row_sum[i-2]*col_sum[j-2])/total_sum,2))**2,2),
+            round((eval(document["td"+str(i)+str(j)].value)-round((row_sum[i-2]*col_sum[j-2])/total_sum,2))**2/round((row_sum[i-2]*col_sum[j-2])/total_sum,2),2)]
+            sum_ka+=v_list[-1]
+            table <= TR(TD(str(k)) for k in v_list)
+    ka=round(sum_ka,2)
+    table <= TR([TD("卡方值"),TD(str(ka),colspan=3)])
+    table <= TR([TD("psi相关系数"),TD(str(round((ka/total_sum)**0.5,4)),colspan=3)])
+    table <= TR([TD("c相关系数"),TD(str(round((ka/(ka+total_sum))**0.5,4)),colspan=3)])
+    table <= TR([TD("V相关系数"),TD(str(round((ka/total_sum/min(row-1,col-1))**0.5,4)),colspan=3)])
+    document["step-container"].clear()
+    document["step-container"] <= table
+document["step"].bind("click",step)
+</script>
+
+<div style="float: left;">
+    <input placeholder="输入大于等于2的值" value="2" id="table-row-num">行数</input><br/>
+    <input placeholder="输入大于等于2的值" value="2" id="table-col-num">列数</input><br/>
+    <button id='table-dim'>生成表格</button>
+</div>
+
+<div id="table-container" style="float: left;">表格</div>
+
+<div style="float: left;">
+    <input id="alpha" value="0.05"><br/>
+    <button id="step">计算步骤</button>  
+</div>
+
+<div id="step-container" style="float: left;">计算结果</div>
+
+</body>
+</html> -->
+
+<!-- 单因素方差分析 -->
+<!-- <html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.10.0/brython.min.js"></script>
+    <style type="text/css">
+    .mytable{
+    
+    border:1px solid #A6C1E4;
+
+    font-family:Arial;
+
+    border-collapse: collapse;
+
+}
+
+table th{
+
+    border:1px solid black;
+
+    background-color:#71c1fb;
+
+    width:100px;
+
+    height:20px;
+
+    font-size:15px;
+
+}
+
+table td{
+
+    border:1px solid #A6C1E4;
+
+    text-align:center;
+
+    height:15px;
+
+    padding-top:5px;
+
+    font-size:12px;
+
+}
+        td input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 5em;
+         text-align: center;
+      } 
+
+      th input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 100%;
+         background-color:#71c1fb;
+         text-align: center;
+         font-size:15px;
+         margin-left: 0%;
+         margin-right: 0%;
+         margin-top: 0%;
+         margin-bottom: 0%;
+      } 
+    </style>
+</head>
+
+<body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+col=2
+row=5
+def add_col(ev):
+    global col
+    global row
+    col+=1
+    b=row
+    document["th-factor"].clear()
+    document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col)
+    document["th"] <= TH(INPUT(value="水平"+str(col),id="th"+str(col)))
+    for i in range(1,b+1):
+        document["td"+str(i)] <= TD(INPUT(value="",id="td"+str(i)+str(col)))
+
+def del_col(ev):
+    global col
+    global row
+    b=row
+    document["th-factor"].clear()
+    document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col-1)
+    document["th"].clear()
+    for i in range(1,col):
+        document["th"] <= TH(INPUT(id="th"+str(i),value="水平"+str(i)))
+    for i in range(1,b+1):
+        document["td"+str(i)].clear()
+        for j in range(1,col):
+            document["td"+str(i)] <= TD(INPUT(id="td"+str(i)+str(j),value=""))
+    col-=1
+
+def add_row(ev):
+    global col
+    global row
+    row+=1
+    a=col
+    document["data"] <= TR([TD(INPUT(value="",id="td"+str(row)+str(j))) for j in range(1,a+1)],id="td"+str(row))
+
+def del_row(ev):
+    global col
+    global row
+    document["td"+str(row)].style.display="none"
+    row-=1
+
+document["add-col"].bind("click",add_col)
+document["del-col"].bind("click",del_col)
+document["add-row"].bind("click",add_row)
+document["del-row"].bind("click",del_row)
+
+</script>
+</body> 
+
+<body onload="brython()">
+    <script type="text/python">
+    from browser import document, html,alert
+    from browser.html import TABLE,TR,TH,TD,INPUT
+    col=2
+    row=5
+    def add_col(ev):
+        global col
+        global row
+        col+=1
+        b=row
+        document["th-factor"].clear()
+        document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col)
+        document["th"] <= TH(INPUT(value="水平"+str(col),id="th"+str(col)))
+        for i in range(1,b+1):
+            document["td"+str(i)] <= TD(INPUT(value="",id="td"+str(i)+str(col)))
+    
+    def del_col(ev):
+        global col
+        global row
+        b=row
+        col-=1
+        document["th-factor"].clear()
+        document["th-factor"] <= TH(INPUT(id="factor",value="因素"),colspan=col)
+        document["th"].clear()
+        for i in range(1,col+1):
+            document["th"] <= TH(INPUT(id="th"+str(i),value="水平"+str(i)))
+        for i in range(1,b+1):
+            document["td"+str(i)].clear()
+            for j in range(1,col+1):
+                document["td"+str(i)] <= TD(INPUT(id="td"+str(i)+str(j),value=""))
+    
+    def add_row(ev):
+        global col
+        global row
+        row+=1
+        a=col
+        document["data"] <= TR([TD(INPUT(value="",id="td"+str(row)+str(j))) for j in range(1,a+1)],id="td"+str(row))
+    
+    def del_row(ev):
+        global col
+        global row
+        row-=1
+        table=TABLE(id="data")
+        table <= TR(TH("因素",colspan=col,id="factor"),id="th-factor")
+        table <= TR([TH(INPUT(id="th"+str(i),value="水平"+str(i))) for i in range(1,col+1)],id="th")
+        for i in range(1,row+1):
+            table <= TR([TD(INPUT(value="",id="td"+str(i)+str(j))) for j in range(1,col+1)],id="td"+str(i))
+        document["all-data"].clear()
+        document["all-data"] <= table
+    
+    # 方差分析
+    def single_anova(ev):
+        global col
+        global row
+        table=TABLE(id="mean")
+        me=[]
+        le=[]
+        es=[]
+        total=0
+        for j in range(1,col+1):
+            l=[]
+            for i in range(1,row+1):
+                if document["td"+str(i)+str(j)].value:
+                    l.append(eval(document["td"+str(i)+str(j)].value))
+                    total+=eval(document["td"+str(i)+str(j)].value)
+                else:
+                    break
+            le.append(len(l))
+            me.append(round(sum(l)/len(l),4))
+            es.append(sum([round((k-me[j-1])**2,4) for k in l]))
+        table <= TR(TH("样本均值与样本量",colspan=col+1))
+        table <= TR([TH("计算值")]+[TH(document["th"+str(j)].value) for j in range(1,col+1)])
+        table <= TR([TD("各样本均值")]+[TD(str(me[j])) for j in range(col)])
+        table <= TR([TD("各样本误差平方和")]+[TD(str(es[j])) for j in range(col)])
+        table <= TR([TD("各样本组间误差平方和")]+[TD(round(le[j]*(me[j]-total/sum(le))**2,4)) for j in range(col)])
+        table <= TR([TD("样本量")]+[TD(str(le[j])) for j in range(col)])
+        table <= TR(TD(f"总均值={round(total/sum(le),4)}",colspan=col+1))
+        #方差分析
+        #组内平方和
+        SSE=sum(es)
+        SSA=round(sum([k*(j-total/sum(le))**2 for j,k in zip(me,le)]),4)
+        SST=SSE+SSA
+        table2=TABLE(id="f-test")
+        table2 <= TR(TH(i) for i in ["误差来源","平方和SS","自由度df","均方MS","F值"])
+        table2 <= TR(
+        [TD("组间(因素影响)"),
+        TD(f"SSA={SSA}"),
+        TD(f"df={col-1}"),
+        TD(f"MSA={round(SSA/(col-1),4)}"),
+        TD(f"MSA/MSE={round(SSA/(col-1)/(SSE/(sum(le)-col)),3)}",rowspan=3)
+        ]
+        )
+        table2 <= TR(
+        [TD("组内(误差)"),
+        TD(f"SSE={SSE}"),
+        TD(f"df={sum(le)-col}"),
+        TD(f"MSE={round(SSE/(sum(le)-col),4)}"),
+        ]
+        )
+        table2 <= TR(
+        [TD("组间(因素影响)"),
+        TD(f"SST={SST}"),
+        TD(f"df={sum(le)-1}"),
+        TD("")
+        ]
+        )
+        table2 <= TR(TD(f"R^2={SSA/SST}",colspan=5))
+        document["mean-container"].clear()
+        document["mean-container"] <= table
+        document["f-container"].clear()
+        document["f-container"] <= table2
+    
+    document["add-col"].bind("click",add_col)
+    document["del-col"].bind("click",del_col)
+    document["add-row"].bind("click",add_row)
+    document["del-row"].bind("click",del_row)
+    document["tijiao"].bind("click",single_anova)
+    
+    </script>
+    
+    <div style="float: left;">
+        <button id="add-col" style="display: block;">+增加列数</button>
+        <button id="del-col" style="display: block;">-减少列数</button>
+        <button id="add-row" style="display: block;">+增加行数</button>
+        <button id="del-row" style="display: block;">-减少行数</button>
+        <button id="tijiao" style="display: block;">计算结果</button>
+    </div>
+    
+    <div id="all-data" style="float: left;">
+    <table id="data" style="float:left ;">
+        <tr id="th-factor">
+            <th id="factor" colspan=2>因素</th>
+        </tr>
+        <tr id="th">
+            <th><input value="水平1"  id="th1"></th>
+            <th><input value="水平2"  id="th2"></th>
+        </tr>
+        <tr id="td1">
+            <td><input id="td11"></td>
+            <td><input id="td12"></td>
+        </tr>
+        <tr id="td2">
+            <td><input id="td21"></td>
+            <td><input id="td22"></td>
+        </tr>
+        <tr id="td3">
+            <td><input id="td31"></td>
+            <td><input id="td32"></td>
+        </tr>
+        <tr id="td4">
+            <td><input id="td41"></td>
+            <td><input id="td42"></td>
+        </tr>
+        <tr id="td5">
+            <td><input id="td51"></td>
+            <td><input id="td52"></td>
+        </tr>
+    </table>
+    </div>
+    
+    <div id="mean-container" style="float: left;">均值结果</div>
+    <div id="f-container">统计量计算值</div>
+    </body>
+    </html> -->
+
+<!-- 无交互作用的双因素方差分析 -->
+<!-- 
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.10.0/brython.min.js"></script>
+    <style type="text/css">
+    .mytable{
+    
+    border:1px solid #A6C1E4;
+
+    font-family:Arial;
+
+    border-collapse: collapse;
+
+}
+
+table th{
+
+    border:1px solid black;
+
+    background-color:#71c1fb;
+
+    width:100px;
+
+    height:20px;
+
+    font-size:15px;
+
+}
+
+table td{
+
+    border:1px solid #A6C1E4;
+
+    text-align:center;
+
+    height:15px;
+
+    padding-top:5px;
+
+    font-size:12px;
+
+}
+        td input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 5em;
+         text-align: center;
+      } 
+
+      th input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 100%;
+         background-color:#71c1fb;
+         text-align: center;
+         font-size:auto;
+         margin-left: 0%;
+         margin-right: 0%;
+         margin-top: 0%;
+         margin-bottom: 0%;
+      } 
+    </style>
+</head>
+
+<body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+# 创建表格
+def create_table(ev):
+    row=eval(document["table-row-num"].value)
+    col=eval(document["table-col-num"].value)
+    table=TABLE()
+    table <= TR([TH("",colspan=2,rowspan=2)]+[TH(INPUT(value="列因素",id="col-factor"),colspan=col)]+[TH(INPUT(value="每行均值"),rowspan=2)])
+    table <= TR(TH(INPUT(value="列水平"+str(j),id="cs"+str(j))) for j in range(1,col+1))
+    table <= TR([TD(INPUT(value="行因素",id="row-factor"),rowspan=row)]+[TD(INPUT(value="行水平1",id="rs1"))]+[TD(INPUT(value="",id="td1"+str(j))) for j in range(1,col+1)]+[TD(INPUT(value="",id="rm1"))])
+    for i in range(2,row+1):
+        table <= TR([TD(INPUT(value="行水平"+str(i),id="rs"+str(i)))]+[TD(INPUT(value="",id="td"+str(i)+str(j))) for j in range(1,col+1)]+[TD(INPUT(value="",id="rm"+str(i)))])
+    table <= TR([TD(INPUT(value="每列均值"),colspan=2)]+[TD(INPUT(value="",id="cm"+str(j))) for j in range(1,col+1)]+[TD(INPUT(value="",id="tm"))])
+    document["table-container"].clear()
+    document["table-container"] <= table
+
+def No_two_anova(ev):
+    row=eval(document["table-row-num"].value)
+    col=eval(document["table-col-num"].value)   
+    for i in range(1,row+1):
+        document["rm"+str(i)].value = str(round(sum(eval(document["td"+str(i)+str(j)].value) for j in range(1,col+1))/col,4))
+    for j in range(1,col+1):
+        document["cm"+str(j)].value = str(round(sum(eval(document["td"+str(i)+str(j)].value) for i in range(1,row+1))/row,4))
+    document["tm"].value=str(round(sum(eval(document["td"+str(i)+str(j)].value) for i in range(1,row+1) for j in range(1,col+1))/row/col,4))
+    SSR=round(sum((eval(document["rm"+str(i)].value)-eval(document["tm"].value))**2*col for i in range(1,row+1)),4)
+    SSC=round(sum((eval(document["cm"+str(j)].value)-eval(document["tm"].value))**2*row for j in range(1,col+1)),4)
+    SSE=round(sum((eval(document["td"+str(i)+str(j)].value)-eval(document["rm"+str(i)].value)-eval(document["cm"+str(j)].value)+eval(document["tm"].value))**2 for i in range(1,row+1) for j in range(1,col+1)),4)
+    SST=SSR+SSC+SSE
+    df_SSR=row-1
+    df_SSC=col-1
+    df_SST=row*col-1
+    df_SSE=(row-1)*(col-1)
+    MSR=round(SSR/df_SSR,4)
+    MSC=round(SSC/df_SSC,4)
+    MSE=round(SSE/df_SSE,4)
+    F_R=round(MSR/MSE,4)
+    F_C=round(MSC/MSE,4)
+    table = TABLE(id="nta")
+    table <= TR(TH(i) for i in ["差异源","平方和SS","自由度df","均方值MS","F值"])
+    table <= TR(
+    [TD("行因素"),
+    TD(f"SSR={SSR}"),
+    TD(f"df={df_SSR}"),
+    TD(f"MSR={MSR}"),
+    TD(f"F_R={F_R}")
+    ])
+    table <= TR(
+    [TD("列因素"),
+    TD(f"SSC={SSC}"),
+    TD(f"df={df_SSC}"),
+    TD(f"MSC={MSC}"),
+    TD(f"F_C={F_C}")
+    ])
+    table <= TR(
+    [TD("误差"),
+    TD(f"SSE={SSE}"),
+    TD(f"df={df_SSE}"),
+    TD(f"MSE={MSE}"),
+    TD("")
+    ])
+    table <= TR(
+    [TD("总和"),
+    TD(f"SST={SST}"),
+    TD(f"df={df_SST}"),
+    TD(""),
+    TD("")
+    ])
+    table <= TR(TD(f"R^2={round((SSR+SSC)/SST,4)}",colspan=5))
+    document["result"].clear()
+    document["result"] <= table
+
+# 方差分析
+def single_canova(ev):
+    col=eval(document["table-col-num"].value)
+    row=eval(document["table-row-num"].value)
+    table=TABLE(id="col-mean")
+    me=[]
+    le=[]
+    es=[]
+    total=0
+    for j in range(1,col+1):
+        l=[]
+        for i in range(1,row+1):
+            if document["td"+str(i)+str(j)].value:
+                l.append(eval(document["td"+str(i)+str(j)].value))
+                total+=eval(document["td"+str(i)+str(j)].value)
+            else:
+                break
+        le.append(len(l))
+        me.append(round(sum(l)/len(l),4))
+        es.append(sum([round((k-me[j-1])**2,4) for k in l]))
+    table <= TR(TH("样本均值与样本量",colspan=col+1))
+    table <= TR([TH("计算值")]+[TH(document["cs"+str(j)].value) for j in range(1,col+1)])
+    table <= TR([TD("各样本均值")]+[TD(str(me[j])) for j in range(col)])
+    table <= TR([TD("各样本误差平方和")]+[TD(str(es[j])) for j in range(col)])
+    table <= TR([TD("各样本组间误差平方和")]+[TD(round(le[j]*(me[j]-total/sum(le))**2,4)) for j in range(col)])
+    table <= TR([TD("样本量")]+[TD(str(le[j])) for j in range(col)])
+    table <= TR(TD(f"总均值={round(total/sum(le),4)}",colspan=col+1))
+    #方差分析
+    #组内平方和
+    SSE=sum(es)
+    SSA=round(sum([k*(j-total/sum(le))**2 for j,k in zip(me,le)]),4)
+    SST=SSE+SSA
+    table2=TABLE(id="cf-test")
+    table2 <= TR(TH(i) for i in ["误差来源","平方和SS","自由度df","均方MS","F值"])
+    table2 <= TR(
+    [TD("组间(因素影响)"),
+    TD(f"SSA={SSA}"),
+    TD(f"df={col-1}"),
+    TD(f"MSA={round(SSA/(col-1),4)}"),
+    TD(f"MSA/MSE={round(SSA/(col-1)/(SSE/(sum(le)-col)),3)}",rowspan=3)
+    ]
+    )
+    table2 <= TR(
+    [TD("组内(误差)"),
+    TD(f"SSE={SSE}"),
+    TD(f"df={sum(le)-col}"),
+    TD(f"MSE={round(SSE/(sum(le)-col),4)}"),
+    ]
+    )
+    table2 <= TR(
+    [TD("组间(因素影响)"),
+    TD(f"SST={SST}"),
+    TD(f"df={sum(le)-1}"),
+    TD("")
+    ]
+    )
+    table2 <= TR(TD(f"R^2={SSA/SST}",colspan=5))
+    document["col-mean-container"].clear()
+    document["col-mean-container"] <= table
+    document["col-result"].clear()
+    document["col-result"] <= table2
+
+# 方差分析
+def single_ranova(ev):
+    col=eval(document["table-col-num"].value)
+    row=eval(document["table-row-num"].value)
+    table=TABLE(id="row-mean")
+    me=[]
+    le=[]
+    es=[]
+    total=0
+    for i in range(1,row+1):
+        l=[]
+        for j in range(1,col+1):
+            if document["td"+str(i)+str(j)].value:
+                l.append(eval(document["td"+str(i)+str(j)].value))
+                total+=eval(document["td"+str(i)+str(j)].value)
+            else:
+                break
+        le.append(len(l))
+        me.append(round(sum(l)/len(l),4))
+        es.append(sum([round((k-me[i-1])**2,4) for k in l]))
+    table <= TR(TH("样本均值与样本量",colspan=row+1))
+    table <= TR([TH("计算值")]+[TH(document["rs"+str(j)].value) for j in range(1,row+1)])
+    table <= TR([TD("各样本均值")]+[TD(str(me[j])) for j in range(row)])
+    table <= TR([TD("各样本误差平方和")]+[TD(str(es[j])) for j in range(row)])
+    table <= TR([TD("各样本组间误差平方和")]+[TD(round(le[j]*(me[j]-total/sum(le))**2,4)) for j in range(row)])
+    table <= TR([TD("样本量")]+[TD(str(le[j])) for j in range(row)])
+    table <= TR(TD(f"总均值={round(total/sum(le),4)}",colspan=row+1))
+    #方差分析
+    #组内平方和
+    SSE=sum(es)
+    SSA=round(sum([k*(j-total/sum(le))**2 for j,k in zip(me,le)]),4)
+    SST=SSE+SSA
+    table2=TABLE(id="rf-test")
+    table2 <= TR(TH(i) for i in ["误差来源","平方和SS","自由度df","均方MS","F值"])
+    table2 <= TR(
+    [TD("组间(因素影响)"),
+    TD(f"SSA={SSA}"),
+    TD(f"df={row-1}"),
+    TD(f"MSA={round(SSA/(row-1),4)}"),
+    TD(f"MSA/MSE={round(SSA/(row-1)/(SSE/(sum(le)-row)),3)}",rowspan=3)
+    ]
+    )
+    table2 <= TR(
+    [TD("组内(误差)"),
+    TD(f"SSE={SSE}"),
+    TD(f"df={sum(le)-row}"),
+    TD(f"MSE={round(SSE/(sum(le)-row),4)}")
+    ]
+    )
+    table2 <= TR(
+    [TD("组间(因素影响)"),
+    TD(f"SST={SST}"),
+    TD(f"df={sum(le)-1}"),
+    TD("")
+    ]
+    )
+    table2 <= TR(TD(f"R^2={SSA/SST}",colspan=5))
+    document["row-mean-container"].clear()
+    document["row-mean-container"] <= table
+    document["row-result"].clear()
+    document["row-result"] <= table2
+
+document["table-dim"].bind("click",create_table)
+document["pro"].bind("click",No_two_anova)
+document["col-anova"].bind("click",single_canova)
+document["row-anova"].bind("click",single_ranova)
+
+</script>
+
+<div style="float: left;">
+    <input placeholder="输入大于等于2的值" value="2" id="table-row-num">行数</input><br/>
+    <input placeholder="输入大于等于2的值" value="2" id="table-col-num">列数</input><br/>
+    <button id='table-dim' style="width: 165px;">生成表格</button>
+</div>
+
+<div id="table-container" style="float: left;">表格</div>
+<div style="float: left;">
+    <button id="pro" style="float: left;">双因素方差分析</button><br/>
+    <button id="col-anova" style="float: left;">列因素的单因素方差分析</button><br/>
+    <button id="row-anova" style="float: left;">行因素的单因素方差分析</button>
+</div>
+<div id="result" style="float: left;">分析结果</div>
+<div>
+    <div id="col-mean-container" style="float: left;">均值</div>
+    <div id="col-result" style="float: left;">结果</div>
+</div>
+<div>
+    <div id="row-mean-container" style="float: left;">均值</div>
+    <div id="row-result" style="float: left;">结果</div>
+</div>
+</body>
+</html>
+ -->
+
+<!-- 有交互作用的双因素方差分析 -->
+<!-- 
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.10.0/brython.min.js"></script>
+    <style type="text/css">
+    .mytable{
+    
+    border:1px solid #A6C1E4;
+
+    font-family:Arial;
+
+    border-collapse: collapse;
+
+}
+
+table th{
+
+    border:1px solid black;
+
+    background-color:#71c1fb;
+
+    width:100px;
+
+    height:20px;
+
+    font-size:15px;
+
+}
+
+table td{
+
+    border:1px solid #A6C1E4;
+
+    text-align:center;
+
+    height:15px;
+
+    padding-top:5px;
+
+    font-size:12px;
+
+}
+        td input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 5em;
+         text-align: center;
+      } 
+
+      th input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 100%;
+         background-color:#71c1fb;
+         text-align: center;
+         font-size:auto;
+         margin-left: 0%;
+         margin-right: 0%;
+         margin-top: 0%;
+         margin-bottom: 0%;
+      } 
+    </style>
+</head>
+
+<body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+def create_table(ev):
+    row=eval(document["table-row-num"].value)
+    col=eval(document["table-col-num"].value)
+    m=eval(document["table-m-num"].value)
+    table=TABLE(id="table1")
+    table <= TR([TH("",colspan=2,rowspan=2)]+[TH(INPUT(value="列因素",id="col-factor"),colspan=col)]+[TH(INPUT(value="每行均值"),rowspan=2)])
+    table <= TR(TH(INPUT(value="列水平"+str(j),id="cs"+str(j))) for j in range(1,col+1))
+    table <= TR([TD(INPUT(value="行因素",id="row-factor"),rowspan=row*m)]+[TD(INPUT(value="行水平1",id="rs1"),rowspan=m)]+[TD(INPUT(value="",id="td1"+str(j)+"1")) for j in range(1,col+1)]+[TD(INPUT(value="",id="rm1"),rowspan=m)])
+    for k in range(2,m+1):
+        table <= TR(TD(INPUT(value="",id="td1"+str(j)+str(k))) for j in range(1,col+1))
+    for i in range(2,row+1):
+        table <= TR([TD(INPUT(value="行水平"+str(i),id="rs"+str(i)),rowspan=m)]+[TD(INPUT(value="",id="td"+str(i)+str(j)+"1")) for j in range(1,col+1)]+[TD(INPUT(value="",id="rm"+str(i)),rowspan=m)])
+        for k in range(2,m+1):
+            table <= TR(TD(INPUT(value="",id="td"+str(i)+str(j)+str(k))) for j in range(1,col+1))
+    table <= TR([TD(INPUT(value="每列均值"),colspan=2)]+[TD(INPUT(value="",id="cm"+str(j))) for j in range(1,col+1)]+[TD(INPUT(value="",id="tm"))])
+    document["table-container"].clear()
+    document["table-container"] <= table
+
+def Y_two_anova(ev):
+    row=eval(document["table-row-num"].value)
+    col=eval(document["table-col-num"].value)   
+    m=eval(document["table-m-num"].value)
+    for i in range(1,row+1):
+        document["rm"+str(i)].value = str(round(sum(eval(document["td"+str(i)+str(j)+str(k)].value) for j in range(1,col+1) for k in range(1,m+1))/col/m,4))
+    for j in range(1,col+1):
+        document["cm"+str(j)].value = str(round(sum(eval(document["td"+str(i)+str(j)+str(k)].value) for i in range(1,row+1) for k in range(1,m+1))/row/m,4))
+    document["tm"].value=str(round(sum(eval(document["td"+str(i)+str(j)+str(k)].value) for i in range(1,row+1) for j in range(1,col+1) for k in range(1,m+1))/row/col/m,4))  
+    SSR=round(sum((eval(document["rm"+str(i)].value)-eval(document["tm"].value))**2*col*m for i in range(1,row+1)),4)
+    SSC=round(sum((eval(document["cm"+str(j)].value)-eval(document["tm"].value))**2*row*m for j in range(1,col+1)),4)
+    SSRC=round(sum([(sum(eval(document["td"+str(i)+str(j)+str(k)].value) for k in range(1,m+1))/m - eval(document["cm"+str(j)].value)-eval(document["rm"+str(i)].value)+eval(document["tm"].value))**2*m for i in range(1,row+1) for j in range(1,col+1)]),4)
+    SST=round(sum((eval(document["td"+str(i)+str(j)+str(k)].value)-eval(document["tm"].value))**2 for i in range(1,row+1) for j in range(1,col+1) for k in range(1,m+1)),4)
+    SSE=SST-SSR-SSC-SSRC
+    df_SSR=row-1
+    df_SSC=col-1
+    df_SSRC=(row-1)*(col-1)
+    df_SSE=row*col*(m-1)
+    df_SST=row*col*m-1
+    MSR=round(SSR/df_SSR,4)
+    MSC=round(SSC/df_SSC,4)
+    MSRC=round(SSRC/df_SSRC,4)
+    MSE=round(SSE/df_SSE,4)
+    F_R=round(MSR/MSE,4)
+    F_C=round(MSC/MSE,4)
+    F_RC=round(MSRC/MSE,4)
+    table = TABLE(id="table2")
+    table <= TR(TH(i) for i in ["误差来源","平方和SS","自由度df","均方值MS","F值"])
+    table <= TR(
+    [TD("行因素"),
+    TD(f"SSR={SSR}"),
+    TD(f"k-1={df_SSR}"),
+    TD(f"MSR={MSR}"),
+    TD(f"F_R={F_R}")
+    ])
+    table <= TR(
+    [TD("列因素"),
+    TD(f"SSC={SSC}"),
+    TD(f"r-1={df_SSC}"),
+    TD(f"MSC={MSC}"),
+    TD(f"F_C={F_C}")
+    ])
+    table <= TR(
+    [TD("交互作用"),
+    TD(f"SSRC={SSRC}"),
+    TD(f"(k-1)(r-1)={df_SSRC}"),
+    TD(f"MSRC={MSRC}"),
+    TD(f"F_RC={F_RC}")
+    ])
+    table <= TR(
+    [TD("误差"),
+    TD(f"SSE={SSE}"),
+    TD(f"kr(m-1)={df_SSE}"),
+    TD(f"MSE={MSE}"),
+    TD("")
+    ])
+    table <= TR(
+    [TD("总和"),
+    TD(f"SST={SST}"),
+    TD(f"n-1={df_SST}"),
+    TD(""),
+    TD("")
+    ])    
+    document["result"].clear()
+    document["result"] <= table
+document["table-dim"].bind("click",create_table)
+document["yta"].bind("click",Y_two_anova)
+
+</script>
+<div style="float: left;">
+    <input placeholder="输入大于等于2的值" value="2" id="table-row-num">行水平数</input><br/>
+    <input placeholder="输入大于等于2的值" value="2" id="table-col-num">列水平数</input><br/>
+    <input placeholder="输入大于等于2的值" value="2" id="table-m-num">每个组合的样本数</input><br/>
+    <button id='table-dim'>生成表格</button><br/>
+    <button id='yta'>有交互作用的双因素方差分析</button>
+</div>
+<div id="table-container" style="float: left;"></div>
+<div id="result" style="float: left;"></div>
+</body> 
+</html>
+ -->
+

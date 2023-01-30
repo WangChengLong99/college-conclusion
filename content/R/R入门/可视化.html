@@ -1,0 +1,607 @@
+---
+title: 可视化
+date: 2022-8-10
+lastmod: 2022-8-10
+summary: 各种图形的绘制，以及相应的绘制
+type: book
+weight: 3
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="高级绘图" class="section level1">
+<h1>高级绘图</h1>
+<p>{{%figure src="data/高级绘图.png"%}}</p>
+<div id="plothistbarplot" class="section level2">
+<h2>plot()/hist()/barplot()</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>plot(x) 绘制x的值为纵坐标，序号为横坐标的图<br/>plot(x,y)或plot(y~x) 绘制y为纵坐标，x为横坐标的图<br/>plot(matrix) 绘制矩阵散点图，一般matrix为数据框的某些列</td>
+<td>axes=T,如果设置axes为F，则不显示边框和轴<br/>type=“p”,设置线型，注意要加双引号，其他选项为”l”,“b”,“o”,见 <a href="#a1">图形参数</a>，这个参数决定了绘制的图是点图还是线图<br/>xlim,ylim 設置坐标范围<br/>xlab，ylab坐标轴的标签，必须是字符型<br/>main= ,sub= ,设置主标题，副标题。字符型。</td>
+</tr>
+<tr class="even">
+<td>hist() 将数据取值范围平均分成n份，每个区间长度称为组距，以每个组为横坐标，纵坐标可以是落在改组的数据的频数或频率或频率/组距。如果是频率/组距称为频率分布直方图，也可以看成是一个变量的概率密度。</td>
+<td>x:数值向量<br/>main，xlab,xlim,ylim:注意只有xlab，没有ylab<br/>col:条的颜色<br/>border：设置每个栏的边框颜色<br/>freq=T:默认频数，设置为F时显示密度 prob是freq的化名，不过prob为true时，绘制密度<br/>breaks：分成多少份</td>
+</tr>
+<tr class="odd">
+<td>barplot() 显示各个分类的频数</td>
+<td>height：向量或矩阵，矩阵就是一列为一个数据，矩阵可以选择绘制分组图或堆叠图<br/>naems.arg:每个条的标签<br/>horiz: T:水平 F :垂直<br/>beside:T:分组 F：堆叠<br/>border:边框颜色，如果设置为true，将和阴影线颜色相同<br/>col,xlab,ylab,main</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># plot
+par(mfrow=c(2,3))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4),axes=F)
+plot(c(1,2,3,4),type=&quot;o&quot;)
+plot(c(1,2,3,4),type=&quot;l&quot;)
+plot(c(1,2,3,4),c(5,6,7,8))
+x=seq(-1,1,0.001)
+plot(x,x^2,type=&quot;l&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>plot(as.data.frame(matrix(1:16,c(4,4))))#必须是数据框</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>x=rnorm(100)
+par(mfrow=c(1,2))
+hist(x,breaks=10)
+hist(x,freq=F,breaks=10)
+lines(density(x),col=&quot;red&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(2,2))
+math&lt;-c(78,92,89, 61, 95)
+english&lt;-c(90, 89, 95,70, 98)
+names&lt;-c(&quot;小刚&quot;,&quot;小明&quot;,&quot;小花&quot;,&quot;小芳&quot;,&quot;小丽&quot;)
+barplot(math,names.arg=names,main=&quot;成绩&quot;,ylim=c(0,100))
+barplot(math,names.arg=names,border=&quot;green&quot;,main=&quot;成绩&quot;,ylim=c(0,100),col=c(&quot;red&quot;,&quot;orange&quot;,&quot;lightblue&quot;,&quot;yellow&quot;,&quot;lightgreen&quot;))#为每一组设置一个颜色
+barplot(matrix(c(math, english),2,5), border=&quot;green&quot;,names.arg=names,beside=F,main=&quot;成绩&quot;,xlab=&quot;姓名&quot;,ylab=&quot;成绩&quot;,legend=c(&quot;数学&quot;,&quot;英语&quot;),ylim=c(0,200))#绘制堆叠图，并设置图例
+barplot(matrix(c(math, english),2, 5), border=&quot;green&quot;,names.arg=names,beside=T,main=&quot;成绩&quot;,xlab=&quot;姓名&quot;,ylab=&quot;成绩&quot;,col=rainbow(10),ylim=c(0,100))#绘制分组图，每个条一种颜色。</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="饼图" class="section level2">
+<h2>饼图</h2>
+<p>饼图绘制向量中各数值占总和的百分比。</p>
+<p><strong>二维饼图</strong></p>
+<p>语法：</p>
+<p>pie(x,labels,radius,col，clockwise=F)</p>
+<p>x:数据的向量</p>
+<p>labels：每一个部分的标签</p>
+<p>radius：圆的半径，决定了圆的大小</p>
+<p>col：圆每一个部分的颜色</p>
+<p>clockwise：默认逆时针，设置为true则顺时针绘制。</p>
+<p><strong>三维饼图</strong></p>
+<p>需要导入plotrix包，使用其中的pie3D包。</p>
+<p>pie3D(x,label,explode=0,main…)</p>
+<p>explode设置了每一份之间的间隙.</p>
+<pre class="r"><code>x=c(1,2,3,4)
+nm=c(&quot;one&quot;,&quot;two&quot;,&quot;three&quot;,&quot;four&quot;)
+par(mfrow=c(3,2))
+pie(x)#不设置标签默认为各个数值
+lbl=paste(round(100*x/sum(x),2),&quot;%&quot;)
+pie(x,labels=lbl)
+pie(x,labels=lbl,clockwise=T)#顺时针
+pie(x,labels=lbl,col=&quot;blue&quot;)#注意要加双引号
+pie(x,labels=lbl,col=rainbow(4))
+pie(x,labels=lbl,col=rainbow(4))
+legend(&quot;topright&quot;,nm,fill=rainbow(4))#这个颜色默认会跟pie中的对应上</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># install.packages(&quot;plotrix&quot;)
+library(&quot;plotrix&quot;)
+par(mfrow=c(1,2))
+pie3D(x,labels=lbl)#关键字不能丢
+pie3D(x,labels=lbl,explode=0.1)#设置间隙</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="箱线图" class="section level2">
+<h2>箱线图</h2>
+<p>boxplot(formula,data,notch=F,varwidth=F,names,na.action…)</p>
+<p>formula:一般是y~x，或者x。如果是取自某个数据框，直接写列名。y是数据，x是分类依据，一般是因子。y会根据对应x的因子水平分类，有多少分类，就有多少个箱线图。</p>
+<p>data：如果数据是取自数据框，则需要声明数据框。前面也可以直接写data的名称，就是对每一列做箱线图</p>
+<p>notch：设置为T。可以画出缺口。</p>
+<p>varwidth：设置为T，则每个箱子的宽度和对应分类的样本量成比例。</p>
+<p>names：给每个箱子命名。</p>
+<p>na.action:对缺失值的处理，默认忽视。</p>
+<pre class="r"><code>x=1:12
+y=gl(3,2,12)
+y1=gl(3,2,12,labels=c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;))
+z=rep(c(1,2,3),4)
+par(mfrow=c(2,2))
+boxplot(x)
+boxplot(x~y)
+boxplot(x~y1)
+boxplot(x~z)#不是因子数据，也会根据其中的数值分类</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>df=as.data.frame(matrix(1:16,c(4,4),dimnames=list(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),c(&quot;one&quot;,&quot;two&quot;,&quot;three&quot;,&quot;four&quot;))))
+par(mfrow=c(1,2))
+boxplot(df,data=df)#可以直接对数据框每一列绘制箱线图
+boxplot(t(df),data=df)#可以直接对数据框每一行绘制箱线图</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="pairs函数与panel参数" class="section level2">
+<h2>pairs函数与panel参数</h2>
+<p>pairs函数可以绘制多个变量的散点图矩阵，数据对象为数据框，直接pairs（数据框）即可</p>
+<p>但是当我们想设置里面图形的类型时，就得用到panel参数。</p>
+<ul>
+<li>panel：定义每个矩阵元素图中的图形，默认为散点图</li>
+<li>lower.panel：定义下三角矩阵元素图中的图形，默认散点图</li>
+<li>upper.panel:定义上三角矩阵元素图中的图形，默认为散点图</li>
+<li>diag.panel:定义对角线元素图形，默认不绘制</li>
+</ul>
+<p>既可以设置为已有的图形，<strong>也可以设置为自定义的绘图函数。</strong></p>
+<pre class="r"><code>df=as.data.frame(matrix(1:16,c(4,4),dimnames=list(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),c(&quot;one&quot;,&quot;two&quot;,&quot;three&quot;,&quot;four&quot;))))
+pairs(df)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>#panel参数还未解决</code></pre>
+</div>
+<div id="coplot函数" class="section level2">
+<h2>coplot函数</h2>
+<p>{{%figure src="data/coplot.png"%}}</p>
+<p>依照条件来分区间，每个区间画连个变量之间的关系图。</p>
+<pre class="r"><code>data(quakes)
+coplot(lat~long|depth,data=quakes)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>data(quakes)
+coplot(lat~long|depth*mag,data=quakes,number=c(2,3),show.given=c(TRUE,FALSE))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="qqnorm函数" class="section level2">
+<h2>qqnorm函数</h2>
+<p>{{%figure src="data/qqnorm.png"%}}</p>
+<p>判断数据是否是正态分布，就是qqnorm(x)跟qqline(x)对比，</p>
+<p>判断两个样本是否相同分布，就是qqplot(x,y)</p>
+<pre class="r"><code>par(mfrow=c(1,2))
+data(AirPassengers)
+qqnorm(AirPassengers)
+qqline(AirPassengers,col=&quot;red&quot;)
+X=rexp(100)
+y=rchisq(100,3)
+qqplot(x,y)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="image与persp三维绘图函数" class="section level2">
+<h2>image与persp（三维绘图函数）</h2>
+<p>image函数创建三维图像</p>
+<p>{{%figure src="data/image.png"%}}</p>
+<pre class="r"><code>data(volcano)
+par(mfrow=c(1,2))
+image(t(volcano)[ncol(volcano):1,])
+x=10*(1:nrow(volcano))
+y=10*(1:ncol(volcano))
+image(x, y, volcano, col =terrain.colors(100))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>persp函数创建三维图像</p>
+<p>{{%figure src="data/persp.png"%}}</p>
+<pre class="r"><code>x&lt;- seq(0,2,0.01)
+y&lt;- seq(0,1,0.01)
+f&lt;-function(x,y)
+{
+ifelse(x&lt;=1,10*x*log10(x)*y*(y-1),-10*(x-1)*log10(abs(x-1))*y*(y-1))
+}
+z= outer(x,y,f)
+persp(x,y,z,theta=30,phi=30,expand=0.5,col=&quot;lightblue&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(2,2))
+persp(x,y,z,theta=30,phi=30,expand=0.5, col=&quot;lightblue&quot;)
+persp(x,y,z,theta=150,phi=30,expand=0.5,col=&quot;lightblue&quot;)
+persp(x,y,z,theta=30,phi=30,expand=0.9, col=&quot;lightblue&quot;)
+persp(x,y,z,theta=30,phi=30, expand=0.5, col=&quot;red&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="热图" class="section level2">
+<h2>热图</h2>
+<p>使用heatmap绘制热图</p>
+<p>{{%figure src="data/heatmap.png"%}}</p>
+<pre><code>#共列举了50位球员的19个指标
+#包括打了几场球G）、上场几分钟（MIN）、得分PTS…·
+nba &lt;-read.csv(&quot;D:/R/data/ppg2008.csv&quot;, sep=&quot;,&quot;)
+nba &lt;-nba[order(nba$PTS),]#按每场得分从大到小排序
+row.names(nba)&lt;- nba$Name # 以球员名字命名nba&lt;-nba[,2:20]
+nba_matrix&lt;- data.matrix(nba)
+heatmap(nba_matrix, Rowv=NA, Colv=NA, col = heat.colors(256),scale=&quot;column&quot;, margins=c(5,10))
+heatmap(nba_matrix, col = heat.colors(256),scale=&quot;column&quot;,margins=c(5,10))</code></pre>
+</div>
+</div>
+<div id="低级绘图参数" class="section level1">
+<h1>低级绘图参数</h1>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>点</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>points（x，y）</td>
+<td>∶添加点</td>
+</tr>
+<tr class="odd">
+<td>线</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>lines（x，y）</td>
+<td>∶添加线</td>
+</tr>
+<tr class="odd">
+<td>segments（x0，Y0，X1，y1）</td>
+<td>∶从（x0，y0）到（x1，y1）画线段</td>
+</tr>
+<tr class="even">
+<td>arrows（x0，Y0，X1，y1）</td>
+<td>∶从（x0，y0）到（x1，y1）画带箭头的线段</td>
+</tr>
+<tr class="odd">
+<td>abline（a，b）</td>
+<td>∶绘制斜率为b和截距为a的直</td>
+</tr>
+<tr class="even">
+<td>abline（h=y）</td>
+<td>∶在纵坐标y处画水平直线</td>
+</tr>
+<tr class="odd">
+<td>abline（v=x）</td>
+<td>∶在横坐标x处画垂直线</td>
+</tr>
+<tr class="even">
+<td>abline（lm.obj）</td>
+<td>∶画出lm.obj确定的回归线</td>
+</tr>
+<tr class="odd">
+<td>图形</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>rect（x1，y1，x2，y2）</td>
+<td>∶绘制长方形，左下角为x1，y1），右上角为（x2,y2)</td>
+</tr>
+<tr class="odd">
+<td>polygon(x,y)</td>
+<td>绘制多边形。x,y为向量，连接各点。</td>
+</tr>
+<tr class="even">
+<td>文字</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>legend（x，y,legend）</td>
+<td>∶在点（x，y）处添加图例，说明内容由legend给<br/>{{%figure src="data/legend.png"%}}</td>
+</tr>
+<tr class="even">
+<td>text（x，y，labels…）</td>
+<td>∶在（x，y）处添加用labels指定的文字</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>x=seq(-2,2,0.01)
+plot(x,x^2,type=&quot;l&quot;,col=&quot;orange&quot;)
+points(1,1,col=&quot;red&quot;,pch=19,cex=1)#标记（1,1）点
+lines(x,2*x-1,col=&quot;blue&quot;)#做（1,1）点的切线
+text(1.5,1,expression(y==2%*%x-1))#添加公式文字
+arrows(1,1,2,3,code=2)#右箭头
+abline(3/2,-1/2,col=&quot;yellow&quot;)#做切线的垂直线
+arrows(0,3/2,1,1,code=1)#左箭头
+abline(h=2)
+abline(v=-1)
+arrows(-1,2,1,2,code=3)#双箭头
+rect(0,4,1,3,border=&quot;red&quot;)
+polygon(c(-2,-1.5,-1),c(0,1,0),col=&quot;green&quot;)
+legend(1.5,4,c(&quot;幂函数&quot;,&quot;线性函数&quot;),fill=c(&quot;orange&quot;,&quot;blue&quot;))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="a1" class="section level1">
+<h1>图形参数</h1>
+<p>部分绘图参数可以放在函数里面做为选项，只改变该函数。</p>
+<p>也可以用par函数永久的改变图形参数，也就是后面的所有图形都会被改变。</p>
+<p>可使用<code>?par</code>来查看。</p>
+<p>{{%figure src="data/par.png"%}}</p>
+<p>下面是一些常用的图形参数：</p>
+<p>{{%figure src="data/图形参数.png"%}}</p>
+<div id="type" class="section level2">
+<h2>type</h2>
+<p>决定了点的形式</p>
+<p>可以在函数中设置</p>
+<p><span style="color:red">图形参数”type”已过期不用了<span>,所以只在函数中设置</p>
+<table>
+<thead>
+<tr class="header">
+<th>值</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p</td>
+<td>默认，点</td>
+</tr>
+<tr class="even">
+<td>l</td>
+<td>将点连接成线，不显示点</td>
+</tr>
+<tr class="odd">
+<td>b</td>
+<td>连线，但是在有点的地方断开</td>
+</tr>
+<tr class="even">
+<td>o</td>
+<td>连线，点在线上</td>
+</tr>
+<tr class="odd">
+<td>s</td>
+<td>下梯形</td>
+</tr>
+<tr class="even">
+<td>S</td>
+<td>上梯形</td>
+</tr>
+<tr class="odd">
+<td>h</td>
+<td>做点到x轴的竖线，不显示点</td>
+</tr>
+<tr class="even">
+<td>n</td>
+<td>说明都不显示</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>par(mfrow=c(3,3))
+plot(c(1,2,3,4),type=&quot;p&quot;,main=&quot;p&quot;)
+plot(c(1,2,3,4),type=&quot;l&quot;,main=&quot;l&quot;)
+plot(c(1,2,3,4),type=&quot;b&quot;,main=&quot;b&quot;)
+plot(c(1,2,3,4),type=&quot;o&quot;,main=&quot;o&quot;)
+plot(c(1,2,3,4),type=&quot;s&quot;,main=&quot;s&quot;)
+plot(c(1,2,3,4),type=&quot;S&quot;,main=&quot;S&quot;)
+plot(c(1,2,3,4),type=&quot;h&quot;,main=&quot;h&quot;)
+plot(c(1,2,3,4),type=&quot;n&quot;,main=&quot;n&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="bg" class="section level2">
+<h2>bg</h2>
+<p>设置整个画布背景颜色,不可在图形中设置。</p>
+<p>一次设置对应所有画布，但是如果设置多次，只会生效与后面的画布，前面的依然生效与前面的设置。</p>
+<pre class="r"><code>par(bg=&quot;red&quot;)
+par(mfrow=c(2,2))#这张被设置为红色背景
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+plot(c(5,6,9,3))
+par(bg=&quot;blue&quot;)
+plot(c(1,2,3,4))#依然属于前面的2*2的画布，所以是在red背景下</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>plot(c(1,2,3,4))#不再属于前面的画布，是一张新的，而在这张新的前有一个新的设置为蓝色，所以显示为蓝色。</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+</div>
+<div id="bty" class="section level2">
+<h2>bty</h2>
+<p>图形边框</p>
+<table>
+<thead>
+<tr class="header">
+<th>值</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>o</td>
+<td align="center">全边框</td>
+</tr>
+<tr class="even">
+<td>c</td>
+<td align="center">没有右边框</td>
+</tr>
+<tr class="odd">
+<td>u</td>
+<td align="center">没有上边框</td>
+</tr>
+<tr class="even">
+<td>]</td>
+<td align="center">没有左边框</td>
+</tr>
+<tr class="odd">
+<td>l</td>
+<td align="center">没有右、上边框</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td align="center">没有左、下边框</td>
+</tr>
+<tr class="odd">
+<td>n</td>
+<td align="center">全部边框都没有，仅有坐标轴</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>par(bg=&quot;white&quot;)
+par(mfrow=c(3,3))
+plot(c(1,2,3,4),bty=&quot;o&quot;,main=&quot;o&quot;)
+plot(c(1,2,3,4),bty=&quot;l&quot;,main=&quot;l&quot;)
+plot(c(1,2,3,4),bty=&quot;7&quot;,main=&quot;7&quot;)
+plot(c(1,2,3,4),bty=&quot;c&quot;,main=&quot;c&quot;)
+plot(c(1,2,3,4),bty=&quot;u&quot;,main=&quot;u&quot;)
+plot(c(1,2,3,4),bty=&quot;]&quot;,main=&quot;]&quot;)
+plot(c(1,2,3,4),bty=&quot;n&quot;,main=&quot;n&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="cex与pch与font" class="section level2">
+<h2>cex与pch与font</h2>
+<p>cex可以设置文字与字符的大小</p>
+<p>pch只控制符号的类型,值不需加引号</p>
+<p>{{%figure src="data/pch.png"%}}</p>
+<p>font只控制字体的类型</p>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(c(1,2,3,4),cex=1,pch=&quot;*&quot;,font=1,main=&quot;cex=1,pch=*,font=1&quot;)
+plot(c(1,2,3,4),cex=2,pch=0,font=2,main=&quot;cex=2,pch=0,font=2&quot;)
+plot(c(1,2,3,4),cex=3,pch=15,font=3,main=&quot;cex=3,pch=15,font=3&quot;)
+plot(c(1,2,3,4),cex=4,pch=19,font=4,main=&quot;cex=4,pch=19,font=4&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>可以看到坐标轴上的值被改变了字体，点被改变了样式和大小，但是标题和横纵坐标标签并未被改变样式</p>
+<pre class="r"><code>par(font=4,cex=2,pch=&quot;*&quot;)
+plot(c(1,2,3,4),main=&quot;线性&quot;,xlab=&quot;横坐标&quot;)
+text(3,2,&quot;点&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>标题和坐标轴标签不会被改变。</p>
+</div>
+<div id="lty与lwd" class="section level2">
+<h2>lty与lwd</h2>
+<p>线条样式与线条宽度</p>
+<p>{{%figure src="data/lty与lwd.png"%}}</p>
+<p><strong>可以看到lty大于6时就是循环1到6</strong></p>
+<pre class="r"><code>par(mfrow=c(3,4))
+plot(c(1,2,3,4),lty=1,lwd=0.25,main=&quot;lty=1,lwd=0.25&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=7,lwd=0.5,main=&quot;lty=7,lwd=0.5&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=2,lwd=0.75,main=&quot;lty=2,lwd=0.75&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=8,lwd=1,main=&quot;lty=8,lwd=1&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=3,lwd=1.25,main=&quot;lty=3,lwd=1.25&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=9,lwd=1.5,main=&quot;lty=9,lwd=1.5&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=4,lwd=1.75,main=&quot;lty=4,lwd=1.75&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=10,lwd=2,main=&quot;lty=10,lwd=2&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=5,lwd=2.25,main=&quot;lty=5,lwd=2.25&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=11,lwd=2.5,main=&quot;lty=11,lwd=2.5&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=6,lwd=2.75,main=&quot;lty=6,lwd=2.75&quot;,type=&quot;l&quot;)
+plot(c(1,2,3,4),lty=12,lwd=3,main=&quot;lty=12,lwd=3&quot;,type=&quot;l&quot;)</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="col" class="section level2">
+<h2>col</h2>
+<p>设置符号的颜色</p>
+<p>{{%figure src="data/col.png"%}}</p>
+<pre class="r"><code>par(col=&quot;red&quot;)
+par(mfrow=c(2,2))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4),type=&quot;l&quot;)
+abline(h=2)
+text(2,3,&quot;点&quot;)
+legend(&quot;topright&quot;,legend=&quot;图例&quot;)
+boxplot(c(1,2,3,4))
+barplot(c(1,2,3,4))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>可以看到他会影响的颜色为所有的点，线，边框,以及text和legend的文字颜色。</p>
+</div>
+<div id="mfcol和mfrow" class="section level2">
+<h2>mfcol和mfrow</h2>
+<p>见<a href="#a2">网格作图</a></p>
+</div>
+<div id="mar" class="section level2">
+<h2>mar</h2>
+<pre class="r"><code>plot(c(1,2,3,4))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>par(mar=c(2,2,2,2))
+plot(c(1,2,3,4))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(2,2))
+par(mar=c(1,1,1,1))
+plot(c(1,2,3,4))
+par(mar=c(2,2,2,2))
+plot(c(1,2,3,4))
+par(mar=c(3,3,3,3))
+plot(c(1,2,3,4))
+par(mar=c(4,4,4,4))
+plot(c(1,2,3,4))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
+<div id="数学公式与符号" class="section level2">
+<h2>数学公式与符号</h2>
+<p>图形有时需要添加数学公式或符号</p>
+<p>数学公式需要用到expression函数来显示</p>
+<p>有时需要打希腊字母等特殊字符</p>
+<p>可以用<code>help(plotmath)</code>或example(plotmath)或demo(plotmath)</p>
+<p>{{%figure src="data/符号.png"%}}</p>
+<p>基础运算符</p>
+<p>{{%figure src="data/基础运算符.png"%}}</p>
+<p><strong>注意“=”号的表现形式</strong></p>
+<p>大型运算符</p>
+<p>{{%figure src="data/大型运算符.png"%}}</p>
+<p>上下标</p>
+<p>{{%figure src="data/上下标.png"%}}</p>
+<p>箭头符号</p>
+<p>{{%figure src="data/箭头符号.png"%}}</p>
+<p>集合符号</p>
+<p>{{%figure src="data/集合符号.png"%}}</p>
+<p>特殊字体</p>
+<p>{{%figure src="data/特殊字体.png"%}}</p>
+<p>导数符号</p>
+<p>{{%figure src="data/导数符号.png"%}}</p>
+<p>希腊字母</p>
+<p>{{%figure src="data/希腊字母1.png"%}}</p>
+<p>{{%figure src="data/希腊字母2.png"%}}</p>
+</div>
+</div>
+<div id="a2" class="section level1">
+<h1>网格作图</h1>
+<div id="mfrow与mfcol图形参数" class="section level2">
+<h2>mfrow与mfcol图形参数</h2>
+<p>mfrow就是把绘图窗口分割为几行几列的部分，先按行开始排列。</p>
+<p>而mfcol是先按列开始排列</p>
+</div>
+<div id="使用layout函数" class="section level2">
+<h2>使用layout函数</h2>
+<p>layout函数使用矩阵来模拟绘图窗口的分割，矩阵的维度代表了绘图窗口的分割，矩阵中的元素的值代表了第几个图形，矩阵中元素的位置代表了图的位置。具有相同值的元素的位置会被合并。如果元素值为0，则代表该位置不绘制图形。</p>
+<p>同时还可以为矩阵的每一个维设置宽度和高度的比例。比如一个2*2的矩阵，可以设置宽度之比为width=c(1,4),高度之比为height=c(4,1)。</p>
+<p>可以使用layout.show(n)来查看当前页面的分割情况。</p>
+<pre class="r"><code>par(mar=c(1,1,1,1))
+layout(matrix(c(1,0,2,3),nrow=2),widths=c(1,4),heights=c(3,1))#构建复合图形
+x=rnorm(100)
+y=rchisq(100,df=10)
+boxplot(y,col=&quot;blue&quot;)#变量y的垂直箱线图
+plot(x,y,col=&quot;green&quot;)#x与y的散点图
+boxplot(x,horizontal=T,col=&quot;red&quot;)#变量x的水平箱线图</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="split.screen函数" class="section level2">
+<h2>split.screen函数</h2>
+<p>可以用split.screen函数来将绘图窗口分成几个部分。然后使用screen()声明所属的屏幕再绘图。使用close.screen()来关闭。</p>
+<pre class="r"><code>par(mar=c(1,1,1,1))
+split.screen(c(2,1))</code></pre>
+<pre><code>## [1] 1 2</code></pre>
+<pre class="r"><code>screen(2)
+plot(c(1,2,3,4))
+screen(1)
+barplot(c(1,2,3,4))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>close.screen(all=T)</code></pre>
+<pre class="r"><code>par(mar=c(1,1,1,1))
+split.screen(c(3,3))</code></pre>
+<pre><code>## [1] 1 2 3 4 5 6 7 8 9</code></pre>
+<pre class="r"><code>screen(5)
+plot(c(1,2,3,4))
+screen(4)
+barplot(c(5,6,7,8))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code>plot(c(11,12,13,14))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
+<pre class="r"><code>plot(c(5,6,7,8))
+close.screen(n=4)</code></pre>
+<pre><code>## [1] 1 2 3 5 6 7 8 9</code></pre>
+<pre class="r"><code>plot(c(11,21,31,41))</code></pre>
+<p><img src="/R/R入门/%E5%8F%AF%E8%A7%86%E5%8C%96_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
+<pre class="r"><code>close.screen(all=T)</code></pre>
+</div>
+</div>

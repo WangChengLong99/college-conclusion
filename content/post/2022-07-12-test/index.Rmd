@@ -1,0 +1,238 @@
+---
+title: 用rmarkdown生成网站
+author: admin
+date: '2022-09-07'
+slug: setup-of-hugo
+categories: markdown
+tags: rmarkdown
+subtitle: 'shortcode'
+summary: 总结了rmarkdown+hugo+wowchemy建设网站的页面元素设置
+lastmod: '2022-09-07T16:45:51+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+private: false
+show_date: true
+reading_time: true
+share: true
+profile: true
+pager: true
+show_related: true
+show_breadcrumb: true
+header:
+  navbar:
+    enable: false
+design:
+  background: 
+    color: black
+    text_color_light: true
+---
+
+## todo {#c3-s1}
+
+- [x] 任务列表
+
+## 跳转到todo
+
+
+	[任务列表](#c3-s1)
+
+[任务列表](#c3-s1)
+
+
+## 不生效部分
+
+* 代码折叠不再生效
+* .tabset不再支持
+* \{\{\%toc\%\}\}在.rmd后缀不显示，在.Rmarkdown后缀显示
+* yaml中设置`toc: true`.rmd不显示，.Rmarkdown显示
+
+## 短代码
+
+{{% callout warning %}}
+注意在编译为html文件后，英文双引号会莫名被转换为中文，注意前面加反斜杠则不会被转换
+{{% /callout %}}
+
+### 链接静态文件
+
+比如pdf，doc，html等，文件放在theme下的static文件下
+
+{{%staticref \"uploads/LaTeX.pdf\" \"new tab\"%}}Download my CV{{%/staticref%}}
+
+### 下拉框
+
+可以把内容放在下拉框之间，可以是其他markdown格式
+
+{{%spoiler text=\"Click to view the spoiler\"%}}You found me!{{%/spoiler%}}	
+
+### 应用css
+
+<p style="color:green">Red colored text</p>
+
+### 文本高亮
+
+This is a {{%hl%}}highlighted quote{{%/hl%}}
+
+### 链接
+
+* 可以直接用标题名作为链接
+
+[Scroll down to a page section with heading *Hi*](#跳转到todo)
+
+* 链接到别的post，要搞明白路径关系，文件名为slug若没有则为title
+
+[A post](../python-style-strategy/)
+
+### 脚注
+
+I have more [^1] to say
+
+[^1]: Footnote example.
+
+### 导入图片
+
+还可以设置numbered属性为true，从而编号，以及caption标题，图片位置为assets/media下或者该文件所在文件夹
+
+可以设置id，用于链接到该图片
+
+{{% figure src=\"iu3.jpg\" id=\"iu3\"%}}
+
+* markdown形式的链接
+
+{{% figure src=\"header.png\" caption=\"A caption\" numbered=\"true\" %}}
+
+{{%figure src=\"icon.png\" caption=\"A icon\" numbered=\"true\"%}}
+
+{{% figure src=\"header.png\" caption=\"test\" theme=\"dark\" %}}
+
+[a figure](#iu3)
+
+### tags and categories
+
+展示所有标签和分类
+
+{{%list_tags%}}
+
+{{%list_categories%}}
+
+### 交互式行为
+
+生成图形化的交互式按钮，也是一种链接
+
+{{%cta cta_text=\"Do something\" cta_link=\"/\" cta_new_tab=\"false\" cta_alt_text=\"Alternative action\" cta_alt_link=\"/\" cta_alt_new_tab=\"false\"%}}
+
+### 关联作者
+
+{{%mention \"admin\"%}}
+
+### 子节
+
+To list child pages, such as to list book sections from a book chapter, use
+
+{{%list_children%}}.
+
+### 画廊
+
+{{% gallery album=\"iu\" resize_options=\"250x250\"%}}
+
+### icon和emoji
+
+{{%icon name=\"python\" pack=\"fab\"%}} Python  
+
+I :heart: Wowchemy :smile:
+
+### 注意和警告
+
+{{% callout note %}}
+A Markdown callout is useful for displaying notices, hints, or definitions to your readers.
+{{% /callout %}}
+
+{{% callout warning %}}
+Here's some important information...
+{{% /callout %}}
+
+### 声音和视频
+
+放在相同目录下
+
+{{% audio src=\"wrong.mp3\" %}}
+
+{{% video library=\"true\" src=\"sigmoid.mp4\" controls=\"yes\" %}}
+
+### mermaid
+
+<pre>
+{{%mermaid align=\"left\" theme=\"neutral\"%}}
+flowchart LR
+	subgraph EXTRACT
+		direction TB
+			oi[Outlook inbox] --> |Download manually|gs[Get and save data]
+			gs --> |Rename file <br> change column types|rd[Raw data store]
+	end
+	subgraph TRANSFORM
+		direction TB
+            e[Raw data store] -->|Manual filename change| sas_read
+			sas_read[Read raw data <br> into SAS format] --> |Manual filename change| sas_trans[Transform data]
+			sas_trans --> data[Processed data]
+	end
+fa[feed A] -->|automated <br> delivery| EXTRACT --> TRANSFORM
+{{%/mermaid %}}
+</pre>
+
+```mermaid
+graph TD;
+  A-->B;
+  A-->C;
+  B-->D;
+  C-->D;
+```
+
+### 代码
+
+```python
+# Example of code highlighting
+input_string_var = input("Enter some data: ")
+print("You entered: {}".format(input_string_var))
+```
+
+### 公式
+
+$$
+  f(x) = \frac{1}{2} \sum_{j=1}^\infty \int_0^1 \sin^2(j t x) dt .
+$$
+
+### chart
+
+Wowchemy supports the popular Plotly chart format.
+
+Save your Plotly JSON in your page folder, for example chart.json, and then add the `{{< chart data="chart" >}}` shortcode where you would like the chart to appear.
+
+### markmap markdown和mindmap结合
+
+```markmap
+- Hugo Modules
+  - wowchemy
+  - wowchemy-plugins-netlify
+  - wowchemy-plugins-netlify-cms
+  - wowchemy-plugins-reveal
+```
+
+{{%markmap%}}
+- Hugo Modules
+  - wowchemy
+  - wowchemy-plugins-netlify
+  - wowchemy-plugins-netlify-cms
+  - wowchemy-plugins-reveal
+{{%/markmap%}}
+
+### 插入幻灯片
+
+<iframe src="https://slides.com/iphysresearch/journal_club_20201020/embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+
+{{% table path=\"2_student_info.csv\" header=\"true\" caption=\"Table 1: My results\" %}}
+
+
+

@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.0/brython.min.js"></script>
+<!--
+    <style>
+    *{
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 1.1em;
+    }
+    td{
+    background-color: #ccc;
+    padding: 10px 30px 10px 30px;
+    border-radius: 0.2em;
+    text-align: center;
+    cursor: default;
+    }
+    #result{
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px 30px 10px 30px;
+    text-align: right;
+    }
+</style>
+-->
+
+<style type="text/css">
+    .mytable{
+    
+        border:1px solid #A6C1E4;
+    
+        font-family:Arial;
+    
+        border-collapse: collapse;
+    
+    }
+    
+    table th{
+    
+        border:1px solid black;
+    
+        background-color:#71c1fb;
+    
+        width:100px;
+    
+        height:20px;
+    
+        font-size:15px;
+    
+    }
+    
+    table td{
+    
+        border:1px solid #A6C1E4;
+    
+        text-align:center;
+    
+        height:15px;
+    
+        padding-top:5px;
+    
+        font-size:12px;
+    
+    }
+    
+    td input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 5em;
+         text-align: center;
+      } 
+
+      th input{
+         border: none;
+         overflow: hidden;
+         height: 100%;
+         width: 100%;
+         background-color:#71c1fb;
+         text-align: center;
+         font-size:15px;
+         margin-left: 0%;
+         margin-right: 0%;
+         margin-top: 0%;
+         margin-bottom: 0%;
+      } 
+    .double{
+    
+        background-color:#c7dff6;
+    
+    }
+    
+</style>
+
+</head>
+
+<body onload="brython()">
+<script type="text/python">
+from browser import document, html,alert
+from browser.html import TABLE,TR,TH,TD,INPUT
+# 创建表格
+def create_table(ev):
+    row=eval(document["table-row-num"].value)+2
+    col=eval(document["table-col-num"].value)+2
+    table=TABLE()
+    table <= TR(TH(INPUT(value="",id="td1"+str(i+1))) for i in range(col))
+    for i in range(1,row):
+        table <= TR(TD(INPUT(value="",id="td"+str(i+1)+str(j+1))) for j in range(col))
+    document["table-container"].clear()
+    document["table-container"] <= table
+document["table-dim"].bind("click",create_table) 
+# 表格输入内容后开始计算
+def step(ev):
+    row=eval(document["table-row-num"].value)
+    col=eval(document["table-col-num"].value)
+    for i in range(2,row+2):
+        document["td"+str(i)+str(col+2)].value=str(sum(eval(document["td"+str(i)+str(j)].value) for j in range(2,col+2)))
+    for i in range(2,col+2):
+        document["td"+str(row+2)+str(i)].value=str(sum(eval(document["td"+str(j)+str(i)].value) for j in range(2,col+2)))
+    document["td"+str(row+2)+str(col+2)].value=str(sum(eval(document["td"+str(j)+str(row+2)].value) for j in range(2,col+2)))
+    row_sum=[eval(document["td"+str(i)+str(col+2)].value) for i in range(2,row+2)]  
+    col_sum=[eval(document["td"+str(row+2)+str(i)].value)  for i in range(2,col+2)] 
+    total_sum=eval(document["td"+str(row+2)+str(col+2)].value)
+    sum_ka=0
+    table=TABLE()
+    table <= TR(TH(i) for i in ['观察值频数','期望值频数','二者差的平方','二者差的平方比上期望值频数'])
+    for i in range(2,row+2):
+        for j in range(2,col+2):
+            v_list=[
+            eval(document["td"+str(i)+str(j)].value),
+            round((row_sum[i-2]*col_sum[j-2])/total_sum,2),
+            round((eval(document["td"+str(i)+str(j)].value)-round((row_sum[i-2]*col_sum[j-2])/total_sum,2))**2,2),
+            round((eval(document["td"+str(i)+str(j)].value)-round((row_sum[i-2]*col_sum[j-2])/total_sum,2))**2/round((row_sum[i-2]*col_sum[j-2])/total_sum,2),2)]
+            sum_ka+=v_list[-1]
+            table <= TR(TD(str(k)) for k in v_list)
+    ka=round(sum_ka,2)
+    table <= TR([TD("卡方值"),TD(str(ka),colspan=3)])
+    table <= TR([TD("psi相关系数"),TD(str(round((ka/total_sum)**0.5,4)),colspan=3)])
+    table <= TR([TD("c相关系数"),TD(str(round((ka/(ka+total_sum))**0.5,4)),colspan=3)])
+    table <= TR([TD("V相关系数"),TD(str(round((ka/total_sum/min(row-1,col-1))**0.5,4)),colspan=3)])
+    document["step-container"].clear()
+    document["step-container"] <= table
+document["step"].bind("click",step)
+</script>
+
+<div style="float: left;">
+    <input placeholder="输入大于等于2的值" value="2" id="table-row-num">行数</input><br/>
+    <input placeholder="输入大于等于2的值" value="2" id="table-col-num">列数</input><br/>
+    <button id='table-dim'>生成表格</button><br/>
+    <button id="step">独立性检验与相关系数</button> 
+</div>
+
+<div id="table-container" style="float: left;"></div>
+
+<div id="step-container" style="float: left;"></div>
+
+</body>
+</html>

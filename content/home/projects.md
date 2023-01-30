@@ -3,6 +3,10 @@
 # Documentation: https://wowchemy.com/docs/page-builder/
 widget: portfolio
 
+##不显示
+
+active: true
+
 # This file represents a page section.
 headless: true
 
@@ -41,8 +45,8 @@ design:
   #   2 = Compact
   #   3 = Card
   #   5 = Showcase
-  view: 2
-
+  #   Masonry 独属于protfolio的设置
+  view: 3
   # For Showcase view, flip alternate rows?
   flip_alt_rows: false
 ---

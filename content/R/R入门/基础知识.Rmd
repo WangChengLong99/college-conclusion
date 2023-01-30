@@ -1,0 +1,300 @@
+---
+title: R基础知识
+date: 2022-8-10
+lastmod: '2022-08-09T16:44:38+08:00'
+type: book
+summary: 包，帮助，运算，文件，函数，可视化
+weight: 1
+toc: true
+---
+
+# 包的安装，载入，查找，更新，卸除加载的包，删除包
+
+功能|函数
+-|:-
+安装 |install.packages("包名")
+查找|library() 可以查找所有已经安装的包
+载入|library("包名")
+卸除加载的包（并未删除）|detach("包名")
+更新|updata.packages("包名")
+删除|remove.packages("包名")
+
+# 查看帮助信息
+
+函数|用途|实例
+:-|-|-
+help.start()|直接进入一个帮助文档的总页面|help.start()<br/>{{%figure src=\"./data/help_start.png\"%}}
+help(函数名)/?函数名|显示该函数的帮助页面,但是有时候寻找的只是已经载入的包中，可以加上 `try.all.packages=TRUE` 来让它搜索所有的包。同时对于某些特殊的函数必须使用双引号，比如if等。|help(mean)<br/>{{%figure src=\"./data/help.png\"%}}<br/>help("bs")<br/>No documentation for 'bs' in specified packages and libraries:you could try '??br'<br/>help("bs",try.all.packages=TRUE)<br/>Help for topic 'bs' is not in any loaded package but can be found in the following packages:<br/>Package               Library<br/>splines               D:/R/R-3.6.3/library 
+apropos("字符串")|搜索含有该字符串的函数的帮助文档，但是只是在已经安装的包中寻找|apropos("means")<br/>{{%figure src=\"./data/apropos.png\"%}}
+help.search("字符串")|列出所有在**帮助页面**中含有该字符串的函数，不仅仅是名字|help.search("mean")<br/>{{%figure src=\"./data/help_search.png\"%}}
+find("函数名")|找出含有该函数的程序包|find("mean")<br/>r$> find("mean")<br/>[1] "package:Matrix" "package:base"
+
+# 变量，常量和赋值
+
+r是基于对象的语言，变量名实际就是对象名。
+
+变量名由点号，下划线，字母，数字组成，以字母或下划线开头，或者在这两个前面加个点号也行。
+
+有了变量就可以赋值，可以用 =，-> ,<- 来赋值。
+
+常量就是不变的值。
+
+# 运算符与运算函数
+
+运算符是特殊的函数，分为算数运算符，比较运算符，逻辑运算符，赋值符，和其他运算符。
+
+算数运算符>比较运算符>逻辑运算符>赋值符
+
+算数运算符中：指数>乘除>加减
+
+比较运算符：无大小
+
+逻辑运算符：!>&>| 非大于并大于或
+
+常见运算符：
+
+符号|含义|实例
+-|-|-
+算数运算符|
+\+,\-|加，减|
+\*,/|乘，除 |5/3 为浮点数
+%%|求余 |
+%/%|求整| 5%/%3 为 1
+^|幂|
+比较运算符|
+>,<,>=,<=,==,!=|大于，小于，大于等于，小于等于，等于，不等于|
+逻辑运算符|
+！|非，取逻辑值的反运算|!TRUE
+&|并，比较的对象全为真才是真|TRUE&FALSE<br/>[1] FALSE<br/>c(TRUE,TRUE)&c(TRUE,FALSE)<br/>[1]  TRUE FALSE
+&&|如果比较的是向量只比较第一组值。|c(TRUE,TRUE)&&c(TRUE,FALSE)<br/>[1] TRUE<br/>c(FALSE,TRUE)&&c(TRUE,FALSE)<br/>[1] FALSE
+\||或|
+\|\||如果比较的是向量只比较第一组值。|
+xor|异或，两个逻辑值不一致时为真|xor(TRUE,FALSE)<br/>[1] TRUE
+赋值符|
+=，<-|赋值|
+其他运算符|
+$|提取符|
+%*%|矩阵相乘|
+all()|一个向量中所有值全为真则为真|
+any()|一个向量中有值为真则为真|
+
+常用运算函数：
+
+    x=c(1,2,3,4)
+    x2=c(5,6,7,8)
+    y=matrix(c(1,2,3,4,5,6,7,8),2,4)
+    y2=matrix(c(3,8,5,7,3,6,7,4,2),3,3)
+    z=c('a','c','b')
+
+函数|功能|实例
+-|-|-
+sum(x)|求和|sum(x) 10<br/>sum(y) 36
+range(x)|查看数值的范围| range(z)<br/>[1] "a" "c"<br/>range(x)<br/>[1] 1 4<br/> range(y)<br/>[1] 1 8
+length(x)|返回数据长度|r$> length(x)<br/>[1] 4<br/> length(y)<br/>[1] 8
+prod(x)|序列中所有值相乘| prod(x)<br/>[1] 24<br/> prod(x,x2)<br/>[1] 40320<br/>prod(y)<br/>[1] 40320
+mean(x)|求所有值的平均值| mean(x)<br/>[1] 2.5<br/>mean(y)<br/>[1] 4.5
+max(x)|求最大值| max(z)<br/>[1] "c"
+median(x)|中位数|median(z)<br/>[1] "b"
+min(x)|求最小值|
+cov(x,y)|求协方差|矩阵每一列是一个变量<br/>cov(y2)<br/>          [,1]      [,2]      [,3]<br/>[1,]  6.333333 -5.166667 -3.166667<br/>[2,] -5.166667  4.333333  1.833333<br/>[3,] -3.166667  1.833333  6.333333
+cor(x,y)|求两个变量之间相关系数|
+var(x)|对矩阵求协方差，对向量求方差|var(y2)<br/>          [,1]      [,2]      [,3]<br/>[1,]  6.333333 -5.166667 -3.166667<br/>[2,] -5.166667  4.333333  1.833333<br/>[3,] -3.166667  1.833333  6.333333<br/>var(y2[,1])<br/>[1] 6.333333
+cor(x)|求矩阵的相关系数|cor(y2)<br/>           [,1]       [,2]       [,3]<br/>[1,]  1.0000000 -0.9862414 -0.5000000<br/>[2,] -0.9862414  1.0000000  0.3499566<br/>[3,] -0.5000000  0.3499566  1.0000000
+which.max(x)|返回第一个最大值的位置| which.max(y2)<br/>[1] 2<br/>which.max(c(1,2,2,1))<br/>[1] 2
+which.min(x)|返回第一个最小值的位置
+round(x, n)|转置|
+pmin(x,y,...)|对所有向量或矩阵的值进行比较，长度不等可以循环，取较小的值组成一个与最长长度相同的向量|pmin(x,x2)<br/>[1] 1 2 3 4<br/> pmin(y,y2)<br/>[1] 1 2 3 4 3 6 7 4 1
+pmax(x,y,...)|返回所有最大值|
+rev(x)|倒序| rev(x)<br/>[1] 4 3 2 1<br/>rev(y2)[1] 2 4 7 6 3 7 5 8 3
+sort(x)|排序|sort(y2)<br/>[1] 2 3 3 4 5 6 7 7 8
+cumsum(x)|累加|cumsum(x)<br/>[1]  1  3  6 10
+rank(x,ties.method=?)|对一维数组或向量进行排序，给每个值赋予一个排名，对相同值排名有五种规则（first：从小到大，相同值先出现的小，max：取最好水平，min：取最差水平，average：取平均水平，random：随机排名）|rank(c(6,9,10,3,9,5),ties.method=?)<br/>"first":3 4 6 1 5 2<br/>"max":3 5 6 1 5 2<br/>"min":3 4 6 1 4 2<br/>"average":3.0 4.5 6.0 1.0 4.5 2.0<br/>"random":3 5 6 1 4 2
+cumprod(x)|累乘|cumprod(x)<br/>[1]  1  2  6 24
+log(x,base)|求对数|log(5,80)<br/>[1] 0.3672816<br/>log(80,5)[1] 2.722706
+cummin(x)|输出目前为止碰到的最小值，如果后面碰到了更小的，就变成更小的值，依次往下推|cummin(y2)<br/>[1] 3 3 3 3 3 3 3 3 2<br/>cummin(c(3,5,2,4,1,0))<br/>[1] 3 3 2 2 1 0
+cummax(x)|输出目前为止碰到的最大值，如果后面碰到了更大的，就变成更大的值，依次往下推|
+scale(x，center，scale)|规范化处理，归1化。center为true时，减去均值，false不减；scale为true时除标准差，false不除。两个值默认都为true，所以x_i=(x_i-mean(x))/sd(x)| {{%figure src=\"./data/scale.png\"%}})
+unique(x)|去除掉重复元素的向量数据框或数组|unique(c(1,3,3,7,5,4))<br/>[1] 1 3 7 5 4<br/>unique(matrix(c(1,2,1,3,5,3),3,2))<br/>     [,1] [,2]<br/>[1,]    1    3<br/>[2,]    2    5<br/>矩阵去掉的是重复行
+match(x,y)|返回x中元素在y中的位置，有的返回位置，没有的返回na|match(c(3,1),c(1,3))<br/>[1] 2 1<br/>match(c(4,3),c(4,1))<br/>[1]  1 NA
+sample(x,size)|从向量或数据框等中随机抽取n个数|sample(x,2)<br/>[1] 3 1<br/>sample(y,2)<br/>[1] 4 3<br/>sample(y,2)<br/>[1] 6 4
+which(x == a)|返回所有等于a的值的位置| which(y2==3)<br/>[1] 1 5<br/>which(x==2)<br/>[1] 2
+
+# 文件读写
+
+## 设定路径
+
+利用getwd函数获取当前路径
+利用setwd函数，设定路径，之后的路径如果不设置就是默认在这个路径下，如果设置了其他的，可以是跟在这个路径之后。也可以是一个跟这个路径无关的新路径。
+
+```{r}
+getwd()#"C:/Users/WangChengLong/Desktop/R/R总结"
+# setwd("D:/code")#setwd("D:\\code")正斜杠或双反斜杠
+# read.csv(file="data/GDP.csv")#D:/code/data/gdp.csv
+# read.table("Rtest.txt")#D:/code/Rtest.txt
+# read.csv(file="D:/R/data/shop.csv")
+```
+
+## 读取纯文本文件
+
+并不是单纯的纯文本，而是有一定格式的纯文本。并不是文章之类的文本。
+
+函数|使用|实例
+-|-|-
+read.table()|以数据框的形式读取具有多列表格形式的文件数据<br/>file∶文件路径<br/>header∶逻辑值，用于指出文件的第一行是否为数据变量的名字。一般默认为header=F。如果第一行比其他行少一列，则默认第一列为行名，第一行为列名。<br/>sep∶字符型，数据的分隔符。默认情况下，sep=""，此参数用于指定**数据文件中**每行中数据之间使用的分隔符。<br/>quote∶指定包围字符型数据的字符。默认情况下，字符串可以被"或'括起，并且两种情况下，引号内部的字符都作为字符串的一部分。<br/> dec∶字符型，制定小数点字符，默认为"."一般不用修改.<br/> row.names∶保存行名的向量。未定义时以1、2、3、4.…代替. <br/>col.names∶指定列名的向量。缺省情况下是用"V"加上列序构成，即V1，V2，V3.<br/>nroWS∶整型数，用于指定从文件中读取的最大行数。<br/>skip∶整型数，读取数据时从前面开始忽略的行数。|read.table(file="D:/R/data/house.data.txt",sep="",nrows=5)<br/>read.table(file="D:/R/data/house.data.txt",sep="",header=T,nrows=2)<br/>read.table(file="D:/R/data/house.data.txt",header=T,nrows=5,quote="\"'")
+read.csv()|以数据框的格式读取逗号分隔的数据文件，默认header
+=TRUE。是read.table的变形|read.csv(file, header = TRUE, sep =",",quote="\"",dec =".",...)
+read.csv2()|以数据框的格式读取分号分隔的数据文件，默认header
+=TRUE。是read.table的变形|read.csv2(file, header = TRUE, sep =",",quote="\"",dec =".",...)
+scan()|在R语言中可以使用scan（）函数从文本文件中读取数据或从键盘直接获取用户输入的数据。<br/>scan(file =", what = double(), sep ="", quote,
+deC =".",skip= 0,nlines=0,...)
+<br/>file∶用于指定要读取文件的路径和名字，如果为空或""，则是要从键
+盘中获取数据。
+<br/>what∶用于给出要读取的数据的类型，支持的数据类型包括∶logical，，
+integer， numeric， complex， character以及list。<br/>sep∶用于指出文件中数据的分隔符，Scan默认数据是以空白进行分
+隔。<br/>quote∶制定包围字符型数据的字符。<br/>dec∶字符型，制定小数点字符，默认为""。<br/>skip∶用于指定读取数据时，忽略文件前面的行数.<br/>nlines∶指定要读取文件中数据的最大行数。
+|<br/>{{%figure src=\"./data/scan.png\"%}}<br/>回车之后再回车代表输入的结束
+read.fwf()|可以用来读取每一列数据宽度固定的数据<br/>read. fwf(file, widths, header =FALSE, sep ="\t"
+skip=0, row.names, col.names,...)
+|{{%figure src=\"data/read.fwf.png\"%}}
+
+## 读取excel数据
+
+{{%figure src=\"data/excel.png\"%}}
+
+## 读取R中数据集
+
+* 使用`data()`可列出R中自带的全部的数据集
+* 某些数据集存在某些包中，导入包后，还需要使用data(数据集名)来加载数据集,如`data(package="survival")`
+* {{%figure src=\"data/attach.png\"%}}
+
+## 其他格式数据的读取
+
+{{%figure src=\"data/duqu.png\"%}}
+
+## 写数据
+
+写数据分为两种，一种是存入已有的文件中，一种是创建新的文件
+
+函数|参数|实例
+-|-|-
+write.table|写纯文本数据,新文件<br/>write.table(gnp,file="...\\lecture 2\\GNP.txt")|
+write.csv|写excel数据，新文件<br/>write.csv(gnp,file="...\\lecture 2\\GNP.csv")|
+write()|既可以新文件，也可以写入，取决于append参数<br/>X∶数据，通常是矩阵、向量等。<br/>file∶是文件名<br/> append∶默认为FALSE，append=TRUE指在原文件上填加数据|
+sink|之后输出的数据会被输出到该文件中。如果是一个新文件那么之后的输出都会显示在里面。不管append的T或F；但是如果是一个已有文件，那么如果不设置append=T，那么源文件中原本存在的都会被删除或者说替代。之后的所有输出还是出现在文件中<br/>sink(file="",append=FALSE,...)|sink(file="data/sink1.txt",append=F)<br/>print(x)<br/>print(x)<br/>print(x)<br/>第一次运行改程序，会创建一个新的sink1.txt文件，在里面输入三个x数据。但是在第二次运行时，里面不是6个，依然是三个，因为append是false，原来的被清除了。
+cat()|既能输入到屏幕也能输入到文件中，取决于有无设置file属性<br/>cat(...,file ="", sep ="",append=F)|
+
+# 数据类型和类型转换
+
+## 数据类型
+
+* 数值型（numeric） 1e23,inf,-inf,NaN表示不是数字的<br/>5/0，inf+inf为inf；inf-inf,0/0的结果为NaN。
+* 逻辑型（complex） 包括FALSE，TRUE，和NA（缺失值）
+* 复数型（logical） 
+* 字符型 （character）单或双引号包括
+
+## 数据对象
+
+{{%figure src=\"data/数据对象类型.png\"%}}
+
+{{%figure src=\"data/数据类型.png\"%}}
+
+列表可以看成数据框的一列，向量，矩阵，数组可以是一维二维和多维的关系。
+
+## 对象的属性
+
+对象有内在属性（类型（mode）和长度）和其他属性（维度（dim）和类（class）等），可以用一些函数查看对象的属性。
+
+* mode(x) 查看数据对象类型
+* length(x) 查看数据对象长度
+* attributes(x) 查看数据对象其他属性，不包括mode和length
+* attr(x,属性名称) 可以查看对象某一属性
+* attr(x,"names")=?? 为对象的names属性更改值或者为对象x添加names属性。
+
+    x=c(NA)
+    attr(x,"mode") #NULL
+
+## 数据类型判断和转化
+
+    x=c(NA)
+    #判断：
+    is.numeric(x)#F
+    is.character(x)#F
+    is.logical(x)#T
+    is.complex(x)#F
+
+    # 转化
+
+    y=as.numeric(x)
+    mode(x)#x类型并没有变
+    mode(y)#y类型变化，为数值型的NA
+    y#NA
+
+* is.nan 检测数据是否不确定，true为不确定
+* is.infinite 监测数据是否为无限值。true为无限
+* is.finite 检测数据是否为有限值，true为有限
+* `is.na` 判断数据是否存在缺失值
+
+# 控制符和循环
+
+## 分支语句
+
+分支语句是用来判断的，条件满足则执行，条件不满足则不执行。
+
+主要有下面五种
+
+语句|使用
+-|-
+if语句|if()每个if语句只要条件满足就会执行
+if <br/>……else……|if条件满足执行if下的语句，否则执行else下的语句
+ifelse|ifelse（？，x，y）满足条件为x，不满足为y，返回结果的长度和判断生成的逻辑值数目一致。有多少个逻辑值。就会返回多少个结果。<br/>ifelse(?,c()，c()),满足时，取第一个向量的第i个，否则取第二个向量的第i个,向量中的元素可以循环取。
+if<br/>…… else if<br/>……else if<br/>……else|只要有一个条件满足，其他条件就不会再执行。
+switch|switch(con,list)或<br/>switch(con,case1,case2,case3,...)<br/>switch是多分支语句，一次**只能比较一个变量**，比较的可以是下标，如，1，2.如果下标范围在列表长度内，返回对应位置元素，否则什么都不返回。如果列表元素是有names的，则还可以通过names比较。
+
+**注意**：
+
+<span style="color:red">else或else if不可前面无其他内容，也就是不可以另起一行或者放在开头，一般是放在上一个if的内容后面</span>
+
+* ifelse 与 if else的区别：
+
+    ifelse（con，expr1，expr2）中的条件判断中可以得到多个逻辑结果，有多少个逻辑结果，ifelse（）的返回值就有多少个元素，且不同的逻辑结果取不同的值。
+ 
+    
+    if（con) expr1 else expr2中的条件判断中只得到一个逻辑结果（如果
+有多个逻辑结果，会自动取第一个，并抛出警告）。然后根据这个逻辑结果，取后面表达式的值。
+
+* if语句各判断条件的位置关系：
+
+    if语句可以有零个或一个else，但如果有else if语句，那么else语句必须在else if语句之后。
+    
+    if语句可以有零或多个else if语句，else if语句必须放在else语句之前。
+    
+    当有一个else if条件测试成功，其余的else.….if或else将不会被测试。
+
+## 循环语句
+
+循环语句主要有for，while和repeat循环
+
+语句|使用
+-|-
+for|for（name in expr1）expr2 <br/>name 是一个循环变量，expr1是他的取值范围，直到循环结束前，每一次都执行下面的expr2
+while|while（con）expr <br/>con一般是循环终止条件，在expr中一般有变量的循环。运行直到终止条件满足。
+repeat|repeat expr<br/>repeat 是无条件运行expr，而在expr中需要设置满足条件后的break语句，来将整个循环终止。
+
+## break和next
+
+break将整个循环终止，而next是跳过循环的某一步，执行下一步。
+
+# 函数
+
+# 可视化
+
+可视化分为高级作图函数，低级作图函数，图形参数，网格作图，多图。当然还有一些包中的绘图函数是为了特定的需求。
+
+低级作图函数必须建立在已有高级图形的基础上，低级作图函数一般是在高级图形上添加点，线等。
+
+图形参数是用来调整一个图形，比如坐标轴，图例等。
+
+网格作图是为了在一张画布上显示多个图形，有时候会有对比图形的需求。我们需要一些灵活的方式来实现多图。
+
+## 高级绘图函数
+

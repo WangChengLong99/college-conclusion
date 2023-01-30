@@ -1,49 +1,31 @@
 ---
-bio: My research interests include distributed robotics, mobile computing and programmable
-  matter.
-education:
-  courses:
-  - course: PhD in Artificial Intelligence
-    institution: Stanford University
-    year: 2012
-  - course: MEng in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2008
-email: ""
-highlight_name: true
+title: 汪成龙
+role: fresh graduates
+bio: 好好学习，天天向上
+organizations: []
+# - name: cd
+#   url: https://www.stanford.edu/
 interests:
 - Artificial Intelligence
-- Computational Linguistics
-- Information Retrieval
-organizations:
-- name: Stanford University
-  url: https://www.stanford.edu/
-role: Professor of Artificial Intelligence
+- Data Science 
+- table tennis and basketball
+education:
+  courses:
+  - course: 数据科学与大数据技术
+    institution: 中南财经政法大学
+    year: 2018-2022
+email: "2815475305@qq.com"
+highlight_name: true
 social:
-- icon: envelope
-  icon_pack: fas
-  link: /#contact
-- icon: twitter
-  icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
-- icon: graduation-cap
-  icon_pack: fas
-  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
 - icon: github
   icon_pack: fab
-  link: https://github.com/gcushen
-- icon: linkedin
+  link: https://github.com/wangchenglong99
+- icon: bilibili
   icon_pack: fab
-  link: https://www.linkedin.com/
+  link: https://space.bilibili.com/391629187?spm_id_from=333.1007.0.0
 superuser: true
-title: Nelson Bighetti
 ---
 
-Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+noting to write,but I'm trying to change myself.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
-
-{{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
+{{< icon name="download" pack="fas" >}}下载{{< staticref "uploads/python/简历.pdf" "newtab" >}}我的简历{{< /staticref >}}.

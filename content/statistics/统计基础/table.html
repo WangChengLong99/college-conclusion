@@ -1,0 +1,301 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showProcessingMessages: false, //关闭js加载过程信息
+    messageStyle: "none", //不显示信息
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code', 'a', 'annotation', 'annotation-xml'],
+      ignoreClass: 'crayon-.*' // 'crayon-' 开头的类，属于Wordpress代码高亮库，这部分不需要处理，否则会导致显示不正确,这部分是正则式，多条之间用'|'分割    
+    },
+    'HTML-CSS': {
+        showMathMenu: false //禁用右键菜单
+    }
+  });
+  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+</script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
+        <style type="text/css">
+        .mytable{
+        
+        border:1px solid #A6C1E4;
+    
+        font-family:Arial;
+    
+        border-collapse: collapse;
+    
+    }
+    
+    table th{
+    
+        border:1px solid black;
+    
+        background-color:#71c1fb;
+    
+        width:100px;
+    
+        height:20px;
+    
+        font-size:15px;
+    
+    }
+    
+    table td{
+    
+        border:1px solid #A6C1E4;
+    
+        text-align:left;
+    
+        height:15px;
+    
+        padding-top:5px;
+    
+        font-size:12px;
+    
+    }
+            td input{
+             border: none;
+             overflow: hidden;
+             height: 100%;
+             width: 5em;
+             text-align: center;
+          } 
+    
+          th input{
+             border: none;
+             overflow: hidden;
+             height: 100%;
+             width: 100%;
+             background-color:#71c1fb;
+             text-align: center;
+             font-size:15px;
+             margin-left: 0%;
+             margin-right: 0%;
+             margin-top: 0%;
+             margin-bottom: 0%;
+          } 
+        </style>
+    </head>
+<body>
+<table>
+    <tr>
+        <th>集中趋势</th>
+        <th>性质</th>
+        <th>分类数据</th>
+        <th>顺序数据</th>
+        <th>数值型数据</th>
+        <th>离中趋势</th>
+        <th>性质</th>
+        <th>分类数据</th>
+        <th>顺序数据</th>
+        <th>数值型数据</th>
+    </tr>
+    <tr>
+        <td>众数</td>
+        <td>众数`M_0`：一组数据中出现次数最多的变量值<li>主要用于测度分类数据的
+        集中趋势，也可作为顺序数据以及数值型数据集中趋势的测度值。</li> <li>只有
+        在数据量较大的情况下，众数才有意义</li>
+        <li>
+            众数不受数据中极端值的影响
+        </li>
+        <li>
+            众数可能不存在，也可能不止一个
+        </li>
+        </td>
+        <td>最多的类别</td>
+        <td>最多的顺序类别</td>
+        <td><li>频率分布图中概率最大的点所对应的变量值</li>如果是组矩型，则`M_0=L+\frac{\Delta_1}{\Delta_1+\Delta_2}d=U-\frac{\Delta_2}{\Delta_1+\Delta_2}d` <br/> `\Delta_1,\Delta_2`分别为该组的频数与下限相邻组，上限相邻组的频数之差，d为组距<img src="data/众数.jpg" height="350px" width="350px"></td>
+        <td>异众比率</td> 
+        <td>非众数组的频数占总频数的比例`V_r` `V_r=\frac{\sum f_i-f_m}{\sum
+        f_i}=1-\frac{f_m}{\sum f_i}` `\sum f_i`为变量值的总频数;`f_m`为众数组的频数<br/>异众比率越大，众数的代表性越差</td>
+        <td>异众比率适合测度分类数据的离散程度</td>
+        <td>可以，计算差不多</td>
+        <td>可以，并不好计算异众比率</td>
+    </tr>
+    <tr>
+        <td>中位数`M_e`</td>
+        <td>一组数据排序后处于中间位置上的变量值<br/>设一组数据为`x_1,x_2,\cdots,x_n`,按从小到大的顺序排序后为`x_{(1)},x_{(2)},\cdots,x_{(n)}`,则中位数为：$$\begin{cases} x_{(\frac{n+1}{2})} & n为奇数 \\ \frac{1}{2}\left(x_{(\frac{n}{2})}+x_{(\frac{n}{2}+1)}\right) & n为偶数 \end{cases}$$</td>
+        <td>不适用</td>
+        <td>主要用于测度顺序数据的集中趋势</td>
+        <td>如果是单项变量,则应该是首次累积频率超过`\frac{\sum f}{2}`的组所对应的变量值<br/>如果是组距型，`M_e=L+\frac{\sum f/2-S_{m-1}}{f_m}\times d`<br/> `S_{m-1}`为下限相邻组的累积频数，f_m为该组的频数,d为组距</td>
+        <td>四分位差$M_d$（内距或四分间距）</td>
+        <td>`Q_d=Q_U-Q_L`<br/><li>反映了中间50%数据的离散程度，越小，中间的数据越集中</li><li>不受极值影响</li><li>反映了中位数对一组数据的代表性</li><li>主要用于测度顺序数据的离散程度</li></td>
+        <td>不适合</td>
+        <td>主要用于测度顺序数据的离散程度</td>
+        <td>找到四分位点对应的值，计算四分位差</td>
+    </tr>
+    <tr>
+        <td>四分位数</td>
+        <td>
+            <li>上四分位数和下四分位数</li>
+            <li>先排序然后确定位置</li>
+            <li>`Q_L位置=\frac{n}{4}`</li>
+            <li>`Q_U位置=\frac{3n}{4}`</li>
+            <li>找到位置后，整数部分的数字+小数部分的数字乘上相邻数字的差值,比如`Q_L`位置为3.25，则`Q_L=x_{(3)}+0.25\times (x_{(4)}-x_{(3)})`</li>
+        </td>
+        <td>不适用</td>
+        <td>与中位数类似</td>
+        <td>与中位数类似</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=5>平均数$\bar{x}$(均值)</td>
+        <td rowspan="5">
+            <ul>
+                <li>
+                    集中趋势的主要测度值，主要适用于数值型数据，而不适用于分类数据和顺序数据。
+                </li>
+                <li>
+                    <b>简单平均数</b>：根据<b>未分组</b>数据计算的平均数称为简单平均数 `\bar{x}=\frac{x_1+x_2+\cdots+x_n}{n}=\frac{\sum_{i=1}^n x_i}{n}`
+                </li>
+                <li>
+                    <b>加权平均数</b>:根据<b>分组数据</b>计算的平均数称为加权平均数。<br/>设原始数据被分成k组，各组的组中值分别用`M_1,M_2,\cdots,M_k`表示，各组变量值出现的频数分别用`f_1,f_2,\cdots,f_k`,则`\bar{x}=\frac{M_1f_1+M_2f_2+\cdots+M_kf_k}{f_1+f_2+\cdots+f_k}=\frac{\sum_{i=1}^kM_i f_i}{n}`
+                </li>
+                <li>
+                    <b>几何平均数</b>:n个变量值乘积的n次方根，用G表示。$$G=\sqrt[n]{x_1\times x_2\times \cdots\times x_n}=\sqrt[n]{\prod_{i=1}^n x_i}$$ $$平均增长率\bar{G}=\sqrt[n]{\prod_{1=1}^n(1+G_i)}-1$$ 它主要用于计算平均比率。当所掌握的变量值本身是比率形式时，采用几何平均法计算平均比率更为合理。<br/>当所平均的各比率数值差别不大时，算数平均和几何平均相差不大，但如果相差较大时，二者的差别就很明显。
+                </li>
+            </ul>
+        </td>
+        <td rowspan="5">不适用</td>
+        <td rowspan="5">不适用</td>
+        <td rowspan="5">
+            <li>
+                用各组的组中值代表各组的实际数据，使用这一代表值时假定各组数据在组内是均匀分布的。如果实际数据与这一假定相吻合，计算的结果是比较准确的，否则误差会比较大
+            </li>
+        </td>
+        <td>极差R（全距）</td>
+        <td>
+            <li>测度数值型数据离散程度的主要方法</li>
+            <li>
+                计算简单，容易理解，易受极端值的影响
+                只利用了一组数据两端的信息，不能反映出中间数据的分散状况，因而不能准确描述出数据的分散程度。
+            </li>
+        </td>
+        <td colspan="3">$R=max(x_i)-min(x_i)$</td>
+    </tr>
+    <tr>
+        <td>平均差$M_d$（平均绝对离差）</td>
+        <td>各变量值与其平均数离差绝对值的平均数 。<br/>平均差反映了每个数据与平均数的平均差异程度，能全面准确地反映一组数据的离散状况，平均差越大，说明数据的离散程度越大<br/>平均差含义较清楚，但是绝对值不好计算，应用较少
+        <li>测度数值型数据离散程度的主要方法</li>
+    </td>
+        <td colspan="3">
+        $$未分组：M_d=\frac{\sum_{i=1}^n |x_i-\bar{x}|}{n}$$ $$分组:M_d=\frac{\sum_{i=1}^k|M_i-\bar{x}|f_i}{n}$$
+        </td>
+    </tr>
+    <tr>
+        <td>方差$s^2$与标准差$s$</td>
+        <td>
+            <li>方差：各变量值与其平均数离差平方平均数</li>
+            <li>标准差：方差的平方根</li>
+            <li>方差或标准差能较好的反映出数据的离散程度，是应用最广的离散程度的测度值</li>
+            <li>因为标准差是有量纲的，它与变量值的计算单位相同，实际意义比方差清楚，因此，实际问题更多的使用标准差</li>
+            <li>测度数值型数据离散程度的主要方法</li>
+        </td>
+        <td colspan="3">设样本方差为$s^2$ ,则样本方差的计算公式为$$未分组数据 s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}$$ $$分组数据:s^2=\frac{\sum_{i=1}^k(M_i-\bar{x})^2f_i}{n-1}$$</td>
+    </tr>
+    <tr>
+        <td>离散系数（变异系数）</td>
+        <td>
+            <li>对于平均水平不同或计量单位不同的不同组别的变量值，不能用标准差直接比较其离散程度</li>
+            <li>离散系数：一组数据的标准差与其相应的平均数之比$v_s=\frac{s}{\bar{x}}$</li>
+            <li>主要用于比较<b>不同样本数据的离散程度</b>,离散系数大，说明数据的离散程度也大。</li>
+        </td>
+        <td colspan="3">$v_s=\frac{s}{\bar{x}}$
+            <li>
+                比如比较不同运动员的射击成绩
+            </li>
+        </td>
+    </tr>
+    <tr>
+        <td>标准分数（标准化值或z分数）</td>
+        <td>
+            <li>变量值与其平均数的离差除以标准差后的值称为标准分数</li>
+            <li>标准分数给出了一组数据中各数据的相对位置</li>
+            <li>可以消除量纲的影响</li>
+            <li>3$\sigma$准则,经验法则，只适合对称分布的数据:
+                <ul>
+                <li>约有68%的数据在平均数$\pm$1个标准差的范围之内</li>
+                <li>约有95%的数据在平均数$\pm$2个标准差的范围之内</li>
+                <li>约有99%的数据在平均数$\pm$3个标准差的范围之内</li>
+                </ul>
+            </li>
+            <li><b>离群点</b>:在$\pm$3个标准差之外的数据</li>
+            <li><b>切比雪夫不等式</b>:对任何分布形态的数据都适用。表示<b>至少</b>有$(1-1/k^2)$的数据落在$\pm$k个标准差内，k是大于1的任意值，但不一定是整数。
+                <ul>
+                <li>
+                    至少有75%的数据在平均数$\pm$2个标准差之内的。
+                </li>
+                <li>
+                    至少有89%的数据在平均数$\pm$3个标准差之内的。
+                </li>
+                <li>
+                    至少有94%的数据在平均数$\pm$4个标准差之内的。
+                </li>
+                </ul>
+            </li>
+        </td>
+        <td colspan="3">$$z_i=\frac{x_i-\bar{x}}{s}$$
+            <li>
+                比如说英语成绩和数学成绩，我们不能单纯比较成绩，而要比较成绩在相应科目中的相对位置。
+            </li>
+        </td>
+    </tr>
+    <tr>
+        <th colspan=10>峰态和偏态</th>
+    </tr>
+    <tr>
+        <td >偏态</td>
+        <td colspan="9">
+            <li>
+                偏态：数据分布对称性的测度
+            </li>
+            <li>
+                偏态系数：SK，在计算SK时，将离差三次方的平均数除以$s^3$是为了将偏态系数转化为相对数。<br/>
+                对称：SK=0。若SK明显不等于0，则分布不对称，SK越大，偏斜程度越大。
+            </li>
+            <li>
+             未分组:$$SK=\frac{n\sum(x_i-\bar{x})^3}{(n-1)(n-2)s^3}$$
+            </li>
+            <li>
+             分组:$$SK=\frac{\sum_{i=1}^{k}(M_i-\bar{x})^3 f_i}{ns^3}$$
+            </li>
+            <li>
+                分布的分类
+               <ul>
+                   <li>$SK>1或SK<-1$,高度偏态分布</li>
+                   <li>$0.5\leq SK \leq 1$或$-0.5\leq Sk \leq -0.1$,中等偏态分布</li>
+                   <li>偏态系数越接近0，偏斜程度越小。大于0，右偏</li>
+               </ul>
+            </li>
+
+        </td>
+    </tr>
+    <tr>
+        <td >峰态</td>
+        <td colspan="9">
+            <li>对数据分布平峰或尖峰程度的测量。峰态通常与标准正态分布相较而言的，如果一组数据服从正态分布，则峰态系数的数值为0；若峰态系数明显不等于0，则表明分布比正态分布更平或更尖，通常称为平峰分布或尖峰分布</li>
+            <li>
+                峰态系数：
+                <ul>
+                    <li>未分组:$$K=\frac{n(n+1)\sum (x_i-\bar{x})^4-3[\sum(x_i-\bar{x})^2]^2(n-1)}{(n-1)(n-2)(n-3)s^4}$$</li>
+                    <li>分组:$$K=\frac{\sum_{i=1}^k(M_i-\bar{x})^4 f_i}{ns^4}-3$$</li>
+                </ul>
+            </li>
+            <li>正态分布峰态系数为0，K>0,尖峰分布，数据分布更为集中，K<0,扁平分布，数据的分布越分散</li>
+            <li>如果分组公式不减3，那么比较的数字从0改成3即可</li>
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>

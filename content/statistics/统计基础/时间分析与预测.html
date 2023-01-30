@@ -1,0 +1,186 @@
+---
+# Page title
+title: 时间序列分析与预测
+# summary
+summary: 本章主要介绍传统的时间序列分析方法，内容包括时间序列数据的统计描述和预测方法。
+# Date page published
+date: 2022-8-5
+lastmod: '2022-08-09T16:44:38+08:00'
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 10
+
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<p>本章主要介绍传统的时间序列分析方法，内容包括时间序列数据的统计描述和预测方法</p>
+<p>传统时间序列分析的一项主要内容就是把时间序列的成分从时间序列中分离出来，并用一定的数学关系式表示他们之间的关系。时间序列分析的一个主要目的就是根据已有的历史数据对未来进行预测。</p>
+<div id="时间序列及其分解" class="section level1">
+<h1>时间序列及其分解</h1>
+<p><strong>时间序列</strong>:是指将同一统计指标的数值按其发生的时间先后顺序排列而成的数列。</p>
+<ol style="list-style-type: decimal">
+<li>时间序列的分类</li>
+</ol>
+<ul>
+<li>平稳时间序列：统计规律不会随着时间推移而发生变化的序列，直观上可以看做一条围绕其均值上下波动的曲线，虽然波动程度可能不同，但并不存在某种规律。</li>
+<li>非平稳时间序列：指序列的均值，方差等参数会随着时间推移而发生变化的序列，即存在长期趋势、季节变动、循环波动中一种或多种成分。
+<ul>
+<li>有趋势的序列</li>
+<li>有趋势和季节性的序列</li>
+<li>几种成分混合而成的序列</li>
+</ul></li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>时间序列的成分</li>
+</ol>
+<ul>
+<li>趋势T:时间序列在长期内呈现出来的某种持续上升或持续下降的变动</li>
+<li>季节性S（季节变动）：它是时间序列在一年内重复出现的周期性波动。</li>
+<li>周期性C(循环波动):是时间序列中呈现出来的围绕长期趋势的一种波浪形或振荡式变动。
+<ul>
+<li>周期性是涨落相间的交替波动</li>
+<li>循环波动则无固定规律，变动周期多在一年以上，且周期长短不一。而季节波动则有着比较固定的规律，且变动周期大多为一年。</li>
+</ul></li>
+<li>随机性I（不规则波动）：时间序列中除趋势、季节性和周期性之外的偶然性波动称为随机性。</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>时间序列的分解模型</li>
+</ol>
+<ul>
+<li>乘法模型：<span class="math inline">\(Y_t=T_t\times S_t \times C_t \times I_t\)</span></li>
+</ul>
+</div>
+<div id="时间序列的描述性分析" class="section level1">
+<h1>时间序列的描述性分析</h1>
+<div id="图形分析" class="section level2">
+<h2>图形分析</h2>
+<p>趋势：明显的递增或递减</p>
+<p>随机波动：没有呈现任何趋势或周期性，季节性</p>
+<p>季节性：按月份或季度呈现年度的规律</p>
+<p>周期性：周期性的波动</p>
+</div>
+<div id="增长率分析" class="section level2">
+<h2>增长率分析</h2>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>基期</th>
+<th>发展速度</th>
+<th>增长率(增长速度)</th>
+<th>平均增长率（平均增长速度）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>前一时期</td>
+<td><strong>环比发展速度</strong>:<span class="math inline">\(\frac{Y_i}{Y_{i-1}}\)</span></td>
+<td><strong>环比增长率</strong>:<span class="math inline">\(G_i=\frac{Y_i}{Y_{i-1}}-1,i=1,2,\cdots,n\)</span></td>
+<td>它是时间序列中逐期环比值的几何平均数减1之后的结果<br/><span class="math inline">\(\bar{G}=\sqrt[n]{(\frac{Y_1}{Y_0})(\frac{Y_2}{Y_1})\cdots(\frac{Y_n}{Y_{n-1}})}-1\)</span></td>
+</tr>
+<tr class="even">
+<td>固定时期</td>
+<td><strong>定基发展速度</strong>：<span class="math inline">\(\frac{Y_i}{Y_0}\)</span></td>
+<td><strong>定基增长率</strong>:<span class="math inline">\(G_i=\frac{Y_i}{Y_0}-1,i=1,2,\cdots,n\)</span></td>
+<td><span class="math inline">\(\bar{G}=\sqrt[n]{\frac{Y_n}{Y_0}}-1\)</span>,与与上面的结果是一样的，只不过有不同的意义</td>
+</tr>
+</tbody>
+</table>
+<p><strong>增长1%的绝对值</strong>=<span class="math inline">\(\frac{前期水平}{100}\)</span></p>
+<p>因为单纯的增长率可能并不能反映真实水平，比如1万增长了1000，和100增长了10，虽然前者增长较少，但是明显增长的更多.</p>
+<p>在应用增长率时应注意:
+* 当序列中的观察值出现0或负数时,不宜计算增长率
+* 在有些情况，不能单纯就增长率论增长率.要注意将增长率与绝对水平结合起来分析。</p>
+</div>
+</div>
+<div id="时间序列预测的程序" class="section level1">
+<h1>时间序列预测的程序</h1>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>第一步</th>
+<th>趋势的判断</th>
+<th>季节性的判断</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>确定时间序列的类型</td>
+<td><strong>方法</strong><br/> 1. 绘制时间的线图<br/>2. 利用回归分析</td>
+<td>确定季节成分是否存在，至少需要两年的数据<br/><strong>方法</strong><br/>绘制<strong>年度折叠时间序列图</strong><br/>如果图中的折线有明显的交叉，则只存在季节成分<br/>如果图中的折线没有交叉并且后面年份都高于（或者低于）前面年度的折线,则既有季节性也有趋势</td>
+</tr>
+<tr class="even">
+<td><strong>第二步 选择预测方法</strong></td>
+<td><strong>是否有趋势和季节性</strong></td>
+<td><strong>方法</strong></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>无趋势和季节性</td>
+<td>平滑预测法<br/>1. <strong>简单平均法</strong><br/>根据已有的t期观察值通过简单平均来预测下一期的数值 <span class="math display">\[F_{t+1}=\frac{1}{t}(Y_1+Y_2+\cdots+Y_t)=\frac{1}{t}\sum_{i=1}^n\]</span> <span class="math display">\[预测误差e_{t+1}=F_{t+1}-Y_{t+1}\]</span><br/><strong>缺点</strong><br/>当序列有趋势或季节性时，预测不够准确<br/>将远期的数值和近期的数值看做对未来同等重要<br/>2. <strong>移动平均法</strong><br/>通过对时间序列逐期递移求得平均数作为预测值的一种预测方法<br/><strong>简单移动平均</strong><br/>将最近的k期数据加以平均，作为下一期的平均值 <span class="math display">\[\bar{Y}_t=\frac{Y_{t-k+1}+\cdots+Y_t}{k}\]</span> <span class="math display">\[预测:F_{t+1}=\bar{Y}_t=\frac{Y_{t-k+1}+\cdots+Y_t}{k}\]</span> 关键是确定合理的移动间隔k,可通过实验选择一个使均方误差最小的移动间隔<br/>3. <strong>指数平滑法</strong> <br/> 通过对过去的观察值加权平均进行预测的一种方法，该方法使t+1期的预测值等于t的实际观察值与t期的预测值的加权平均值<br/><strong>一次指数平滑法</strong><br/>他只有一个平滑系数<span class="math inline">\(\alpha\)</span>,而且观察值利预测时期越久远，权数变得越小。<span class="math display">\[F_{t+1}=\alpha Y_t+(1-\alpha)F_t=F_t+\alpha(Y_t-F_t)\]</span> 可以看到它既可以理解为一段时期内的预测值与观察值的线性组合作为<span class="math inline">\(t+1\)</span>期的预测值,也可以理解为t期的预测值<span class="math inline">\(F_t\)</span>加上用<span class="math inline">\(\alpha\)</span>调整的t期的预测误差(Y_t-F_t)<br/> <strong>一般1期的预测值<span class="math inline">\(F_1\)</span>假设等于实际观察值Y_1</strong>，则<span class="math display">\[F_1=Y_1\]</span> <span class="math display">\[F_2=Y_1\]</span> <span class="math display">\[F_3=\alpha Y_2+(1-\alpha)Y_1\]</span> <span class="math display">\[F_4=\alpha Y_3 + \alpha(1-\alpha)Y_2+(1-\alpha)^2Y_1\]</span> <strong>使用时，关键是如何确定一个合适的平滑系数<span class="math inline">\(\alpha\)</span></strong><br/>1. 当<span class="math inline">\(\alpha\)</span>越接近于1，模型对时间序列变化的反应就越及时，那么当时间序列有较大的随机波动时，宜选择较大的<span class="math inline">\(\alpha\)</span> <br/>2. 当<span class="math inline">\(\alpha\)</span>越接近于0，意味着给当前的预测值赋予更大的权数,因此当序列较平稳时，可选择较小的<span class="math inline">\(\alpha\)</span><br/>3. 但是在实际预测时还是应该考虑预测误差，可以选择几个<span class="math inline">\(\alpha\)</span>进行预测，然后找出预测误差最小的作为最后的<span class="math inline">\(\alpha\)</span>值</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>只有趋势</td>
+<td>趋势预测法<br/>1. <strong>线性趋势预测</strong> :<br/>指现象随着时间的推移而呈现出稳定增长或下降的线性变化规律 <span class="math display">\[\hat{Y}_t=b_0+b_1t\]</span> <span class="math display">\[\begin{cases}b_1=\frac{n\sum tY-\sum t \sum Y}{n\sum t^2-(\sum t)^2} \\ b_0=\bar{Y}-b_1\bar{t}\end{cases}\]</span> 也可以利用趋势方程进行外推预测 误差为估计标准误差<span class="math display">\[s_e=\sqrt{\frac{\sum_{i=1}^n(Y_i-\hat{Y}_i)^2}{n-m}} \]</span> m为待估参数的个数，对于直线趋势方程，m=2<br/> 2. <strong>非线性趋势预测</strong><br/>(1). <strong>指数曲线</strong> <br/>用于描述以几何级数递增或递减的现象，即时间序列的g观察值Y_t按指数规律变化，或者说时间序列的逐期观察值按一定的比率增长或衰减。<span class="math display">\[\hat{Y}_t=b_0b_1^t\]</span> 若<span class="math inline">\(b_1&gt;1\)</span>,则增长率随着时间t增加而增加,若<span class="math inline">\(b_1&lt;1\)</span>,则增长率随着时间t的增加而降低;若<span class="math inline">\(b_0&gt;0,b_1&lt;1\)</span>，则预测值<span class="math inline">\(\hat{Y}\)</span>逐渐降低到以0为限<br/><strong>先取对数，在利用最小二乘</strong> <span class="math display">\[lg\hat{Y}_t=lgb_0+tlgb_1\]</span> <span class="math display">\[\begin{cases} \sum lgY=nlgb_0+lgb_1\sum t\\ \sum tlgY = lgb_0\sum t+ lgb_1\sum t^2\end{cases}\]</span> (2)<strong>多阶曲线</strong><br/>曲线在变化过程中可能有几个拐点,这就需要拟合多项式函数,一个拐点，二阶，两个拐点，三阶,k-1个，需要拟合k阶曲线.<span class="math display">\[\hat{Y}_t=b_0+b_1t+\cdots+b_kt^k\]</span><br/> 3. 自回归预测模型</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>有季节性（不管有无趋势)</td>
+<td>季节性预测法<br/>1.季节多元回归模型 <br/>2.季节自回归模型<br/> 3.<strong>时间序列分解</strong>:<br/>构建模型为<span class="math inline">\(Y_t=T_t\times S_t \times I_t\)</span> <br/><strong>步骤</strong><br/>1. <strong>确定并分离季节成分</strong>。计算季节指数，以确定时间序列中的季节成分.然后将季节成分从时间序列中分离出去，即用每一个时间序列观察值除以相应的季节指数，消除季节性<br/><strong>计算季节指数</strong>:<br/>季节指数刻画了序列在一个年度内各月或各季度的典型季度特征。<br/>在乘法模型中，季节指数的平均值应为100、%，它反映了某一月份或季度的数值占全年平均数值的大小。若有明显季节性，则各期季节指数应大于或小于100%；若没有，应等于100%。<br/><strong>计算方法-移动平均趋势剔除法</strong><br/><strong>步骤</strong><br/>(1):计算移动平均值（季度数据，4项移动平均,月度数据，12项移动平均）,中心化处理(移动平均结果在再进行一次二项移动平均),即可得出<strong>中心化移动平均值(CMA)</strong><br/>(2):计算移动平均的比值,也称为<strong>季节比率</strong>,即将序列的各观察值除以相应的中心化移动平均值,然后计算出各比值的季度或月份平均值<br/>(3)季节指数调整,计算所有季节比率的平均值,然后将季节比率除以平均值，即可得到季节指数（季节指数的均值应为1)<br/><strong>分离季节成分</strong> <span class="math display">\[\frac{Y}{S}=T\times I\]</span> 2.<strong>建立模型并预测</strong>.对消除了季节成分的时间序列建立适当的预测模型.<br/>如果还有趋势，就用趋势的预测方法，若没有趋势，则用平滑预测法。<br/> 3<strong>计算最后的预测值</strong>.用预测值乘以相应的季节指数,得到最终的预测值</td>
+</tr>
+<tr class="even">
+<td><strong>第三步 对可能的预测方法进行评估</strong></td>
+<td><strong>误差</strong></td>
+<td><strong>公式</strong></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>平均误差</strong><br/>求和的结果可能抵消，平均误差可能会低估误差</td>
+<td><span class="math display">\[ME=\frac{\sum_{i=1}^n(Y_i-F_i)}{n}\]</span></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>平均绝对误差</strong><br/>可以准确反映实际预测误差的大小</td>
+<td><span class="math display">\[MSD=\frac{\sum_{i=1}^n|Y_i-F_i|}{n}\]</span></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>均方误差</strong><br/></td>
+<td><span class="math display">\[MSE=\frac{\sum_{i=1}^n(Y_i-F_i)^2}{n}\]</span></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>平均百分比误差</strong><br/>ME,MAD,MSE的大小受时间序列数据的水平和计量单位的影响，有时并不能真正反映预测模型的好坏，他们只有在比较不同模型对同一数据的预测时才有意义。消除了时间序列数据的水平和计量单位的影响，是反映误差大小的相对值。</td>
+<td><span class="math display">\[MPE=\frac{\sum_{i=1}^n(\frac{Y_i-F_i}{Y_i}\times 100)}{n}\]</span></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>平均绝对百分比误差</strong><br/>意义同上</td>
+<td><span class="math display">\[MAPE=\frac{\sum_{i=1}^n(\frac{|Y_i-F_i|}{Y_i}\times 100)}{n}\]</span></td>
+</tr>
+<tr class="even">
+<td><strong>第四步,利用最佳预测方案进行预测</strong></td>
+<td>具体方法见第二步</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>

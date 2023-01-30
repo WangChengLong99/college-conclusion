@@ -1,0 +1,158 @@
+---
+# Page title
+title: second page
+
+# Date page published
+date: 2022-8-5
+
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 5
+
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<p>A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is the most important.</p>
+<div id="代码布局" class="section level1">
+<h1>代码布局</h1>
+<div id="缩进" class="section level2">
+<h2>缩进</h2>
+<p>一般默认使用4个空格，不是tab键</p>
+<p>在一个语句需要放在多行来写时，需要缩进</p>
+<div id="垂直对齐" class="section level3">
+<h3>垂直对齐</h3>
+<p>直接换行，对开分隔符对齐</p>
+<pre><code># Aligned with opening delimiter.
+foo = long_function_name(var_one, var_two,
+                         var_three, var_four)</code></pre>
+</div>
+<div id="悬挂缩进" class="section level3">
+<h3>悬挂缩进</h3>
+<ul>
+<li><p>第一行不允许有参数</p></li>
+<li><p>函数需要额外缩进4个空格</p></li>
+<li><p>并不一定要缩进四个空格</p>
+<pre><code>  # Add 4 spaces (an extra level of indentation) to distinguish arguments from the rest.
+  def long_function_name(
+          var_one, var_two, var_three,
+          var_four):
+      print(var_one)
+  # Hanging indents should add a level.
+  foo = long_function_name(
+      var_one, var_two,
+      var_three, var_four)</code></pre></li>
+</ul>
+</div>
+<div id="if缩进" class="section level3">
+<h3>if缩进</h3>
+<p>if语句之内的语句也会缩进四个空格，会与多行缩进造成误解，但是也可以，或者参数额外缩进四个语句。</p>
+<pre><code># No extra indentation.
+if (this_is_one_thing and
+    that_is_another_thing):
+    do_something()
+
+# Add a comment, which will provide some distinction in editors
+# supporting syntax highlighting.
+if (this_is_one_thing and
+    that_is_another_thing):
+    # Since both conditions are true, we can frobnicate.
+    do_something()
+
+# Add some extra indentation on the conditional continuation line.
+if (this_is_one_thing
+        and that_is_another_thing):
+    do_something()</code></pre>
+</div>
+<div id="右括号对齐" class="section level3">
+<h3>右括号对齐</h3>
+<p>多行结构中的右大括号/方括号/圆括号可以在列表最后一行的第一个非空白字符下对齐。</p>
+<pre><code># 在列表最后一行的第一个非空白字符下对齐，如:
+my_list = [
+    1, 2, 3,
+    4, 5, 6,
+    ]
+result = some_function_that_takes_arguments(
+    &#39;a&#39;, &#39;b&#39;, &#39;c&#39;,
+    &#39;d&#39;, &#39;e&#39;, &#39;f&#39;,
+    )
+# 和多行结构开始的字符对齐
+my_list = [
+    1, 2, 3,
+    4, 5, 6,
+]
+result = some_function_that_takes_arguments(
+    &#39;a&#39;, &#39;b&#39;, &#39;c&#39;,
+    &#39;d&#39;, &#39;e&#39;, &#39;f&#39;,
+)</code></pre>
+</div>
+</div>
+<div id="tab和space" class="section level2">
+<h2>tab和space</h2>
+<p>空格优先，tab只在已经使用了tab缩进时才使用，不要混合tab和空格</p>
+</div>
+<div id="单行的最大长度" class="section level2">
+<h2>单行的最大长度</h2>
+<p>单行的合适长度是79</p>
+<p>文档注释docstring和评论comment最长是72</p>
+<p>单行的最大长度是99</p>
+<p>换行的最优方式是在括号中的隐式连续行，当然对于with结构（assert）结构可以使用反斜杠来换行。</p>
+<pre><code>with open(&#39;/path/to/some/file/you/want/to/read&#39;) as file_1, \
+     open(&#39;/path/to/some/file/being/written&#39;, &#39;w&#39;) as file_2:
+    file_2.write(file_1.read())</code></pre>
+</div>
+<div id="二元操作符前后的换行" class="section level2">
+<h2>二元操作符前后的换行</h2>
+<pre><code># Wrong:
+# operators sit far away from their operands
+income = (gross_wages +
+          taxable_interest +
+          (dividends - qualified_dividends) -
+          ira_deduction -
+          student_loan_interest)
+
+
+# Correct:
+# easy to match operators with operands
+income = (gross_wages
+          + taxable_interest
+          + (dividends - qualified_dividends)
+          - ira_deduction
+          - student_loan_interest)</code></pre>
+<p>前后两种方式都允许，但是第二种会更可读一点</p>
+</div>
+<div id="blank-lines" class="section level2">
+<h2>blank lines</h2>
+<p>类，函数前后两个空行</p>
+<p>类中方法前后一个空行</p>
+<p>Extra blank lines may be used (sparingly) to separate groups of related functions. Blank lines may be omitted between a bunch of related one-liners (e.g. a set of dummy implementations).</p>
+<p>Use blank lines in functions, sparingly, to indicate logical sections.</p>
+<p>Python accepts the control-L (i.e. ^L) form feed character as whitespace; many tools treat these characters as page separators, so you may use them to separate pages of related sections of your file. Note, some editors and web-based code viewers may not recognize control-L as a form feed and will show another glyph in its place.</p>
+</div>
+<div id="source-file-编码" class="section level2">
+<h2>Source File 编码</h2>
+<p>核心Python发行版中的代码应该始终使用UTF-8，并且不应该有编码声明。</p>
+<p>在标准库中，非utf-8编码应该仅用于测试目的。限制使用非ascii字符，最好只用于表示地名和人名。如果使用非ascii字符作为数据，则避免嘈杂的Unicode字符。</p>
+<p>Python标准库中的所有标识符都必须使用仅限ascii的标识符，并且应该尽可能使用英语单词(在许多情况下，使用的缩写和技术术语不是英语)。</p>
+<p>鼓励面向全球的开源项目采用类似的政策。</p>
+</div>
+<div id="imports" class="section level2">
+<h2>imports</h2>
+<ul>
+<li>书写规范</li>
+</ul>
+<p>导入不同模块，需要分行</p>
+<pre><code># Correct:
+import os
+import sys</code></pre>
+<p>导入同一模块下的不同内容，可以from</p>
+<pre><code># Correct:
+from subprocess import Popen, PIPE</code></pre>
+</div>
+</div>

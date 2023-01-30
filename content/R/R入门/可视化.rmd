@@ -1,0 +1,583 @@
+---
+title: 可视化
+date: 2022-8-10
+lastmod: '2022-08-10T16:44:38+08:00'
+summary: 各种图形的绘制，以及相应的绘制
+type: book
+weight: 3
+toc: true
+---
+
+# 高级绘图
+
+{{%figure src=\"data/高级绘图.png\"%}}
+
+## plot()/hist()/barplot()
+
+函数|参数
+-|-
+plot(x) 绘制x的值为纵坐标，序号为横坐标的图<br/>plot(x,y)或plot(y~x) 绘制y为纵坐标，x为横坐标的图<br/>plot(matrix) 绘制矩阵散点图，一般matrix为数据框的某些列|axes=T,如果设置axes为F，则不显示边框和轴<br/>type="p",设置线型，注意要加双引号，其他选项为"l","b","o",见 [图形参数](#a1)，这个参数决定了绘制的图是点图还是线图<br/>xlim,ylim 設置坐标范围<br/>xlab，ylab坐标轴的标签，必须是字符型<br/>main= ,sub= ,设置主标题，副标题。字符型。
+hist() 将数据取值范围平均分成n份，每个区间长度称为组距，以每个组为横坐标，纵坐标可以是落在改组的数据的频数或频率或频率/组距。如果是频率/组距称为频率分布直方图，也可以看成是一个变量的概率密度。|x:数值向量<br/>main，xlab,xlim,ylim:注意只有xlab，没有ylab<br/>col:条的颜色<br/>border：设置每个栏的边框颜色<br/>freq=T:默认频数，设置为F时显示密度 prob是freq的化名，不过prob为true时，绘制密度<br/>breaks：分成多少份
+barplot() 显示各个分类的频数|height：向量或矩阵，矩阵就是一列为一个数据，矩阵可以选择绘制分组图或堆叠图<br/>naems.arg:每个条的标签<br/>horiz: T:水平 F :垂直<br/>beside:T:分组 F：堆叠<br/>border:边框颜色，如果设置为true，将和阴影线颜色相同<br/>col,xlab,ylab,main
+
+```{r}
+# plot
+par(mfrow=c(2,3))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4),axes=F)
+plot(c(1,2,3,4),type="o")
+plot(c(1,2,3,4),type="l")
+plot(c(1,2,3,4),c(5,6,7,8))
+x=seq(-1,1,0.001)
+plot(x,x^2,type="l")
+```
+
+```{r}
+plot(as.data.frame(matrix(1:16,c(4,4))))#必须是数据框
+```
+
+```{r}
+x=rnorm(100)
+par(mfrow=c(1,2))
+hist(x,breaks=10)
+hist(x,freq=F,breaks=10)
+lines(density(x),col="red")
+```
+
+```{r}
+par(mfrow=c(2,2))
+math<-c(78,92,89, 61, 95)
+english<-c(90, 89, 95,70, 98)
+names<-c("小刚","小明","小花","小芳","小丽")
+barplot(math,names.arg=names,main="成绩",ylim=c(0,100))
+barplot(math,names.arg=names,border="green",main="成绩",ylim=c(0,100),col=c("red","orange","lightblue","yellow","lightgreen"))#为每一组设置一个颜色
+barplot(matrix(c(math, english),2,5), border="green",names.arg=names,beside=F,main="成绩",xlab="姓名",ylab="成绩",legend=c("数学","英语"),ylim=c(0,200))#绘制堆叠图，并设置图例
+barplot(matrix(c(math, english),2, 5), border="green",names.arg=names,beside=T,main="成绩",xlab="姓名",ylab="成绩",col=rainbow(10),ylim=c(0,100))#绘制分组图，每个条一种颜色。
+```
+
+## 饼图
+
+饼图绘制向量中各数值占总和的百分比。
+
+**二维饼图**
+
+语法：
+
+pie(x,labels,radius,col，clockwise=F)
+
+x:数据的向量 
+
+labels：每一个部分的标签
+
+radius：圆的半径，决定了圆的大小
+
+col：圆每一个部分的颜色
+
+clockwise：默认逆时针，设置为true则顺时针绘制。
+
+**三维饼图**
+
+需要导入plotrix包，使用其中的pie3D包。
+
+pie3D(x,label,explode=0,main...)
+
+explode设置了每一份之间的间隙.
+
+```{r}
+x=c(1,2,3,4)
+nm=c("one","two","three","four")
+par(mfrow=c(3,2))
+pie(x)#不设置标签默认为各个数值
+lbl=paste(round(100*x/sum(x),2),"%")
+pie(x,labels=lbl)
+pie(x,labels=lbl,clockwise=T)#顺时针
+pie(x,labels=lbl,col="blue")#注意要加双引号
+pie(x,labels=lbl,col=rainbow(4))
+pie(x,labels=lbl,col=rainbow(4))
+legend("topright",nm,fill=rainbow(4))#这个颜色默认会跟pie中的对应上
+```
+
+```{r}
+# install.packages("plotrix")
+library("plotrix")
+par(mfrow=c(1,2))
+pie3D(x,labels=lbl)#关键字不能丢
+pie3D(x,labels=lbl,explode=0.1)#设置间隙
+```
+
+## 箱线图
+
+boxplot(formula,data,notch=F,varwidth=F,names,na.action...)
+
+formula:一般是y~x，或者x。如果是取自某个数据框，直接写列名。y是数据，x是分类依据，一般是因子。y会根据对应x的因子水平分类，有多少分类，就有多少个箱线图。
+
+data：如果数据是取自数据框，则需要声明数据框。前面也可以直接写data的名称，就是对每一列做箱线图
+
+notch：设置为T。可以画出缺口。
+
+varwidth：设置为T，则每个箱子的宽度和对应分类的样本量成比例。
+
+names：给每个箱子命名。
+
+na.action:对缺失值的处理，默认忽视。
+
+```{r}
+x=1:12
+y=gl(3,2,12)
+y1=gl(3,2,12,labels=c("A","B","C"))
+z=rep(c(1,2,3),4)
+par(mfrow=c(2,2))
+boxplot(x)
+boxplot(x~y)
+boxplot(x~y1)
+boxplot(x~z)#不是因子数据，也会根据其中的数值分类
+```
+
+```{r}
+df=as.data.frame(matrix(1:16,c(4,4),dimnames=list(c("a","b","c","d"),c("one","two","three","four"))))
+par(mfrow=c(1,2))
+boxplot(df,data=df)#可以直接对数据框每一列绘制箱线图
+boxplot(t(df),data=df)#可以直接对数据框每一行绘制箱线图
+```
+
+## pairs函数与panel参数
+
+pairs函数可以绘制多个变量的散点图矩阵，数据对象为数据框，直接pairs（数据框）即可
+
+但是当我们想设置里面图形的类型时，就得用到panel参数。
+
+* panel：定义每个矩阵元素图中的图形，默认为散点图
+* lower.panel：定义下三角矩阵元素图中的图形，默认散点图
+* upper.panel:定义上三角矩阵元素图中的图形，默认为散点图
+* diag.panel:定义对角线元素图形，默认不绘制
+
+既可以设置为已有的图形，**也可以设置为自定义的绘图函数。**
+
+```{r}
+df=as.data.frame(matrix(1:16,c(4,4),dimnames=list(c("a","b","c","d"),c("one","two","three","four"))))
+pairs(df)
+#panel参数还未解决
+```
+
+## coplot函数
+
+{{%figure src=\"data/coplot.png\"%}}
+
+依照条件来分区间，每个区间画连个变量之间的关系图。
+
+```{r}
+data(quakes)
+coplot(lat~long|depth,data=quakes)
+```
+
+```{r}
+data(quakes)
+coplot(lat~long|depth*mag,data=quakes,number=c(2,3),show.given=c(TRUE,FALSE))
+```
+
+## qqnorm函数
+
+{{%figure src=\"data/qqnorm.png\"%}}
+
+判断数据是否是正态分布，就是qqnorm(x)跟qqline(x)对比，
+
+判断两个样本是否相同分布，就是qqplot(x,y)
+
+```{r}
+par(mfrow=c(1,2))
+data(AirPassengers)
+qqnorm(AirPassengers)
+qqline(AirPassengers,col="red")
+X=rexp(100)
+y=rchisq(100,3)
+qqplot(x,y)
+```
+
+## image与persp（三维绘图函数）
+
+image函数创建三维图像
+
+{{%figure src=\"data/image.png\"%}}
+
+```{r}
+data(volcano)
+par(mfrow=c(1,2))
+image(t(volcano)[ncol(volcano):1,])
+x=10*(1:nrow(volcano))
+y=10*(1:ncol(volcano))
+image(x, y, volcano, col =terrain.colors(100))
+```
+
+persp函数创建三维图像
+
+{{%figure src=\"data/persp.png\"%}}
+
+```{r}
+x<- seq(0,2,0.01)
+y<- seq(0,1,0.01)
+f<-function(x,y)
+{
+ifelse(x<=1,10*x*log10(x)*y*(y-1),-10*(x-1)*log10(abs(x-1))*y*(y-1))
+}
+z= outer(x,y,f)
+persp(x,y,z,theta=30,phi=30,expand=0.5,col="lightblue")
+```
+
+```{r}
+par(mfrow=c(2,2))
+persp(x,y,z,theta=30,phi=30,expand=0.5, col="lightblue")
+persp(x,y,z,theta=150,phi=30,expand=0.5,col="lightblue")
+persp(x,y,z,theta=30,phi=30,expand=0.9, col="lightblue")
+persp(x,y,z,theta=30,phi=30, expand=0.5, col="red")
+```
+
+## 热图
+
+使用heatmap绘制热图
+
+{{%figure src=\"data/heatmap.png\"%}}
+
+    #共列举了50位球员的19个指标
+    #包括打了几场球G）、上场几分钟（MIN）、得分PTS…·
+    nba <-read.csv("D:/R/data/ppg2008.csv", sep=",")
+    nba <-nba[order(nba$PTS),]#按每场得分从大到小排序
+    row.names(nba)<- nba$Name # 以球员名字命名nba<-nba[,2:20]
+    nba_matrix<- data.matrix(nba)
+    heatmap(nba_matrix, Rowv=NA, Colv=NA, col = heat.colors(256),scale="column", margins=c(5,10))
+    heatmap(nba_matrix, col = heat.colors(256),scale="column",margins=c(5,10))
+
+# 低级绘图参数
+
+函数|功能
+-|-
+点|
+points（x，y）|∶添加点
+线|
+lines（x，y）|∶添加线
+segments（x0，Y0，X1，y1）|∶从（x0，y0）到（x1，y1）画线段
+arrows（x0，Y0，X1，y1）|∶从（x0，y0）到（x1，y1）画带箭头的线段
+abline（a，b）|∶绘制斜率为b和截距为a的直
+abline（h=y）|∶在纵坐标y处画水平直线
+abline（v=x）|∶在横坐标x处画垂直线
+abline（lm.obj）|∶画出lm.obj确定的回归线
+图形|
+rect（x1，y1，x2，y2）|∶绘制长方形，左下角为x1，y1），右上角为（x2,y2)
+polygon(x,y)|绘制多边形。x,y为向量，连接各点。
+文字|
+legend（x，y,legend）|∶在点（x，y）处添加图例，说明内容由legend给<br/>{{%figure src=\"data/legend.png\"%}}
+text（x，y，labels…）|∶在（x，y）处添加用labels指定的文字
+
+```{r}
+x=seq(-2,2,0.01)
+plot(x,x^2,type="l",col="orange")
+points(1,1,col="red",pch=19,cex=1)#标记（1,1）点
+lines(x,2*x-1,col="blue")#做（1,1）点的切线
+text(1.5,1,expression(y==2%*%x-1))#添加公式文字
+arrows(1,1,2,3,code=2)#右箭头
+abline(3/2,-1/2,col="yellow")#做切线的垂直线
+arrows(0,3/2,1,1,code=1)#左箭头
+abline(h=2)
+abline(v=-1)
+arrows(-1,2,1,2,code=3)#双箭头
+rect(0,4,1,3,border="red")
+polygon(c(-2,-1.5,-1),c(0,1,0),col="green")
+legend(1.5,4,c("幂函数","线性函数"),fill=c("orange","blue"))
+```
+
+# 图形参数{#a1}
+
+部分绘图参数可以放在函数里面做为选项，只改变该函数。
+
+也可以用par函数永久的改变图形参数，也就是后面的所有图形都会被改变。
+
+可使用`?par`来查看。
+
+{{%figure src=\"data/par.png\"%}}
+
+下面是一些常用的图形参数：
+
+{{%figure src=\"data/图形参数.png\"%}}
+
+## type
+
+决定了点的形式
+
+可以在函数中设置
+
+<span style="color:red">图形参数"type"已过期不用了<span>,所以只在函数中设置
+
+值|显示
+-|-
+p|默认，点
+l|将点连接成线，不显示点
+b|连线，但是在有点的地方断开
+o|连线，点在线上
+s|下梯形
+S|上梯形
+h|做点到x轴的竖线，不显示点
+n|说明都不显示
+
+```{r}
+par(mfrow=c(3,3))
+plot(c(1,2,3,4),type="p",main="p")
+plot(c(1,2,3,4),type="l",main="l")
+plot(c(1,2,3,4),type="b",main="b")
+plot(c(1,2,3,4),type="o",main="o")
+plot(c(1,2,3,4),type="s",main="s")
+plot(c(1,2,3,4),type="S",main="S")
+plot(c(1,2,3,4),type="h",main="h")
+plot(c(1,2,3,4),type="n",main="n")
+```
+
+## bg
+
+设置整个画布背景颜色,不可在图形中设置。
+
+一次设置对应所有画布，但是如果设置多次，只会生效与后面的画布，前面的依然生效与前面的设置。
+
+```{r}
+par(bg="red")
+par(mfrow=c(2,2))#这张被设置为红色背景
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+plot(c(5,6,9,3))
+par(bg="blue")
+plot(c(1,2,3,4))#依然属于前面的2*2的画布，所以是在red背景下
+plot(c(1,2,3,4))#不再属于前面的画布，是一张新的，而在这张新的前有一个新的设置为蓝色，所以显示为蓝色。
+```
+
+## bty
+
+图形边框
+
+值|显示
+-|:-:
+o|全边框
+c|没有右边框
+u|没有上边框
+]|没有左边框
+l|没有右、上边框
+7|没有左、下边框
+n|全部边框都没有，仅有坐标轴
+
+```{r}
+par(bg="white")
+par(mfrow=c(3,3))
+plot(c(1,2,3,4),bty="o",main="o")
+plot(c(1,2,3,4),bty="l",main="l")
+plot(c(1,2,3,4),bty="7",main="7")
+plot(c(1,2,3,4),bty="c",main="c")
+plot(c(1,2,3,4),bty="u",main="u")
+plot(c(1,2,3,4),bty="]",main="]")
+plot(c(1,2,3,4),bty="n",main="n")
+```
+
+## cex与pch与font
+
+cex可以设置文字与字符的大小
+
+pch只控制符号的类型,值不需加引号
+
+{{%figure src=\"data/pch.png\"%}}
+
+font只控制字体的类型
+
+```{r}
+par(mfrow=c(2,2))
+plot(c(1,2,3,4),cex=1,pch="*",font=1,main="cex=1,pch=*,font=1")
+plot(c(1,2,3,4),cex=2,pch=0,font=2,main="cex=2,pch=0,font=2")
+plot(c(1,2,3,4),cex=3,pch=15,font=3,main="cex=3,pch=15,font=3")
+plot(c(1,2,3,4),cex=4,pch=19,font=4,main="cex=4,pch=19,font=4")
+```
+
+可以看到坐标轴上的值被改变了字体，点被改变了样式和大小，但是标题和横纵坐标标签并未被改变样式
+
+```{r}
+par(font=4,cex=2,pch="*")
+plot(c(1,2,3,4),main="线性",xlab="横坐标")
+text(3,2,"点")
+```
+
+标题和坐标轴标签不会被改变。
+
+## lty与lwd
+
+线条样式与线条宽度
+
+{{%figure src=\"data/lty与lwd.png\"%}}
+
+**可以看到lty大于6时就是循环1到6**
+
+```{r}
+par(mfrow=c(3,4))
+plot(c(1,2,3,4),lty=1,lwd=0.25,main="lty=1,lwd=0.25",type="l")
+plot(c(1,2,3,4),lty=7,lwd=0.5,main="lty=7,lwd=0.5",type="l")
+plot(c(1,2,3,4),lty=2,lwd=0.75,main="lty=2,lwd=0.75",type="l")
+plot(c(1,2,3,4),lty=8,lwd=1,main="lty=8,lwd=1",type="l")
+plot(c(1,2,3,4),lty=3,lwd=1.25,main="lty=3,lwd=1.25",type="l")
+plot(c(1,2,3,4),lty=9,lwd=1.5,main="lty=9,lwd=1.5",type="l")
+plot(c(1,2,3,4),lty=4,lwd=1.75,main="lty=4,lwd=1.75",type="l")
+plot(c(1,2,3,4),lty=10,lwd=2,main="lty=10,lwd=2",type="l")
+plot(c(1,2,3,4),lty=5,lwd=2.25,main="lty=5,lwd=2.25",type="l")
+plot(c(1,2,3,4),lty=11,lwd=2.5,main="lty=11,lwd=2.5",type="l")
+plot(c(1,2,3,4),lty=6,lwd=2.75,main="lty=6,lwd=2.75",type="l")
+plot(c(1,2,3,4),lty=12,lwd=3,main="lty=12,lwd=3",type="l")
+```
+
+## col
+
+设置符号的颜色
+
+{{%figure src=\"data/col.png\"%}}
+
+```{r}
+par(col="red")
+par(mfrow=c(2,2))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4),type="l")
+abline(h=2)
+text(2,3,"点")
+legend("topright",legend="图例")
+boxplot(c(1,2,3,4))
+barplot(c(1,2,3,4))
+```
+
+可以看到他会影响的颜色为所有的点，线，边框,以及text和legend的文字颜色。
+
+## mfcol和mfrow
+
+见[网格作图](#a2)
+
+## mar
+
+```{r}
+plot(c(1,2,3,4))
+```
+
+```{r}
+par(mar=c(2,2,2,2))
+plot(c(1,2,3,4))
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+plot(c(1,2,3,4))
+```
+
+```{r}
+par(mfrow=c(2,2))
+par(mar=c(1,1,1,1))
+plot(c(1,2,3,4))
+par(mar=c(2,2,2,2))
+plot(c(1,2,3,4))
+par(mar=c(3,3,3,3))
+plot(c(1,2,3,4))
+par(mar=c(4,4,4,4))
+plot(c(1,2,3,4))
+```
+
+## 数学公式与符号
+
+图形有时需要添加数学公式或符号
+
+数学公式需要用到expression函数来显示
+
+有时需要打希腊字母等特殊字符
+
+可以用`help(plotmath)`或example(plotmath)或demo(plotmath)
+
+{{%figure src=\"data/符号.png\"%}}
+
+基础运算符
+
+{{%figure src=\"data/基础运算符.png\"%}}
+
+**注意“=”号的表现形式**
+
+大型运算符
+
+{{%figure src=\"data/大型运算符.png\"%}}
+
+上下标
+
+{{%figure src=\"data/上下标.png\"%}}
+
+箭头符号
+
+{{%figure src=\"data/箭头符号.png\"%}}
+
+集合符号
+
+{{%figure src=\"data/集合符号.png\"%}}
+
+特殊字体
+
+{{%figure src=\"data/特殊字体.png\"%}}
+
+导数符号
+
+{{%figure src=\"data/导数符号.png\"%}}
+
+希腊字母
+
+{{%figure src=\"data/希腊字母1.png\"%}}
+
+{{%figure src=\"data/希腊字母2.png\"%}}
+
+# 网格作图{#a2}
+
+## mfrow与mfcol图形参数
+
+mfrow就是把绘图窗口分割为几行几列的部分，先按行开始排列。
+
+而mfcol是先按列开始排列
+
+## 使用layout函数
+
+layout函数使用矩阵来模拟绘图窗口的分割，矩阵的维度代表了绘图窗口的分割，矩阵中的元素的值代表了第几个图形，矩阵中元素的位置代表了图的位置。具有相同值的元素的位置会被合并。如果元素值为0，则代表该位置不绘制图形。
+
+同时还可以为矩阵的每一个维设置宽度和高度的比例。比如一个2*2的矩阵，可以设置宽度之比为width=c(1,4),高度之比为height=c(4,1)。
+
+可以使用layout.show(n)来查看当前页面的分割情况。
+
+```{r}
+par(mar=c(1,1,1,1))
+layout(matrix(c(1,0,2,3),nrow=2),widths=c(1,4),heights=c(3,1))#构建复合图形
+x=rnorm(100)
+y=rchisq(100,df=10)
+boxplot(y,col="blue")#变量y的垂直箱线图
+plot(x,y,col="green")#x与y的散点图
+boxplot(x,horizontal=T,col="red")#变量x的水平箱线图
+```
+
+## split.screen函数
+
+可以用split.screen函数来将绘图窗口分成几个部分。然后使用screen()声明所属的屏幕再绘图。使用close.screen()来关闭。
+
+```{r}
+par(mar=c(1,1,1,1))
+split.screen(c(2,1))
+screen(2)
+plot(c(1,2,3,4))
+screen(1)
+barplot(c(1,2,3,4))
+close.screen(all=T)
+```
+
+```{r}
+par(mar=c(1,1,1,1))
+split.screen(c(3,3))
+screen(5)
+plot(c(1,2,3,4))
+screen(4)
+barplot(c(5,6,7,8))
+plot(c(11,12,13,14))
+plot(c(5,6,7,8))
+close.screen(n=4)
+plot(c(11,21,31,41))
+close.screen(all=T)
+```
+

@@ -1,0 +1,206 @@
+---
+# Page title
+title: 方差分析
+# summary
+summary: 方差分析:通过分析研究不同来源的变异对总变异的贡献大小，判断各组均值是否相等，从而确定可控因素对研究结果是否有显著影响。本书通过检验各总体的均值是否相等来判断分类型自变量对数值型因变量是否有显著影响。从形式上看，方差分析是比较多个总体的均值是否相等，但本质上他所研究的是变量之间的关系。分类型自变量对数值型因变量的影响。例如变量之间有没有关系，关系的强度如何。
+# Date page published
+date: 2022-8-5
+lastmod: '2022-08-09T16:44:38+08:00'
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 8
+
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="方差分析anova" class="section level1">
+<h1>方差分析(ANOVA)</h1>
+<p>方差分析:通过分析研究不同来源的变异对总变异的贡献大小，判断各组均值是否相等，从而确定可控因素对研究结果是否有显著影响。</p>
+<p>本书:通过检验各总体的均值是否相等来判断分类型自变量对数值型因变量是否有显著影响。</p>
+<p>从形式上看，方差分析是比较多个总体的均值是否相等，但本质上他所研究的是变量之间的关系。分类型自变量对数值型因变量的影响。例如变量之间有没有关系，关系的强度如何。</p>
+<p>与假设检验相比:</p>
+<ul>
+<li>差异
+<ul>
+<li>方差分析可以同时判断多个总体均值是否显著相等。t检验或z检验一次只能判断两个总体均值是否显著相等。</li>
+</ul></li>
+<li>优势
+<ol style="list-style-type: decimal">
+<li>方差分析将所有样本信息进行综合分析，仅需进行一次检验，提高了检验的效率以及可靠性。</li>
+<li>判断多个总体均值是否相等时，方差分析的显著性水平可以人为规定具体数值，而t检验或z检验由于需要进行<span class="math inline">\(C_n^2\)</span>次两两检验，虽然可以规定每次检验的显著性水平均为某一常数<span class="math inline">\(\alpha\)</span>，但在综合判断所有总体是否相等时，累计错误导致犯第Ⅰ类错误的概率相应增加，数值难以确定。而方差分析方法则是同时考虑所有的样本，因此排除了错误累积的概率</li>
+</ol></li>
+</ul>
+<p>当<span class="math inline">\(\alpha=0.05\)</span>时，连续做6次检验犯第Ⅰ类错误的概率为<span class="math inline">\(1-(1-\alpha)^6=0.265\)</span>,置信水平降低到0.735</p>
+<div id="方差分析基本概念介绍" class="section level2">
+<h2>方差分析基本概念介绍</h2>
+<div id="方差分析及其相关术语" class="section level3">
+<h3>方差分析及其相关术语</h3>
+<ul>
+<li>因素或因子(factor):所要检验的对象称为因素或因子</li>
+<li>水平或处理(treatment):因素的不同表现</li>
+<li>观测值：在每个因子水平下得到的样本数据称为观测值</li>
+</ul>
+<p>单因素方差分析：在只有一个因素的方差分析中涉及到两个变量：一个是分类型自变量，一个是数值型因变量。</p>
+<p>也就是一个将一个变量分成各个类别，然后衡量各个类别的某个指标。</p>
+<p>R^2:衡量两个变量之间的关系强度。</p>
+</div>
+<div id="方差分析的基本思想和原理" class="section level3">
+<h3>方差分析的基本思想和原理</h3>
+<ol style="list-style-type: decimal">
+<li><p>图形角度</p>
+<p>如果因素对指标没有显著影响，那么各个水平的散点分布应该较相似，波动范围与中心值应该较相似。</p></li>
+</ol>
+<p>仅仅从图形的角度还不能证明不同水平之间的指标值有显著差异，因为这种差异可能是抽样的随机性造成的。因此，需要更准确的方法进行来检验这种差异是否显著，也就是方差分析。</p>
+<p>之所以叫方差分析是因为人们虽然感兴趣的是均值，但在判断均值之间是否有差异时需要借助于方差。其实方差揭示了数据的波动性，这种波动就是误差。这个名字也表示，他是通过数据误差来源的分析来判断不同总体之间的均值是否相等。进而分析自变量对因变量是否有显著影响。</p>
+<ol start="2" style="list-style-type: decimal">
+<li>误差分解的角度</li>
+</ol>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>误差</th>
+<th>误差来源</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>组类误差</td>
+<td>水平内部的数据误差</td>
+<td>可以看成是随机因素的影响造成的，或者说是由抽样的随机性造成的</td>
+</tr>
+<tr class="even">
+<td>组间误差</td>
+<td>不同水平之间的数据误差</td>
+<td>可能由抽样本身形成的随机误差，也可能是水平本身的系统性因素造成的系统性误差。即随机误差和系统误差。它反映了不同样本之间的数据离散程度。</td>
+</tr>
+<tr class="odd">
+<td>交互</td>
+<td>当有两个或以上的因素时，二者不独立而产生的误差</td>
+<td>除了因素的单独影响外，两个因素的搭配会对指标产生新的影响。</td>
+</tr>
+</tbody>
+</table>
+<p>在方差分析中，数据的误差是用平方和来表示的。</p>
+<table>
+<thead>
+<tr class="header">
+<th>平方和</th>
+<th>表示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SSA（SSR，SSC）<br/>组间平方和(因素平方和)</td>
+<td>反映组间平方和大小</td>
+</tr>
+<tr class="even">
+<td>SSE<br/>组内平方和（误差平方和或残差平方和）</td>
+<td>反映组内平方和的大小</td>
+</tr>
+<tr class="odd">
+<td>SST<br/>总平方和</td>
+<td>反映全部数据误差大小的平方和</td>
+</tr>
+<tr class="even">
+<td>SSRC<br/>交互</td>
+<td>反映因素之间共同作用所产生的误差</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="方差分析中的基本假定" class="section level3">
+<h3>方差分析中的基本假定</h3>
+<ol style="list-style-type: decimal">
+<li>每个总体都应服从正态分布（则每个水平的观测值都是来自正态分布总体的简单随机样本，每个水平都服从正态分布。但是每个水平分布是否相同并不确定，这是我们需要检验的）</li>
+<li>各个总体的方差<span class="math inline">\(\sigma^2\)</span>必须相同。（假设每个水平的总体具有相同的方差）</li>
+<li>观测值是独立的。（每个水平之间的观测值相互不影响）</li>
+</ol>
+<p>根据假设我们知道，每个水平相互独立，服从正态分布，且方差形同，所以如果均值相同，那么就说明服从相同分布，且跟总体相同，则不存在系统误差，则组内误差和组间误差应该近似相等。</p>
+<p>如果均值有显著差异，则服从不同分布，此时，则存在显著的系统误差，则应该有明显差异。</p>
+</div>
+<div id="方差分析中问题的一般提法" class="section level3">
+<h3>方差分析中问题的一般提法</h3>
+<p>设因素有k个水平，每个水平的均值分别用<span class="math inline">\(\mu_1,\mu_2,\cdots,\mu_k\)</span>表示，要检验k个水平的总体（总体）的均值是否相等，需要提出如下假设：</p>
+<p><span class="math inline">\(H_0:\mu_1=\mu_2=\cdots=\mu_k\)</span> 自变量对因变量没有显著影响</p>
+<p><span class="math inline">\(H_1:\mu_1,\mu_2,\cdots,\mu_k不全相等\)</span> 自变量对因变量有显著影响</p>
+<p>如果这种差异主要是系统误差，那么必然有均值不全相等，也就必然自变量对因变量有影响。</p>
+<p>如果系统误差不明显，则均值必然相近，此时主要由随机误差引起，则自变量对因变量没有显著影响。</p>
+<p>实际上，只要组间平方和不等于0，就表明两个变量之间有关系(只是是否显著的问题),当组间平方和比组内平方和大，而且大到一定程度时，就意味着两个变量之间的关系显著，大的越多，表明它们之间的关系就越强，反之，当组间平方和比组内平方和小时，就意味着两个变量之间的关系不显著，小得越多，表明它们之间的关系越弱。</p>
+</div>
+</div>
+<div id="方差分析的步骤" class="section level2">
+<h2>方差分析的步骤</h2>
+<table style="width:100%;">
+<colgroup>
+<col width="16%" />
+<col width="16%" />
+<col width="33%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>方差分析</th>
+<th>表格数据介绍</th>
+<th align="left">分析步骤</th>
+<th>统计量</th>
+<th><span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>单因素方差分析</td>
+<td>因素用A表示<br/>因素A的k个水平用<span class="math inline">\(A_1,\cdots,A_k\)</span>来表示<br/><span class="math inline">\(x_{ij}(i=1,2,\cdots,k,j=1,2,\cdots,n)\)</span>表示在第i个水平下的第j个观测值<br/>从不同水平下抽取的样本数量可以相同，也可以不同，因为最终样本在计算组间平方和时会乘上各个水平的样本数量。</td>
+<td align="left">(1)<strong>提出假设</strong><br/><span class="math inline">\(H_0:\mu_1=\mu_2=\cdots=\mu_k\)</span><br/> 自变量对因变量没有显著影响<br/><span class="math inline">\(H_1 :\mu_1,\mu_2,\cdots,\mu_k不全相等\)</span> 自变量对因变量有显著影响<br/>(2)<strong>构造检验的统计量</strong><br/>计算各样本均值<span class="math inline">\(x_i\)</span>,样本总均值<span class="math inline">\(\bar{\bar{x}}\)</span>,误差平方和<span class="math inline">\(SST、SSE、SSA\)</span>。<br/>(3) <strong>计算样本统计量</strong> <span class="math display">\[F=\frac{SSA/(k-1)}{SSE/(n-k)}\]</span> (4)<strong>统计决策</strong><Br/>比较统计量F和<span class="math inline">\(F_\alpha(k-1,n-k)\)</span>的值。若<span class="math inline">\(F&gt;F_{\alpha}\)</span>,拒绝原假设，反之，不能拒绝原假设。</td>
+<td><span class="math display">\[\bar{x_i}=\sum_{j=1}^{n_i}x_{ij}/n_i i=1,\cdots,k\]</span> <span class="math display">\[\bar{\bar{x}}=\frac{\sum_{i=1}^k\sum_{j=1}^{n_i}x_{ij}}{\sum_{i=1}^kn_i}=\frac{\sum_{i=1}^kn_i\bar{x}_i}{n}\]</span> <span class="math display">\[SST=\sum_{i=1}^k\sum_{j=1}^{n_i}(x_{ij}-\bar{\bar{x}})^2,n-1\]</span> <span class="math display">\[SSE=\sum_{i=1}^k\sum_{j=1}^{n_i}(x_{ij}-\bar{x}_i)^2,n-k\]</span> <span class="math display">\[SSA=\sum_{i=1}^kn_i(\bar{x}_i-\bar{\bar{x}})^2,k-1\]</span> <span class="math display">\[MSA=SSA/(k-1)\]</span> <span class="math display">\[MSE=SSE/(n-k)\]</span></td>
+<td><span class="math display">\[R^2=\frac{SSA}{SST}\]</span> 表示自变量对因变量的解释达到了多少比例</td>
+</tr>
+<tr class="even">
+<td>无交互作用的双因素方差分析</td>
+<td>有两个影响因素，并且假设相互独立<br/>设行因素有k个水平，列因素有r个水平<br/><span class="math inline">\(x_{ij}\)</span>可以看成从k个行水平和r个列水平所组合成的k*r个总体中所抽取的样本量为1的独立样本，服从方差相同的正态分布。</td>
+<td align="left">(1)<strong>提出假设</strong><br/><strong>对行因素:</strong><br/><span class="math inline">\(H_0:\mu_1=\mu_2=\cdots=\mu_k\)</span><br/> 行因素对因变量没有显著影响<br/><span class="math inline">\(H_1 :\mu_1,\mu_2,\cdots,\mu_k不全相等\)</span><br/> 行因素对因变量有显著影响<br/><strong>对列因素:</strong><br/><span class="math inline">\(H_0:\mu_1=\mu_2=\cdots=\mu_r\)</span><br/> 列因素对因变量没有显著影响<br/><span class="math inline">\(H_1 :\mu_1,\mu_2,\cdots,\mu_r不全相等\)</span><br/> 列因素对因变量有显著影响<br/>(2)<strong>构造检验的统计量</strong><br/>计算各样本均值<span class="math inline">\(x_{i\cdot},x_{\cdot j}\)</span>,样本总均值<span class="math inline">\(\bar{\bar{x}}\)</span>,误差平方和<span class="math inline">\(SST、SSE、SSR,SSC\)</span>。<br/>(3)<strong>计算样本统计量</strong> <span class="math display">\[F_R=\frac{SSR/(k-1)}{SSE/(k-1)(r-1)}\]</span> <span class="math display">\[F_C=\frac{SSC/r-1}{SSE/(k-1)(r-1)}\]</span>(4)<strong>统计决策</strong><Br/>比较统计量<span class="math inline">\(F_R\)</span>和<span class="math inline">\(F_\alpha(k-1,(k-1)(r-1))\)</span>的值以及<span class="math inline">\(F_C\)</span>和<span class="math inline">\(F_\alpha(r-1,(k-1)(r-1))\)</span>。分别判断行因素和列因素有没有影响</td>
+<td><span class="math display">\[\bar{x}_{i\cdot}=\sum_{j=1}^{r}x_{ij}/r i=1,\cdots,k\]</span> <span class="math display">\[\bar{x}_{\cdot j}=\frac{\sum_{i=1}^kx_{ij}}{k} j=1,\cdots,r\]</span> <span class="math display">\[\bar{\bar{x}}=\frac{\sum_{i=1}^k\sum_{j=1}^{r}x_{ij}}{kr}=\frac{\sum_{i=1}^kr\bar{x}_{i\cdot}}{n}\]</span> <span class="math display">\[SST=\sum_{i=1}^k\sum_{j=1}^{r}(x_{ij}-\bar{\bar{x}})^2,kr-1\]</span> <span class="math display">\[SSE=\sum_{i=1}^k\sum_{j=1}^{r}(x_{ij}-\bar{x}_{i\cdot}-\bar{x}_{\cdot j}+\bar{\bar{x}})^2,(k-1)(r-1)\]</span> <span class="math display">\[SSR=\sum_{i=1}^kr(\bar{x}_{i\cdot}-\bar{\bar{x}})^2,k-1\]</span> <span class="math display">\[SSC=\sum_{j=1}^rk(\bar{x}_{\cdot j}-\bar{\bar{x}})^2,r-1\]</span> <span class="math display">\[MSR=SSR/(k-1)\]</span> <span class="math display">\[MSC=SSC/(r-1) \]</span> <span class="math display">\[MSE=SSE/(n-k)\]</span></td>
+<td><span class="math display">\[R^2=\frac{SSR+SSC}{SST}\]</span> 表示行因素和列因素总共对因变量的解释达到了多少比例，如果要求分别达到了多少，则应该对单个因素进行单因素方差分析。</td>
+</tr>
+<tr class="odd">
+<td>有交互作用的双因素方差分析</td>
+<td>假设两个因素不独立，二者搭配在一起会对因变量产生一种新的效应，就需要考虑交互作用对因变量的影响。<br/><span class="math inline">\(x_{ijl}\)</span>表示第i个行水平和第j个列水平的第l行的观测值</td>
+<td align="left">(1)<strong>提出假设</strong><br/><strong>对行因素:</strong><br/><span class="math inline">\(H_0:\mu_1=\mu_2=\cdots=\mu_k\)</span><br/> 行因素对因变量没有显著影响<br/><span class="math inline">\(H_1 :\mu_1,\mu_2,\cdots,\mu_k不全相等\)</span><br/> 行因素对因变量有显著影响<br/><strong>对列因素:</strong><br/><span class="math inline">\(H_0:\mu_1=\mu_2=\cdots=\mu_r\)</span><br/> 列因素对因变量没有显著影响<br/><span class="math inline">\(H_1 :\mu_1,\mu_2,\cdots,\mu_r不全相等\)</span><br/> 列因素对因变量有显著影响<br/><strong>对交互作用:</strong><br/><span class="math inline">\(H_0:\mu_{ij}相等(i=1,\cdots,k,j=1,\cdots,r)\)</span><br/> 行列交互作用对因变量没有显著影响<br/><span class="math inline">\(\mu_{ij}不全相等,(i=1,\cdots,k,j=1,\cdots,r)\)</span><br/> 行列交互作用对因变量有显著影响<br/>(2)<strong>构造检验的统计量</strong><br/>行因素的第i个水平的均值<span class="math inline">\(\bar{x}_{i\cdot}\)</span><br/>列因素的第j个水平的均值<span class="math inline">\(\bar{x}_{\cdot j}\)</span><br/>行因素的第i个水平和列因素的第j个水平组合的样本均值<span class="math inline">\(\bar{x}_{ij}\)</span>,样本总均值<span class="math inline">\(\bar{\bar{x}}\)</span>,误差平方和<span class="math inline">\(SST、SSE、SSR,SSC\)</span>。<br/>(3)<strong>计算样本统计量</strong> <span class="math display">\[F_R=\frac{SSR/(k-1)}{SSE/kr(m-1)}\]</span> <span class="math display">\[F_C=\frac{SSC/r-1}{SSE/kr(m-1)}\]</span> <span class="math display">\[F_{RC}=\frac{SSRC/(k-1)(r-1)}{SSE/kr(m-1)}\]</span>(4)<strong>统计决策</strong><Br/>比较统计量<span class="math inline">\(F_R\)</span>和<span class="math inline">\(F_\alpha(k-1,kr(m-1))\)</span>的值以及<span class="math inline">\(F_C\)</span>和<span class="math inline">\(F_\alpha(r-1,kr(m-1))\)</span>。以及<span class="math inline">\(F_{RC}\)</span>和<span class="math inline">\(F_{\alpha}((k-1)(r-1),kr(m-1))\)</span>,分别判断行因素和列因素以及二者的交互作用有没有影响</td>
+<td><span class="math display">\[\bar{x}_{i\cdot}=\sum_{j=1}^{r}\sum_{l=1}^mx_{ijl}/rm i=1,\cdots,k\]</span> <span class="math display">\[\bar{x}_{\cdot j}=\frac{\sum_{i=1}^k\sum_{l=1}^mx_{ijl}}{km} j=1,\cdots,r\]</span> <span class="math display">\[\bar{x}_{ij}=\frac{\sum_{l=1}^mx_{ijl}}{m} i=1,\cdots,k,j=1,\cdots,r\]</span> <span class="math display">\[\bar{\bar{x}}=\frac{\sum_{i=1}^k\sum_{j=1}^{r}\sum_{l=1}^mx_{ijl}}{kr}\]</span> <span class="math display">\[SST=\sum_{i=1}^k\sum_{j=1}^{r}\sum_{l=1}^m(x_{ijl}-\bar{\bar{x}})^2,krm-1\]</span> <span class="math display">\[SSRC=m\sum_{i=1}^k\sum_{j=1}^r(\bar{x}_{ij}-\bar{\bar{x}})^2,(k-1)(r-1)\]</span> <span class="math display">\[SSR=rm\sum_{i=1}^k(\bar{x}_{i\cdot}-\bar{\bar{x}})^2,k-1\]</span> <span class="math display">\[SSC=km\sum_{j=1}^r(\bar{x}_{\cdot j}-\bar{\bar{x}})^2,r-1\]</span> <span class="math display">\[SSE=SST-SSR-SSC-SSRC,kr(m-1)\]</span> <span class="math display">\[MSR=SSR/(k-1)\]</span> <span class="math display">\[MSC=SSC/(r-1)\]</span> <span class="math display">\[MSRC=SSRC/(k-1)(r-1)\]</span> <span class="math display">\[MSE=SSE/kr(m-1)\]</span></td>
+<td>书本未介绍</td>
+</tr>
+</tbody>
+</table>
+<div id="单因素方差分析的多重比较" class="section level3">
+<h3>单因素方差分析的多重比较</h3>
+<p><strong>多重比较方法</strong>：通过对总体均值之间的配对来进一步检验到底哪些均值之间存在显著差异.</p>
+<p>其中一种:最小显著差异方法（LSD）</p>
+<ul>
+<li>第1步：提出假设：<span class="math inline">\(H_0:\mu_i=\mu_j;H_1:\mu_i\neq\mu_j\)</span></li>
+<li>第2步：计算检验统计量：<span class="math inline">\(\bar{x}_i-\bar{x}_j\)</span></li>
+<li>第3步：计算<span class="math inline">\(LSD=t_{\alpha/2}(n-k)\sqrt{MSE(\frac{1}{n_i}+\frac{1}{n_j})}\)</span></li>
+<li>第4步：根据显著性水平<span class="math inline">\(\alpha\)</span>做出决策.如果<span class="math inline">\(|\bar{x}_i-\bar{x}_j|&gt;LSD\)</span>,则拒绝原假设.</li>
+</ul>
+<p>对于n个总体的单因素方差分析，总共要进行<span class="math inline">\(C_n^2\)</span>次LSD检验</p>
+</div>
+</div>
+<div id="实践操作" class="section level2">
+<h2>实践操作</h2>
+<p>{{% staticref "uploads/brython/anova.html" "newtab" %}}单因素方差分析{{% /staticref %}}</p>
+<p>{{% staticref "uploads/brython/双因素方差分析.html" "newtab" %}}双因素方差分析{{% /staticref %}}</p>
+<p>{{% staticref "uploads/brython/有相互作用的双因素方差分析.html" "newtab" %}}有相互作用的双因素方差分析{{% /staticref %}}</p>
+</div>
+</div>

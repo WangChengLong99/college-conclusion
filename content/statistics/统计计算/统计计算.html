@@ -1,0 +1,814 @@
+---
+# Page title
+title: 总结
+
+summary: 分布，以及分布的生成
+
+# Date page published
+lastmod: '2022-08-09T16:44:38+08:00'
+date: '2022-08-09'
+
+# Book page type (do not modify).
+type: book
+
+# Position of this page in the menu. Remove this option to sort alphabetically.
+weight: 1
+
+toc: true
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="分布函数" class="section level1">
+<h1>分布函数</h1>
+<p>统计中有许多分布，以及对应的他们的概率密度函数，分位点，分布函数等。</p>
+<p>以均匀分布为例，unif代表均匀分布，在unif前面加上特定字母实现指定功能。</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>字母</th>
+<th>对应函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>r</td>
+<td>概率密度函数</td>
+<td>runif(n,min=0,max=1)<Br/>n:number of observation<br/>取指定个数n的满足该分布的随机样本</td>
+</tr>
+<tr class="even">
+<td>d</td>
+<td>概率密度函数（连续，density）或概率质量函数（离散 pmf）</td>
+<td>dunif(x,min=0,max=1,log=FALSE)<br/>x:vector of quantiles<br/>根据该函数取对应点的概率值。均匀分布的概率密度与变量无关，所以任意点的概率为常数。</td>
+</tr>
+<tr class="odd">
+<td>p</td>
+<td>分布函数（cumulative distribution function（cdf））</td>
+<td>punif(q,min=0,max=1,lower.tail=TRUE,log.p=FALSE)<br/>x:vector of quantiles<br/>给定点x，算F（x），即p(X&lt;=x)的值。可以将点x视为分位点。</td>
+</tr>
+<tr class="even">
+<td>q</td>
+<td>分布函数</td>
+<td>qunif(p,min=0,max=1,lower.tail=TRUE,log.p=FALSE<br/>p:vector of probabilities<br/>给定概率，求分位点。</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>runif(1,-5,5)#取随机数</code></pre>
+<pre><code>## [1] -1.34988</code></pre>
+<pre class="r"><code>dunif(0.2,-5,5)#返回的是在这一点概率密度函数的取值</code></pre>
+<pre><code>## [1] 0.1</code></pre>
+<pre class="r"><code>dunif(0.3,-5,5)</code></pre>
+<pre><code>## [1] 0.1</code></pre>
+<pre class="r"><code>dnorm(0.3,0,1)</code></pre>
+<pre><code>## [1] 0.3813878</code></pre>
+<pre class="r"><code>dnorm(0.6,0,1)</code></pre>
+<pre><code>## [1] 0.3332246</code></pre>
+<pre class="r"><code>punif(0.2,-5,5)#返回的是x&lt;=0.2的概率</code></pre>
+<pre><code>## [1] 0.52</code></pre>
+<pre class="r"><code>punif(1,-5,5)</code></pre>
+<pre><code>## [1] 0.6</code></pre>
+<pre class="r"><code>qunif(0.2,-5,5)#返回的是p(z&lt;=x)=0.2的z，也就是分位点。</code></pre>
+<pre><code>## [1] -3</code></pre>
+<p>其他所有的分布函数都是以这种形式来生成。</p>
+<p>{{%figure src="data/distribution.png" caption="分布函数" numbered="true"%}}</p>
+<p>下面一一介绍</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>分布</th>
+<th>公式</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>均匀分布unif<br/>uniform distribution</td>
+<td><span class="math inline">\(X\sim U(a,b)\)</span><br/><span class="math inline">\(f(x)=\frac{1}{a+b}a&lt;x&lt;b\)</span><br/><span class="math inline">\(f(x)=0,else\)</span></td>
+<td>主要是a和b，默认是0，1。<br/>dunif(x, min = 0, max = 1, log = FALSE) <br/>punif(q, min = 0, max = 1, lower.tail = TRUE, log.p = FALSE) <br/>qunif(p, min = 0, max = 1, lower.tail = TRUE, log.p = FALSE) <br/>runif(n, min = 0, max = 1)</td>
+</tr>
+<tr class="even">
+<td>正态分布norm<br/>Normal distribution</td>
+<td><span class="math inline">\(X \sim N(\mu,\sigma^2)\)</span><br/><span class="math inline">\(f(x)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(x-\mu)^2}{2\sigma^2})\)</span></td>
+<td>参数为均值和方差，mean和sd</td>
+</tr>
+<tr class="odd">
+<td>对数正态分布lnorm<br/>Log-normal distribution</td>
+<td><span class="math inline">\(\ln x \sim N(\mu,\sigma^2)\)</span><br/><span class="math inline">\(f(x,\mu,\sigma)=\begin{cases}\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(\ln x-\mu)^2}{2\sigma^2}) ,&amp; x &gt; 0\\0, &amp; x &lt;= 0\end{cases}\)</span></td>
+<td>参数为均值和方差，meanlog和sdlog</td>
+</tr>
+<tr class="even">
+<td>卡方分布chisq<br/>Chi-square distribution</td>
+<td><span class="math inline">\(Q \sim \chi^2\)</span></td>
+<td>参数为自由度和所有正态分布的均值的平方和，df和ncp。ncp默认为0，是central卡方分布。ncp不为0时，表示这个卡方分布是由非标准正态分布组合而成。</td>
+</tr>
+<tr class="odd">
+<td>t分布 t<br/>T distribution</td>
+<td><span class="math inline">\(f_z(x)=\frac{Gam(\frac{n+1}{2})}{\sqrt{n\pi}Gam(\frac{n}{2})}(1+\frac{x^2}{n})^{-\frac{n+1}{2}}\)</span></td>
+<td>参数为df和ncp。自由度和均值平方和。ncp出现时表示分布由非标准的<strong>卡方分布</strong>构成。</td>
+</tr>
+<tr class="even">
+<td>F分布 f<br/>F distribution</td>
+<td><span class="math inline">\(F \sim F(n1,n2)\)</span><br/><span class="math inline">\(f_{m,n}(x)=\begin{cases}\frac{\Gamma (\frac{m+n}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}m^{\frac{m}{2}}n^{\frac{n}{2}}x^{\frac{m}{2}-1}(n+mx)^{-\frac{m+n}{2}}&amp;x&gt;0\\0&amp;其他\end{cases}\)</span></td>
+<td>参数为自由度1，自由度2和ncp。ncp同t分布的定义相同。</td>
+</tr>
+<tr class="odd">
+<td>指数分布 exp<br/>Exponential distribution</td>
+<td><span class="math inline">\(X\sim Exp(\lambda)\)</span><br/><span class="math inline">\(f(x)=\begin{cases}\lambda e^{-\lambda x}&amp;x&gt;=0\\0&amp;x&lt;0\end{cases}\)</span></td>
+<td>参数为rate，常被称为率参数（rate parameter），常用 <span class="math inline">\(\lambda\)</span>表示。</td>
+</tr>
+<tr class="even">
+<td>B分布 beta<br/>Beta distribution</td>
+<td><span class="math inline">\(X\sim Be(\alpha,\beta)\)</span><br/><span class="math inline">\(f(x;\alpha,\beta)=\frac{x^{\alpha -1}(1-x)^{\beta-1}}{\int_{0}^{1}u^{\alpha-1}(1-u)^{\beta-1}\text{d}u}\)</span><br/><span class="math inline">\(=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}\)</span><br/><span class="math inline">\(=\frac{1}{B(\alpha,\beta)}x^{\alpha-1}(1-x)^{\beta-1}\)</span></td>
+<td>参数为shape1，shape2，ncp。代表<span class="math inline">\(\alpha \beta\)</span>,该分布的变量x的取值的范围为0~1.</td>
+</tr>
+<tr class="odd">
+<td>Gamma分布 gamma<Br/>Gamma distribution</td>
+<td><span class="math inline">\(X\sim Ga(\alpha,\beta)\)</span><br/><span class="math inline">\(f(x,\beta,\alpha)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x},x&gt;0\)</span></td>
+<td>有三个参数为shape，rate，scale=1/rate。代表 <span class="math inline">\(\alpha,\beta的倒数,\beta\)</span> ,注意<strong>scale才是 <span class="math inline">\(\beta\)</span></strong> ,<span class="math inline">\(\alpha\)</span> 被称为形状参数（shape parameter），<span class="math inline">\(\beta\)</span> 被称为尺度参数 （scale parameter） rgamma(x,y,z)默认y和z代表shape和rate。</td>
+</tr>
+<tr class="even">
+<td>二项分布 binom<br/>Binomial distribution<br/>n重伯努利试验</td>
+<td><span class="math inline">\(X\sim B(n,p)或X\sim b(n,p)\)</span><br/><span class="math inline">\(P\left\{X=k\right\}=\left(\begin{array}{c}n\\ k\end{array}\right)p^k(1-p)^{n-k}\)</span></td>
+<td>参数为size和prob，代表n:总的实验次数和p：发生概率。x的值代表了k。</td>
+</tr>
+<tr class="odd">
+<td>负二项分布 nbinom<br/>Negative binomial distribution</td>
+<td>实验持续到r次失败，需要最后一次失败<br/><span class="math inline">\(X\sim NB(r,p)\)</span><br/><span class="math inline">\(f(k;r,p)=\left(\begin{array}{c}k+r-1\\ r-1\end{array}\right)p^r(1-p)^{k}\)</span></td>
+<td>x=k代表了成功的次数，r是失败的次数，p是失败的概率，需要前k+r-1次中失败r-1次。函数中size代表r，prob是r对应时间发生的概率，mu未知。</td>
+</tr>
+<tr class="even">
+<td>几何分布 geom<br/>Geometric distribution</td>
+<td>前n-1次失败，第n次成功 <br/> <span class="math inline">\(x\sim GE(p)\)</span><br/><span class="math inline">\(P\left\{X=k\right\}=\left(\begin{array}{c}n\\ k\end{array}\right)(1-p)^{k-1}p^{k}\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>超几何分布 hyper<br/>Hypergeometric Distribution</td>
+<td></td>
+<td>m,n,k</td>
+</tr>
+<tr class="even">
+<td>泊松分布 pois<br/>Poisson Distribution</td>
+<td><span class="math inline">\(P(X=k)=\lambda^k\frac{e^{-\lambda}}{k!}\)</span></td>
+<td>lambda</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="取样" class="section level1">
+<h1>取样</h1>
+<div id="取随机样本" class="section level2">
+<h2>取随机样本</h2>
+<div id="sample函数" class="section level3">
+<h3>sample函数</h3>
+<p>sample函数用于随机抽样</p>
+<p><code>sample(x,size,replace=F,prob=c())</code></p>
+<p>x可以是任意类型对象的向量，比如字符串，字符，数值等都可以。</p>
+<p>size决定了抽样的个数</p>
+<p>replace决定了是放回抽样还是不放回抽样，默认F（不放回）</p>
+<p>prob<strong>对于放回抽样</strong>，还可以决定各个元素抽样的比例。各元素比例加起来可以不为1。</p>
+<ul>
+<li>不放回抽样</li>
+</ul>
+<p><code>sample(x)</code> 会取x里面的所有元素,顺序不定
+<code>sample(x，size=n)</code> 会从x里面随机取n个元素,n不能超过x的长度</p>
+<ul>
+<li>放回抽样</li>
+</ul>
+<p><code>sample(x=c(),size=n,replace=T)</code> 可以取无穷个数，n可以无穷大。</p>
+<p><code>sample(x=c(),size=n,replace=T,prob=c(p1,p2,...pn))</code> 可以指定各个元素之间被抽样的比例为p1,p2,…,pn；并且p1+p2+…+pn可以不等于1；它只是起到设置各个元素之间比例的作用<strong>prob的长度必须和x一致</strong></p>
+</div>
+<div id="sample.int" class="section level3">
+<h3>sample.int</h3>
+<p>规定了被抽样对象x必须是正整数。其他和sample一样。</p>
+</div>
+</div>
+<div id="抽取满足一定分布的样本" class="section level2">
+<h2>抽取满足一定分布的样本</h2>
+<p>对于一些R中已有的分布可以通过r+分布的形式抽取随机数。</p>
+<p>但是对于某些已知密度函数或分布函数的R中没有的分布又该怎么取？</p>
+<p>下面将会介绍这些方法</p>
+<div id="逆变换法inverse-transform-method" class="section level3">
+<h3>逆变换法(Inverse transform method)</h3>
+<p>原理：</p>
+<p>所有的分布函数都服从0到1上的均匀分布;</p>
+<p><strong>分布函数</strong>的反（逆）函数依然服从相同的分布；</p>
+<p>公式：</p>
+<p><span class="math display">\[U=F(x)\sim uniform(0,1)\]</span></p>
+<p><span class="math display">\[X=F^{-1}(U)\sim F(x)\]</span></p>
+<p>步骤：</p>
+<p>先生成0到1上的随机数</p>
+<p>算出分布函数的逆函数</p>
+<p>将随机数带入分布函数的逆函数，得到的值即为所需分布的样本。</p>
+<p>题目：</p>
+<p>1 标准拉普拉斯分布的概率密度函数为</p>
+<p><span class="math display">\[f(x) =\frac{1}{2}e^{-\mid x\mid},  x\in R\]</span></p>
+<p>使用逆变换方法从中生成大小为1000的随机样本。画出它的频率直方图并和概率密度函数<span class="math inline">\(f(x)\)</span>的曲线进行比较</p>
+<p>思路：</p>
+<p>给出的是概率密度函数，所以要先求分布函数</p>
+<p>对x分类讨论，因为x&lt;0和x&gt;0的概率密度是不同的，分界点为
+x=0，此时u=1/2，u的分界点为u=1/2.</p>
+<p>算得</p>
+<p><span class="math display">\[U=F(x)=\begin{cases} \frac{e^x}{2}&amp; x &lt;= 0\\1-\frac{1}{2}e^{-x} &amp; x &gt;0\end{cases}\]</span></p>
+<p>再算<span class="math inline">\(F(x)\)</span>的逆函数</p>
+<p><span class="math display">\[X=F^{-1}(U)=\begin{cases} \log(2u)&amp; u &lt;= \frac{1}{2}\\-\log(2(1-u)) &amp; u&gt;\frac{1}{2}\end{cases}\]</span></p>
+<pre class="r"><code>#生成0到1的均匀分布，来模拟分布函数
+u=runif(1000)
+#带入逆函数
+## 第一种方法
+x=ifelse(u&lt;=1/2,log(2*u),-log(2*(1-u)))
+## 第二种方法,为用for循环
+y=seq(-6,6,0.001)
+hist(x,prob=TRUE,breaks=50)
+lines(y,1/2*exp(-abs(y)))</code></pre>
+<p><img src="/statistics/统计计算/%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>2 假设离散型随机变量X的分布律如下：</p>
+<table>
+<tr>
+<td>
+x
+</td>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+2
+</td>
+<td>
+3
+</td>
+<td>
+4
+</td>
+</tr>
+<tr>
+<td>
+p
+</td>
+<td>
+.1
+</td>
+<td>
+.2
+</td>
+<td>
+.2
+</td>
+<td>
+.2
+</td>
+<td>
+.3
+</td>
+</tr>
+</table>
+<p>使用逆变换法产生1000的随机数，使用R函数sample重复以上的问题</p>
+<p>思路：</p>
+<p>这是一个离散型的问题</p>
+<p>离散型的问题和连续型有一定的区别，因为它的x的取值不是连续的。所以某个区间的u取值，都只对应一个x值。当给定离散型的分布律时，很好求。但是当给定的是分布函数又或者概率密度时又该怎么求呢？</p>
+<p>对于给定分布律时，以此题为例：</p>
+<p>最简单的方法就是利用sample函数取样，因为各个取值和各个取值的概率都知道了。</p>
+<p><code>sample(c(x1,x2,...xn),size=n,replace=T,prob=c(p1,p2,...pn))</code></p>
+<p>如果按照正常步骤：</p>
+<p><span class="math display">\[U=F(x)=\begin{cases}0&amp;x&lt;0\\0.1&amp;0\leq x&lt;1\\0.3&amp;1\leq x&lt;2\\0.5&amp;2\leq x&lt;3\\0.7&amp;3\leq x&lt;4\\1&amp;x\geq 4\end{cases}\]</span></p>
+<p><span class="math display">\[X=F^{-1}(U)=\begin{cases}0&amp;u\leq0.1\\1&amp;0.1&lt;u\leq0.3\\2&amp;0.3&lt;u\leq0.5\\3&amp;0.5&lt;x\leq0.7\\4&amp; u&gt;0.7\end{cases}\]</span></p>
+<p>逻辑就是把x所有可能取值从小到大排序好，对每一个取值算一下P(X&lt;=x)，然后，当取得01之间的均匀分布处于<span class="math inline">\(P(X&lt;x_i)&lt;u&lt;=P(X&lt;x_{i+1})\)</span>时，就将该u映射为<span class="math inline">\(x_{i+1}\)</span></p>
+<p>依照这种逻辑，我们可以取给定分布函数时的离散型的样本。</p>
+<p>我们假定离散的取值为0，1，2、、、，那么相邻的两个取值就是x，x+1,但是如果是2，4，、、、，那就是x，x+2。</p>
+<p>那么只需求解<span class="math inline">\(F(x)&lt;u\leq F(x+1)\)</span>,将它化成<span class="math inline">\(x&lt;g(u)\leq x+1\)</span>的形式，对于0，1，2的随机序列，<span class="math inline">\(x+1\)</span>就等于<span class="math inline">\(\lceil g(u)\rceil\)</span>,在R中用ceiling求上整数，floor用来求下整数。</p>
+<pre class="r"><code>u3=runif(200)
+#sample(x=c(0,1,2,3,4),size=200,replace=T,prob=c(0.1,0.2,0.2,0.2,0.3))
+#u3=ifelse(u3&lt;=1/10,0,ifelse(u3&gt;1/6&amp;u3&lt;=3/10,1,ifelse(u3&gt;3/10&amp;u3&lt;=1/2,2,ifelse(u3&gt;1/2&amp;u3&lt;=7/10,3,4))))这个与下面其实效果一样
+u3=ifelse(u3&lt;=1/10,0,ifelse(u3&lt;=3/10,1,ifelse(u3&lt;=1/2,2,ifelse(u3&lt;=7/10,3,4))))#可以利用ifelse的嵌套来实现u到x的转换。
+mean(u3)</code></pre>
+<pre><code>## [1] 2.475</code></pre>
+<pre class="r"><code>var(u3)</code></pre>
+<pre><code>## [1] 1.828518</code></pre>
+</div>
+<div id="舍选法the-acceptance-rejection-method" class="section level3">
+<h3>舍选法(The Acceptance-Rejection Method)</h3>
+<p>对于 <span class="math inline">\(X\)</span> 有者density或pmf <span class="math inline">\(f(t)\)</span>,并且：</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(f(t)&gt;0\)</span></li>
+<li>存在随机变量 <span class="math inline">\(Y\)</span> ,有着density或pmf <span class="math inline">\(g(t)\)</span> ,满足 <span class="math inline">\(\frac{f(t)}{g(t)}\leq c\)</span> ,c是 <span class="math inline">\(\frac{f(t)}{g(t)}\)</span> 的一个上界，取得越小越好，如果能够算得最大值，就用最大值。</li>
+</ol>
+<p>那么我们就可以用舍选法。</p>
+<ul>
+<li>步骤</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>寻找合适的分布y，g(t),生成<strong>一个</strong>样本y，<strong>一般取均匀分布，t的范围和f(t)一致，这样计算会比较方便</strong>。</li>
+<li>g(t)确定后，c也能确定了。</li>
+<li>生成<strong>一个</strong>随机样本 <span class="math inline">\(u\sim uniform(0,1)\)</span></li>
+<li>如果 <span class="math inline">\(u&lt;\frac{f(y)}{cg(y)}\)</span>,就接受这个y，这样我们获得了一个样本。如果不满足，就拒绝。继续重复操作，直到生成了足够的样本数。</li>
+</ol>
+<p>题目：</p>
+<p>利用Acceptance-rejection method(舍选法)从 <span class="math inline">\(Beta(3,2)\)</span> 分布中生成1000个随机数,其中 <span class="math inline">\(Beta(3,2)\)</span> 分布的密度函数为:</p>
+<p><span class="math display">\[f(x) = 12x^2(1-x)\]</span></p>
+<p>绘制相应随机数的直方图和理论密度曲线.</p>
+<p>思路：</p>
+<p>选择均匀分布作为y，f(x)的x的取值范围为(0,1),所以生成<span class="math inline">\(y \sim rform(1,0,1)\)</span> ，f(y)=1。直接取c为12。</p>
+<pre class="r"><code>n=1000#生成1000个随机样本
+k=1#取得第k个样本
+l=numeric(n)#用来保存生成的每个样本
+while(k&lt;=n)#生成1000个
+{
+u4=runif(1)#y
+u5=runif(1)#u
+if(u5^2*(1-u5)&gt;u4)
+{
+l[k]=u5
+k=k+1
+}
+}
+hist(l,prob=TRUE,breaks=50)
+x=seq(0,1,0.01)
+lines(x,12*x^2*(1-x))</code></pre>
+<p><img src="/statistics/统计计算/%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="变换法" class="section level3">
+<h3>变换法</h3>
+<p>某些分布可以由已知的分布构造而来。</p>
+<p>{{%figure src="data/转换1.png"%}}</p>
+<p>{{%figure src="data/转换2.png"%}}</p>
+<p>题目：</p>
+<p>使用变换法编写一个函数从对数正态 <span class="math inline">\(Lognormal(\mu,\sigma^2)\)</span> 分布中生成样本量为10000的随机样本。计算此样本的0.1;0.2; 0.3,0.4;…0.9分位点并和R中自带的函数qlnorm对应的值进行对比</p>
+<p>思路：</p>
+<p>从正态分布来生成对数分布。</p>
+<p>我们把正态分布生成的数当成<span class="math inline">\(\ln x\)</span>,那么对数正态分布的样本x就是 <span class="math inline">\(e^{\ln x}\)</span> .</p>
+<pre class="r"><code>x=rnorm(10000,0,1)#正态分布样本
+y=exp(x)#对数正态
+p=seq(0.1,0.9,0.1)
+Q=qlnorm(p,0,1)
+Qhat=quantile(y,p)
+round(rbind(Qhat,Q),3)</code></pre>
+<pre><code>##        10%   20%   30%   40%   50%   60%   70%   80%   90%
+## Qhat 0.283 0.436 0.593 0.772 0.993 1.271 1.670 2.321 3.569
+## Q    0.278 0.431 0.592 0.776 1.000 1.288 1.689 2.320 3.602</code></pre>
+</div>
+<div id="随机变量的加法与混合sums-and-mixtures" class="section level3">
+<h3>随机变量的加法与混合(sums and mixtures)</h3>
+<p>sums一般是指某些独立同分布的变量的组合，这样的话只需生成各个变量的随机样本，然后让这些样本相加即可。</p>
+<ul>
+<li>卡方分布是独立同分布的标准正态分布的平方和</li>
+<li>负二项分布NegBin(r,p)是r个独立同分布的Geom(p)的组合</li>
+<li>伽玛分布是 <span class="math inline">\(Gamma(r,\lambda)\)</span> 是r个独立同分布的指数分布 <span class="math inline">\(\exp(\lambda)\)</span>的组合</li>
+</ul>
+<p>题目:</p>
+<p>生成1000个满足 <span class="math inline">\(\chi^2(2)\)</span> 的样本，通过正态分布。</p>
+<p>思路：</p>
+<p>生成一个1000行两列的标准正态分布的样本，每一列是独立同分布的标准正态分布。对每一<strong>行</strong>平方求和，得到1000个服从 <span class="math inline">\(\chi^2(2)\)</span> 分布的样本。</p>
+<pre class="r"><code>n=1000
+mu=2
+X=matrix(rnorm(n*mu),n,mu)^2
+y=rowSums(X)
+#method2
+#y=apply(X,MARGIN=1,FUN=sum)
+mean(y)</code></pre>
+<pre><code>## [1] 1.962741</code></pre>
+<pre class="r"><code>mean(y^2)</code></pre>
+<pre><code>## [1] 7.888361</code></pre>
+<p>Mixtures</p>
+<p>混合 指的是分布函数的加法。我们需要先求各个变量的分布函数。然后根据概率取相应分布函数中的样本。并不是将所有样本乘上概率求和。</p>
+<p>步骤：</p>
+<ol style="list-style-type: decimal">
+<li>生成各个变量的n个样本</li>
+<li>按照各个变量分布函数之前的系数，也就是各个分布函数的混合概率，生成相应比例的n个随机数，每种随机数代表一个分布函数。第i个随机数代表取该分布函数下的第i个样本。生成有概率要求的随机数最方便的是sample函数，也可以runif结合ifelse语句。</li>
+</ol>
+<p>题目：</p>
+<p>从N(0,1)和N(3,1)的混合分布中生成样本量为1000的随机样本,其中混合概率为p1=0.75,p2=1-p1=0.25</p>
+<pre class="r"><code>#先生成各个分布函数的样本
+x=rnorm(1000,0,1)
+y=rnorm(1000,3,1)
+#取随机数
+## 0代表x，1代表y
+p=sample(c(0,1),1000,replace=TRUE,prob=c(0.25,0.75))
+##第二种方法
+##p=runif(1000)
+##p=ifelse(p&lt;=0.25,0,1)
+#生成所需要样本
+z=p*x+(1-p)*y#以0和1代表x和y正好可以构造这种等式实现取x不取y，取y不取x。但是大多时候无法写成等式的形式
+## 更普遍的做法
+## z=numeric(1000)
+## for(i in 1:1000)
+## {
+##    if(p[i]==0) 
+##    z[i]=x[i]
+##    if(p[i]==1)
+##    z[i] =y[i]
+## }</code></pre>
+</div>
+</div>
+<div id="多元函数的分布" class="section level2">
+<h2>多元函数的分布</h2>
+</div>
+</div>
+<div id="蒙特卡罗方法monte-carlo" class="section level1">
+<h1>蒙特卡罗方法（Monte Carlo）</h1>
+<p>蒙特卡罗方法是一种统计模拟方法，随机抽样技术。它利用样本来近似解决一些问题。是以频率代替概率的思想。</p>
+<div id="蒙特卡罗方法算积分" class="section level2">
+<h2>蒙特卡罗方法算积分</h2>
+<div id="一重积分" class="section level3">
+<h3>一重积分</h3>
+<p>假设现在有一个积分：<span class="math inline">\(\int_a^bg(x)\text{d}x\)</span>，让我们求积分似乎并不是很好求。</p>
+<p>假设我们已知x的分布<span class="math inline">\(f(x)\)</span> ,那么求<span class="math inline">\(\int_a^bg(x)f(x)\text{d}x\)</span> 实际上就是求 <span class="math inline">\(g(x)\)</span>的期望，也就是<span class="math inline">\(g(x)\)</span>的均值。所以我们只需生成满足x的分布的样本，然后用样本估计<span class="math inline">\(g(x)\)</span> 的均值即可。该值就是积分值。</p>
+<p>所以对于 <span class="math inline">\(\int_a^bg(x)\text{d}x\)</span> ,我们可以将x看成服从均匀分布的变量。那么该式就等于：</p>
+<p><span class="math display">\[(b-a)\int_a^bg(x)\frac{1}{b-a}\text{d}x\]</span></p>
+<p><span class="math inline">\(x\sim uniform(a,b)\)</span>,<span class="math inline">\(\int_a^bg(x)\frac{1}{b-a}\text{d}x\)</span> 就是在求 <span class="math inline">\(g(x)\)</span> 的均值，所以只需先生成(a,b)上的均匀分布得样本，然后求<span class="math inline">\(g(x)\)</span>的均值再乘上<span class="math inline">\(b-a\)</span>即可。</p>
+<p>如果积分上下限涉及到了 <span class="math inline">\(\infty\)</span>,或<span class="math inline">\(-\infty\)</span>,那么就得用变量的替换。</p>
+</div>
+<div id="算二重积分" class="section level3">
+<h3>算二重积分</h3>
+<p>怎么计算<span class="math inline">\(F(x,y)=\int_0^1\int_0^1e^{(x+y)^2}\text{d}x\text{d}y\)</span></p>
+<p>同样的，可以把x和y看成服从<span class="math inline">\(uniform(0,1)\)</span>的独立的分布，所以联合密度函数就是<span class="math inline">\(1\times1=1\)</span>。</p>
+<p>步骤:</p>
+<ol style="list-style-type: decimal">
+<li>生成<span class="math inline">\(x\sim unifrom(0,1)\)</span>,<span class="math inline">\(y\sim uniform(0,1)\)</span></li>
+<li>算<span class="math inline">\(e^{(x+y)^2}\)</span>的均值即可。</li>
+</ol>
+</div>
+<div id="算积分的包和函数" class="section level3">
+<h3>算积分的包和函数</h3>
+<p>int求一重积分，int2求二重积分</p>
+<p>参数为g(x),a是所有下界构成的向量，b是所有上界构成的向量。</p>
+<pre><code>#install.packages(&quot;rmutil&quot;)
+library(&quot;rmutil&quot;)
+g&lt;-function(x,y)exp(x+y)^2
+int2(g,a=c(0,0),b=c(1,1))</code></pre>
+</div>
+</div>
+<div id="hit-or-miss-method" class="section level2">
+<h2>Hit-or-miss method</h2>
+<p><span class="math display">\[E\begin{bmatrix}I(Z\leq x)\end{bmatrix}=P(Z&lt;=x)=\Phi(x)=\int_{-\infty}^{x}\phi(x)\text {d}x\]</span></p>
+<p>如果积分上下限涉及到了 <span class="math inline">\(\infty\)</span>,或<span class="math inline">\(-\infty\)</span>,用这种方法比较好。</p>
+<p>所以只需取该分布的全范围的所有数，看有多少(比例)小于x，就是积分值。</p>
+<pre><code>r$&gt; x=seq(0.1,2.5,length=10)
+
+r$&gt; m=10000
+
+r$&gt; z=rnorm(m)
+
+r$&gt; dim(x)=length(x)
+
+r$&gt; p=apply(x,MARGIN=1,FUN=function(x,z){mean(z&lt;x)},z=z)
+
+r$&gt; phi=pnorm(x)
+
+r$&gt; print(round(rbind(x,p,phi),3))
+    [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]  [,9] [,10]
+x   0.100 0.367 0.633 0.900 1.167 1.433 1.700 1.967 2.233 2.500
+p   0.538 0.644 0.739 0.819 0.878 0.924 0.955 0.974 0.988 0.994
+phi 0.540 0.643 0.737 0.816 0.878 0.924 0.955 0.975 0.987 0.994</code></pre>
+</div>
+<div id="减小方差的方法" class="section level2">
+<h2>减小方差的方法</h2>
+<p>如果对于两个不同方法的估计值，其中一个估计值的方差更小，则认为这个估计值更有效，更好。</p>
+<p><span class="math display">\[\frac{Var(\hat{\theta}1)}{Var(\hat{\theta}2)}&lt;1\]</span></p>
+<p>下面介绍能够减少蒙特卡罗方法方差的方法</p>
+<div id="对偶变量法" class="section level3">
+<h3>对偶变量法</h3>
+<ol style="list-style-type: decimal">
+<li>生成一半样本的均匀分布<span class="math inline">\(u\)</span>，另一半为<span class="math inline">\(1-u\)</span>生成。</li>
+<li>合并成一个整体的样本</li>
+<li>其他步骤不变。</li>
+</ol>
+</div>
+<div id="控制变量法" class="section level3">
+<h3>控制变量法</h3>
+<p>找一个与<span class="math inline">\(g(x)\)</span> <strong>有关</strong>的<span class="math inline">\(f(x)\)</span>, <span class="math inline">\(\mu=E\begin{bmatrix}f(X)\end{bmatrix}\)</span>改造函数：</p>
+<p><span class="math display">\[\hat{\theta}_c=g(X)+c(f(Y)-\mu)\]</span></p>
+<p>则该函数均值和<span class="math inline">\(g(x)\)</span>相同，但是方差可以更小，当：</p>
+<p><span class="math display">\[c^\star=-\frac{\begin{bmatrix}Cov(g(X),f(X))\end{bmatrix}^2}{Var(f(x))}\]</span></p>
+<p>步骤:</p>
+<ol style="list-style-type: decimal">
+<li>找到合适的与f(x)相关的函数</li>
+<li>生成满足X和Y分布的样本</li>
+<li>求解<span class="math inline">\(c^\star\)</span>时，协方差和方差可以通过样本估计，当然可以通过函数直接算出更精确。但一般是难以算得。</li>
+<li>算<span class="math inline">\(g(X)+c^\star(f(Y)-\mu)\)</span>的均值即可。</li>
+</ol>
+</div>
+<div id="重要抽样" class="section level3">
+<h3>重要抽样</h3>
+<p>蒙特卡罗方法可以看成是重要抽样的一种。</p>
+<p>重要抽样就是不在仅仅把变量看成服从均匀分布，而是有很多其他选择：</p>
+<p><span class="math display">\[\int_a^bg(x)\text{d}x=\int_a^b\frac{g(x)}{f(x)}f(x)\text{d}x\]</span></p>
+<p>这样就转化为求<span class="math inline">\(\frac{g(x)}{f(x)}\)</span>的均值</p>
+<p>需要注意的是<span class="math inline">\(f(x)\)</span> 需要大于或等于0，并且并不是所有的<span class="math inline">\(f(x)\)</span>都一定能减小方差。</p>
+</div>
+<div id="分层抽样" class="section level3">
+<h3>分层抽样</h3>
+<p>将一个积分区间分成好几个部分，对每一个区间取样求均值，然后再求区间之间的均值。</p>
+<p>步骤：</p>
+<ol style="list-style-type: decimal">
+<li>确定样本数n和分层数m以及重复数z</li>
+<li>对每一层取n/m个样本，算蒙特卡罗积分</li>
+<li>算各层之间的均值作为最终结果。</li>
+<li>重复z次可以得到z个最终结果。以他们的均值作为最终预测，这些样本同时可以用来估计结果的方差标准差等。</li>
+</ol>
+</div>
+</div>
+<div id="蒙特卡罗方法算统计指标" class="section level2">
+<h2>蒙特卡罗方法算统计指标</h2>
+<p>可以用蒙特卡罗方法来估计某些参数，比如均值方差等，但是对于样本估计值来说，它也有一些性质，比如估计值的方差，标准差，均方误差等。这些同样也可以通过蒙特卡罗方法来估计。只不过之前估计参数时，只需估计一次，现在需要估计n次，即重复n次。计算这n次估计值的方差，均值等来估计估计值的方差均值等。</p>
+<p>同时，我们也不仅仅可以进行参数的点估计，同样也可以进行参数的置信区间的计算和假设检验。因为置信区间的逻辑就是该参数的n次重复试验中有多少次会包含该参数值。假设检验也类似。</p>
+<div id="计算ex1-x2" class="section level3">
+<h3>计算<span class="math inline">\(E|X1-X2|\)</span></h3>
+<p>假如X1和X2是独立同分布的标准正态分布，计算<span class="math inline">\(E|X1-X2|\)</span>。</p>
+<p>思路:</p>
+<p>首先这可以看成变量|X1-X2|的均值</p>
+<p>我们可以直接用积分来求它的均值，方差。</p>
+<pre class="r"><code>library(rmutil)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rmutil&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     nobs</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.data.frame, units</code></pre>
+<pre class="r"><code>g=function(x1,x2)
+{
+    abs(x1-x2)*(1/2/pi)*exp(-x1^2/2-x2^2/2)
+}
+u=int2(g,a=c(-Inf,-Inf),b=c(Inf,Inf))</code></pre>
+<p>算得均值为1.128345</p>
+<p>再算方差</p>
+<pre class="r"><code>g1=function(x1,x2)
+{
+   (abs(x1-x2)-u)^2*(1/2/pi)*exp(-x1^2/2-x2^2/2)
+}
+int2(g1,a=c(-Inf,-Inf),b=c(Inf,Inf))</code></pre>
+<pre><code>## [1] 0.7268341</code></pre>
+<p>算得答案为0.7268341</p>
+<p>现在我们用蒙特卡罗方法来估计均值<span class="math inline">\(\mu\)</span>。</p>
+<pre class="r"><code>set.seed(1)
+x=matrix(rnorm(2000),1000,2)#生成1000行2列的随机矩阵，两列代表X1,X2
+y=abs(x[,1]-x[,2])
+mean(y)</code></pre>
+<pre><code>## [1] 1.173598</code></pre>
+<pre class="r"><code>#mean(sum((y-mean(y))^2)/1000)
+#mean(sum((y-mean(y))^2)/999)
+var(y)#与第二种一致</code></pre>
+<pre><code>## [1] 0.7601436</code></pre>
+<p>算得答案为均值1.173598,方差0.7601436</p>
+</div>
+<div id="计算估计量的标准差hatse" class="section level3">
+<h3>计算估计量的标准差<span class="math inline">\(\hat{se}\)</span></h3>
+<p>上面我们只得到了均值的一个估计值，这是无法估计参数的标准差的。所以我们现在重复1000次，来估计参数的方差，标准差和均值。</p>
+<pre class="r"><code>m=1000
+me=numeric(m)
+for (i in 1:m)
+{
+    set.seed(i)
+    x=matrix(rnorm(2000),1000,2)#生成1000行2列的随机矩阵，两列代表X1,X2
+    y=abs(x[,1]-x[,2])
+    me[i]=mean(y)
+}
+mean(me)#1.127965</code></pre>
+<pre><code>## [1] 1.127965</code></pre>
+<pre class="r"><code>sd(me)#0.02648184</code></pre>
+<pre><code>## [1] 0.02648184</code></pre>
+<pre class="r"><code>var(me)#0.0007012878</code></pre>
+<pre><code>## [1] 0.0007012878</code></pre>
+<p>我们现在估计的是参数<span class="math inline">\(\mu\)</span>，用的是<span class="math inline">\(\overline{X}\)</span>的均值，计算的估计值的方差和标准差实际就是<span class="math inline">\(\overline{X}\)</span>的方差和标准差。而我们知道样本均值的方差和总体方差是有下关系的：</p>
+<p><span class="math display">\[var(\overline{X})=\frac{var(X)}{n}\]</span></p>
+<p>而我们使用样本方差来估计总体的方差，这时我们有两种估计方式，一种是无偏的(分母为n-1)，一种是有偏的（分母为n），而我们的var函数对应的是无偏的。sd也是无偏的。</p>
+</div>
+<div id="计算残差平方和hatmse" class="section level3">
+<h3>计算残差平方和<span class="math inline">\(\hat{MSE}\)</span></h3>
+<p>计算均值误差的估计值应该要知道实际值，否则无法比较。</p>
+<p>均值误差的计算公式：</p>
+<p><span class="math display">\[\hat{MSE}=\frac{1}{m}\sum_{j=1}^m(\hat{\theta^{(j)}}-\theta)^2\]</span></p>
+<p>上面已经知道均值的准确值为1.128345。</p>
+<p>我们来估算<span class="math inline">\(|X1-X2|\)</span>的均值误差</p>
+<pre class="r"><code>m=1000
+u=1.128345
+ms=numeric(m)
+for(i in 1:m)
+{
+    x=matrix(rnorm(2000),1000,2)
+    y=mean(abs(x[,1]-x[,2]))-u
+    ms[i]=y
+}
+mean(ms)</code></pre>
+<pre><code>## [1] 0.0003353569</code></pre>
+</div>
+<div id="计算置信区间" class="section level3">
+<h3>计算置信区间</h3>
+<p>这个计算置信区间其实可以直接手算，一般说的置信区间，应该是估计某个参数的区间。在R中其实可以直接计算区间两个端点的值。</p>
+<p>用蒙特卡罗方法是在参数值已知情况下，比较用这种方法算出的n个区间，是否确实有接近<span class="math inline">\(n\times(1-\alpha)\)</span>个区间包含该参数值。</p>
+<p>介绍一下replicate函数</p>
+<p>replicate函数可以将某个函数f重复运行n次，返回n个结果组成的向量。函数f可以直接在replicate中的expr参数下写<code>expr={函数主体}</code>,也可以是已有函数。</p>
+<p><code>replicate(n=,expr=)</code></p>
+</div>
+<div id="计算假设检验" class="section level3">
+<h3>计算假设检验</h3>
+<p>假设检验是用来判断某个参数的值或范围是否合理，通过构造参数的某种分布，带入参数的估计值，看是落在大概率处还是落在小概率处，落在大概率则接受，落在小概率处则拒绝。</p>
+<p>我们可以设置一个概率临界值<span class="math inline">\(\alpha\)</span>，参数为<span class="math inline">\(\theta\)</span>,如果当计算<span class="math inline">\(\theta\)</span>的统计量与该分布的分位点满足条件，就接受，不满足，就拒绝。</p>
+<p>在R中，也是用样本的思想，看有多少次结果满足，计算概率。如果接近临界值，则接受原假设。如果与临界值相差很大，就拒绝。</p>
+<p>在R中有很多专门的函数，可以专门用来计算假设检验。他们适用于不同的场景。</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>t.test()</td>
+<td>t.test(x,y=NULL,alternative=c(“two.sided”,“less”,“greater”),<br/> mu=0,paired=FALSE,var.equal=FALSE,conf.level=0.95)<br/>x:数据样本<br/>y:数据样本 如果只提供x，则是单总体，如果x，y都有，则是双总体。<br/>alternative:代表备择假设的形式。以单总体为例two.side(默认，双边检验)：<span class="math inline">\(H_1(\mu!=\mu_0)\)</span>;less(左边检验):<span class="math inline">\(H_1(\mu&lt;\mu_0)\)</span>;greater(右边检验):<span class="math inline">\(H_1(\mu&gt;\mu_0)\)</span><br/>mu表示原假设<span class="math inline">\(\mu_0\)</span><br/>conf.level:置信水平，也就是<span class="math inline">\(1-\alpha\)</span>,一般取0.95。<r/>var.equal是逻辑变量，var.equal=TRUE表示两样品方差相同，var.equal=FALSE（缺省）表示两样本方差不同。<br/>paired：=T表示是成对数据，默认=F，不是成对数据。</td>
+</tr>
+<tr class="even">
+<td>var.test<br/>方差检验</td>
+<td>var.test(x, y, ratio = 1,alternative = <br/>c(“two.sided”, “less”, “greater”),conf.level = 0.95, …)<br/> x,y是来自两样本数据构成的向量<br/>ratio是方差比的原假设，缺省值为1.<br/>alternative是备择假设，two.sided表示双边检验,less和greater表示单边检验。</td>
+</tr>
+<tr class="odd">
+<td>z.test<br/>z检验,在BSDA包中，需要先加载</td>
+<td>z.test(x, y = NULL, alternative = “two.sided”, mu = 0, <br/>sigma.x = NULL, sigma.y = NULL, conf.level = 0.95)<br/>单总体x就需输入sigma.x<br/>双总体就需输入sigma.x和sigma.y。</td>
+</tr>
+</tbody>
+</table>
+<p>检验法</p>
+<table style="width:100%;">
+<colgroup>
+<col width="30%" />
+<col width="30%" />
+<col width="30%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">原假设<span class="math inline">\(H_0\)</span></th>
+<th align="center">检验统计量</th>
+<th align="center">拒绝域</th>
+<th>函数参数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu\leq\mu\)</span><br/><span class="math inline">\(\mu\geq\mu\)</span><br/><span class="math inline">\(\mu=\mu\)</span><br/><span class="math inline">\((\sigma^2已知)\)</span></td>
+<td align="center"><span class="math inline">\(Z=\frac{\overline{X}-\mu_0}{\sigma/\sqrt{n}}\)</span></td>
+<td align="center"><span class="math inline">\(z\geq z_\alpha\)</span><br/><span class="math inline">\(z\leq-z_\alpha\)</span><br/><span class="math inline">\(\mid z\mid\geq z_{\alpha/2}\)</span></td>
+<td>x,sigma.x,mu,alternative,<span class="math inline">\(1-\alpha\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\mu\leq\mu\)</span><br/><span class="math inline">\(\mu\geq\mu\)</span><br/><span class="math inline">\(\mu=\mu\)</span><br/><span class="math inline">\((\sigma^2未知)\)</span></td>
+<td align="center"><span class="math inline">\(t=\frac{\overline{X}-\mu_0}{S/\sqrt{n}}\)</span><br/>用t.test()</td>
+<td align="center"><span class="math inline">\(t\geq t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(t\leq -t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(\mid t\mid\leq t_{\alpha/2}(n-1)\)</span></td>
+<td><br/>x,greater,<span class="math inline">\(\mu_0\)</span>,<span class="math inline">\(1-\alpha\)</span><br/>x,less,<span class="math inline">\(\mu_0\)</span>,<span class="math inline">\(1-\alpha\)</span><br/>x,two.side,<span class="math inline">\(\mu_0\)</span>,<span class="math inline">\(1-\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_1-\mu_2\leq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2\geq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2=\delta\)</span><br/>(<span class="math inline">\(\sigma_1^2,\sigma_2^2已知\)</span>)</td>
+<td align="center"><span class="math inline">\(Z=\frac{\overline{X}-\overline{Y}-\delta}{\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}}\)</span></td>
+<td align="center"><span class="math inline">\(z\geq z_\alpha\)</span><br/><span class="math inline">\(z\leq-z_\alpha\)</span><br/><span class="math inline">\(\mid z\mid\geq z_{\alpha/2}\)</span></td>
+<td>x,y,sigma.x,sigma.y,mu=<span class="math inline">\(\delta\)</span>,<span class="math inline">\(1-\alpha\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\mu_1-\mu_2\leq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2\geq\delta\)</span><br/><span class="math inline">\(\mu_1-\mu_2=\delta\)</span><br/>(<span class="math inline">\(\sigma_1^2=\sigma_2^2=\sigma^2未知\)</span>)</td>
+<td align="center"><span class="math inline">\(t=\frac{\overline{X}-\overline{Y}-\delta}{S_\omega\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}}\)</span><br/><span class="math inline">\(S_\omega^2=\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}\)</span><br/>用t.test()</td>
+<td align="center"><span class="math inline">\(t\geq t_\alpha(n_1+n_2-2)\)</span><br/><span class="math inline">\(t\leq -t_\alpha(n_1+n_2-2)\)</span><br/><span class="math inline">\(\mid t \mid\geq t_{\alpha/2}(n_1+n_2-2)\)</span></td>
+<td>x,y,greater,<span class="math inline">\(\delta\)</span>,<span class="math inline">\(1-\alpha\)</span><br/>x,y,less,<span class="math inline">\(\delta\)</span>,<span class="math inline">\(1-\alpha\)</span><br/>x,y,two.side,<span class="math inline">\(\delta\)</span>,<span class="math inline">\(1-\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\sigma^2\leq \sigma_0^2\)</span><br/><span class="math inline">\(\sigma^2\geq \sigma_0^2\)</span><br/><span class="math inline">\(\sigma^2=\sigma_0^2\)</span><br/><span class="math inline">\((\mu 未知)\)</span></td>
+<td align="center"><span class="math inline">\(\chi^2=\frac{(n-1)S^2}{\sigma_0^2}\)</span><br/>用var.test()</td>
+<td align="center"><span class="math inline">\(\chi^2\geq \chi^2_\alpha(n-1)\)</span><br/><span class="math inline">\(\chi^2\leq \chi^2_{1-\alpha}(n-1)\)</span><br/><span class="math inline">\(\chi^2\geq \chi^2_{\alpha/2}(n-1)\)</span>或<br/><span class="math inline">\(\chi^2\leq \chi^2_{1-\alpha/2}(n-1)\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\sigma_1^2\leq\sigma_2^2\)</span><br/><span class="math inline">\(\sigma_1^2\geq\sigma_2^2\)</span><br/><span class="math inline">\(\sigma_1^2=\sigma_2^2\)</span><br/><span class="math inline">\((\mu_1,\mu_2未知)\)</span></td>
+<td align="center"><span class="math inline">\(F=\frac{S_1^2}{S_2^2}\)</span><br/>用var.test()</td>
+<td align="center"><span class="math inline">\(F\geq F_\alpha(n_1-1,n_2-1)\)</span><br/><span class="math inline">\(F\leq F_{1-\alpha}(n_1-1,n_2-1)\)</span><br/><span class="math inline">\(F\geq F_{\alpha/2}(n_1-1,n_2-1)\)</span>或<br/><span class="math inline">\(F\leq F_{1-\alpha/2}(n_1-1,n_2-1)\)</span></td>
+<td>x,y,1,greater,<span class="math inline">\(1-\alpha\)</span><br/>x,y,1,less,<span class="math inline">\(1-\alpha\)</span><br/>x,y,1,two.side,<span class="math inline">\(1-\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\mu_D\leq0\)</span><br/><span class="math inline">\(\mu_D\geq0\)</span><br/><span class="math inline">\(\mu_D=0\)</span><br/>(成对数据)</td>
+<td align="center"><span class="math inline">\(t=\frac{\overline{D}-0}{S_D/\sqrt{n}}\)</span><br/>用t.test()</td>
+<td align="center"><span class="math inline">\(t\geq t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(t\leq -t_{\alpha}(n-1)\)</span><br/><span class="math inline">\(\mid t\mid\leq t_{\alpha/2}(n-1)\)</span></td>
+<td><strong>x-y</strong>,greater,<span class="math inline">\(0\)</span>,<span class="math inline">\(1-\alpha\)</span><br/><strong>x-y</strong>,less,<span class="math inline">\(0\)</span>,<span class="math inline">\(1-\alpha\)</span><br/><strong>x-y</strong>,two.side,<span class="math inline">\(0\)</span>,<span class="math inline">\(1-\alpha\)</span><br/><strong>注意以上还要都把paired参数设置为T</strong></td>
+</tr>
+</tbody>
+</table>
+<p>现在给一个实例：</p>
+<p>假设现在有20个样本来自正态分布<span class="math inline">\(N\sim (\mu,\sigma^2\)</span>,检验<span class="math inline">\(H_0:\mu=500H_1:\mu&gt;500\)</span>,<span class="math inline">\(\alpha=0.05\)</span>.利用统计量:</p>
+<p><span class="math display">\[T=\frac{\overline{X}-500}{S/\sqrt{20}}\sim t(19)\]</span></p>
+<pre class="r"><code>n=20#样本数
+alpha=0.05#置信区间
+mu0=500#检验均值
+sigma=100#方差已知，如果未知就无法生成样本。一般是现有样本然后判断。这里没有样本只好以这种方式演示一下。这里sigma可以随便取。
+
+m=10000
+p=numeric(m)
+for(j in 1:m)
+{
+    x=rnorm(n,mu0,sigma)
+    ttest=t.test(x,alternative=&quot;greater&quot;,mu=mu0)
+    p[j]=ttest$p.value
+}
+p.hat=mean(p&lt; alpha)
+se.hat=sqrt(p.hat*(1-p.hat)/m)#p的估计值的标准差
+print(c(p.hat,se.hat))</code></pre>
+<pre><code>## [1] 0.050900000 0.002197935</code></pre>
+<p>[1] 0.051600000 0.002212181</p>
+<p>用了t.test()函数后，有一些属性</p>
+<pre><code>r$&gt; attributes(ttest)
+$names
+[1] &quot;statistic&quot;   &quot;parameter&quot;   &quot;p.value&quot;     &quot;conf.int&quot;    &quot;estimate&quot;    &quot;null.value&quot;  &quot;stderr&quot;
+[8] &quot;alternative&quot; &quot;method&quot;      &quot;data.name&quot;
+
+$class
+[1] &quot;htest&quot;</code></pre>
+<p>我们可以用p.value来判断假设检验。</p>
+<p>p的标准差的公式：<span class="math inline">\(\sqrt{\frac{\hat{p}(1-\hat{p})}{m}}\leq\frac{0.5}{\sqrt{m}}.\)</span></p>
+</div>
+</div>
+</div>
+<div id="自助法和刀切法" class="section level1">
+<h1>自助法和刀切法</h1>
+<p>也就是抽取样本的方法，当样本量不足时，我们如何创造出足够的合理的样本来支持我们的实验。其实在机器学习中我们也学过自助法。就是重抽样，并且观察拟合效果。</p>
+<p>Bootstrap的奥义也就是：既然样本是抽出来的，那我何不从样本中再抽样（Resample）？Jackknife的奥义在于：既然样本是抽出来的，那我在作估计、推断的时候“扔掉”几个样本点看看效果如何？</p>
+<div id="自助法bootstrap" class="section level2">
+<h2>自助法（bootstrap）</h2>
+<p>Bootstrap方法是一类非参数Monte Carlo方法，其通过再抽样对总体分布进行估计.再抽样方法将 观测到的样本视为一个有限总体，从中进行随机（再）抽样来估计总体的特征以及对抽样总体作出统计推断.当目标总体分布没有指定时，Bootstrap方法经常被使用，此时，样本是唯一已有的信息.</p>
+<p>Bootstrap一词可以指非参数Bootstrap，也可以指参数Bootstrap（上一讲中）.参数Bootstrap是指总体分布完全已知，利用Monte Carlo方法从此总体中抽样进行统计推断;而非参数Bootstrap是指总体分布完全未知，利用再抽样方法从样本中（再）抽样进行统计推断.</p>
+<p>可以视样本所表示的有限总体的分布为一个”伪”总体，其具有和真实总体类似的特征.通过从此”伪”总体中 重复（再）抽样，可以据此估计统计量的抽样分布.统计量的一些性质，如偏差，标准差等也可以通过再抽样来估计.</p>
+<p>思路：</p>
+<p>将已有样本视为总体，样本的分布视为经验分布。从样本中再抽样视为从总体中抽样。从而通过再抽样对参数进行估计就可认为是对总体的估计。</p>
+<p>步骤：</p>
+<p>首先由一组长度为n的样本。</p>
+<p>对该样本进行重抽样，得到新的m组等长的样本。</p>
+<p>通过这m组样本，可以估计参数值，参数估计的标准差等。</p>
+<p>代码实现：</p>
+<p>主要就是<code>sample(1:n,n,replace=T)</code></p>
+<p>然后再取原样本中对应的位置的样本组成一个新的样本。</p>
+<pre class="r"><code>library(bootstrap) # for the law data
+print(cor(law$LSAT,law$GPA))</code></pre>
+<pre><code>## [1] 0.7763745</code></pre>
+<pre class="r"><code>#set up the bootstrap 
+B&lt;-200 #number of replicates
+n&lt;- nrow(law) #样本容量
+R=numeric(B)#存储重复值
+
+#bootstrap estimate of standard error of R
+for(b in 1:B){
+#randomly select the indices
+i&lt;-sample(1:n, size =n,replace = TRUE)
+LSAT&lt;- law$LSAT[i]#i is a vector of indices
+GPA&lt;- law$GPA[i]
+R[b]&lt;- cor(LSAT, GPA)}
+print(se.R&lt;-sd(R))</code></pre>
+<pre><code>## [1] 0.13546</code></pre>
+<pre class="r"><code>hist(R, prob=TRUE)</code></pre>
+<p><img src="/statistics/统计计算/%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div id="自助法计算偏差" class="section level3">
+<h3>自助法计算偏差</h3>
+<p><span class="math inline">\(\theta\)</span> 的一个估计量 <span class="math inline">\(\hat{\theta}\)</span> 的偏差定义为：</p>
+<p><span class="math display">\[bias(\hat{\theta})=E\hat{\theta}-\theta\]</span></p>
+<p>当 <span class="math inline">\(\theta\)</span> 的分布未知或者形式很复杂使得期望的计算不可能（从此分布中抽样变得很困难，Monte Carlo方法不可行），以及在现实中，我们也不知道 <span class="math inline">\(\theta\)</span> 的真值时（需要估计），这种情况下偏差是未知的.</p>
+<p>但是现在我们把样本当总体，利用已有样本估计 <span class="math inline">\(\theta\)</span>,作为 <span class="math inline">\(\theta\)</span> 的真实值，再从已有样本重抽样，计算 <span class="math inline">\(E\hat{\theta}\)</span>.即可算得偏差，表达式为：</p>
+<p><span class="math display">\[\hat{bias}_B(\theta)=E^\star\hat{\theta}^\star-\hat{\theta}\]</span></p>
+<p><span class="math inline">\(E^\star\)</span>为经验分布函数.</p>
+</div>
+<div id="boot函数与bootstarp函数" class="section level3">
+<h3>boot函数与bootstarp函数</h3>
+<p><code>bootstrap(x,nboot,theta,……,func=NULL)</code></p>
+<p>参数说明：</p>
+<p>x:原始抽样数据</p>
+<p>theta:统计量T，以函数形式呈现，与数据有关</p>
+<p>nboot:构造Bootstrap数据集个数</p>
+<p>实例：</p>
+<p>我们构造一个返回</p>
+<p>library(boot)</p>
+</div>
+</div>
+<div id="刀切法" class="section level2">
+<h2>刀切法</h2>
+</div>
+</div>
+<div id="em算法" class="section level1">
+<h1>EM算法</h1>
+</div>
+<div id="参考文献" class="section level1">
+<h1>参考文献</h1>
+</div>

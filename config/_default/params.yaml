@@ -66,7 +66,7 @@ features:
       - r
       - latex
   math:
-    enable: false
+    enable: true
   privacy_pack:
     enable: false
   repository:
@@ -94,6 +94,7 @@ features:
     provider: ''
     api_key: ''
     zoom: 15
+  diagram: true
 
 # Extensions
 
@@ -109,3 +110,9 @@ extensions:
 security:
   # Allow frame for embedding speaker notes in slides
   allow_frame: true
+
+# book
+
+docs_section_pager:
+  enable: true
+
