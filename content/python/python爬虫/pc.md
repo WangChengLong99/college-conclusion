@@ -1841,7 +1841,7 @@ class Chaojiying_Client(object):
         return r.json()
 
 if __name__ == '__main__':
-	chaojiying = Chaojiying_Client('pfdr2815475305', '990925wcldsg', '919750')	#用户中心>>软件ID 生成一个替换 96001
+	chaojiying = Chaojiying_Client('****', '****', '919750')	#用户中心>>软件ID 生成一个替换 96001
 	im = open('./data/古诗文验证码.jpg', 'rb').read()													#本地图片文件路径 来替换 a.jpg 有时WIN系统须要//
 	print(chaojiying.PostPic(im, input('验证码类型')))												#1902 验证码类型  官方网站>>价格体系 3.4+版 print 后要加()
 ```
@@ -1923,7 +1923,7 @@ class Chaojiying_Client(object):
         r = requests.post('http://upload.chaojiying.net/Upload/ReportError.php', data=params, headers=self.headers)
         return r.json()
 ##对验证码图片进行解析
-chaojiying = Chaojiying_Client('pfdr2815475305', '990925wcldsg', '919750')
+chaojiying = Chaojiying_Client('****', '****', '919750')
 im = open('./data/古诗文验证码.jpg', 'rb').read()
 code=chaojiying.PostPic(im, input('验证码类型'))['pic_str']
 url='https://www.gswen.cn/mbuser/index_do.php'
@@ -1932,7 +1932,7 @@ data={
     'dopost': 'login',
     'gourl':'',
     'userid': 'wcl',
-    'pwd': '990925wcldsg',
+    'pwd': '****',
     'vdcode':code,
     'keeptime': '604800'
 }
@@ -2041,7 +2041,7 @@ class Chaojiying_Client(object):
         r = requests.post('http://upload.chaojiying.net/Upload/ReportError.php', data=params, headers=self.headers)
         return r.json()
 ##对验证码图片进行解析
-chaojiying = Chaojiying_Client('pfdr2815475305', '990925wcldsg', '919750')
+chaojiying = Chaojiying_Client('***', '****', '919750')
 im = open('./data/古诗文验证码.jpg', 'rb').read()
 code=chaojiying.PostPic(im, input('验证码类型'))['pic_str']
 url='https://www.gswen.cn/mbuser/index_do.php'
@@ -2050,7 +2050,7 @@ data={
     'dopost': 'login',
     'gourl':'',
     'userid': 'wcl',
-    'pwd': '990925wcldsg',
+    'pwd': '****',
     'vdcode':code,
     'keeptime': '604800'
 }
@@ -2761,9 +2761,9 @@ a_tag.click()#点击
 ##输入账号密码
 user=bro.find_element_by_id('u')
 password=bro.find_element_by_id('p')
-user.send_keys('2815475305')
+user.send_keys('')
 time.sleep(1)
-password.send_keys('990925wcldsg')
+password.send_keys('')
 time.sleep(1)
 ##登录
 button=bro.find_element_by_id('login_button')
@@ -3164,7 +3164,7 @@ code_img_name='./code.png'
 frame=i.crop(rangle)
 frame.save(code_img_name)
 ##对验证码图片进行解析
-chaojiying = Chaojiying_Client('pfdr2815475305', '990925wcldsg', '919750')
+chaojiying = Chaojiying_Client('', '', '919750')
 im = open('./code.png','rb').read()
 code=chaojiying.PostPic(im, input('验证码类型'))['pic_str']#9004
 print(code)
@@ -3387,7 +3387,7 @@ bro.quit()
 ##     conn=None
 ##     cursor=None
 ##     def open_spider(self,spider):
-##         self.conn=pymysql.Connect(host='localhost',port=3306,user='root',password='990925wcldsg',db='qiubai',charset='utf8')
+##         self.conn=pymysql.Connect(host='localhost',port=3306,user='root',password='',db='qiubai',charset='utf8')
 ##     def process_item(self,item,spider):
 ##         self.cursor=self.conn.cursor()
 ##         try:
