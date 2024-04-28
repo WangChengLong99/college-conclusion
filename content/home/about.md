@@ -4,7 +4,7 @@
 widget: about
 
 # Activate this widget? true/false
-active: True
+active: false
 
 # This file represents a page section.
 headless: true

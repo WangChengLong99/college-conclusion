@@ -8,8 +8,10 @@
 appearance:
   theme_day: minimal
   theme_night: minimal
-  font: minimal
-  font_size: L
+  # font: minimal
+  font-family: Arial,"kaiTi",kaiTi,sans-serif
+  font-size: 1.2rem
+  font-weight: 400
 
 # SEO
 
